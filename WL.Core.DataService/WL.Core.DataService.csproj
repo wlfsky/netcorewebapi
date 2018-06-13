@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
+    <PackageReference Include="Dapper.Contrib" Version="1.50.4" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="1.1.10" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.v140" Version="1.1.10" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3.net45" Version="1.1.10" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.108" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.108" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WL.Core.Model\WL.Core.Model.csproj" />
+    <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.Sqlite">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.data.sqlite.core\2.0.1\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

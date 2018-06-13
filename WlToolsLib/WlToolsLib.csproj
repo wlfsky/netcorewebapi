@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="JsonHelper\c\JsonHelper.cs" />
+    <Compile Remove="JsonHelper\c\ResultData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HashLib" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="pinyin4net" Version="1.0.0" />
+    <PackageReference Include="QrCode.Net" Version="0.4.0" />
+    <PackageReference Include="ServiceStack.Text" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Compiler\" />
+    <Folder Include="JsonHelper\c\" />
+    <Folder Include="LogHelper\" />
+  </ItemGroup>
+
+</Project>

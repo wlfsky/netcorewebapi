@@ -1,0 +1,386 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>这里有bootstrap3+vue</p>
+
+
+
+
+
+@section style {
+
+}
+
+
+<section class="container-fluid">
+    <div id="colorConfigAppv" class="container">
+        <h2>
+            {{metadata.title}}管理
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#add_modal" v-on:click="show_add_modal">
+                添加按钮
+            </button>
+        </h2>
+
+        <div>
+            <table id="v_colorconfig_list_box" class="table table-bordered">
+                <tr>
+                    <template v-for="k in metadata.item_dic">
+                        <td class="t_c">{{k.title}}</td>
+                    </template>
+                    <td class="t_c">管理</td>
+                </tr>
+                <tr v-for="i in main_data.Rows" v-bind:class="['alert', i.IsEnable == 1 ? 'alert-success' : 'alert-warning']">
+                    <td class="t_c" width="5%">{{i.SysNo}}</td>
+                    <td class="t_c" width="15%">{{i.ColorName}}</td>
+                    <td class="t_c" width="10%">{{i.ColorCode}}</td>
+                    <td class="t_c"><img v-bind="{alt:i.ColorUrl,src:i.ColorUrl,title:i.ColorUrl}" /></td>
+                    <td class="t_c" width="5%">{{i.IsEnable}}</td>
+                    <td class="t_c" width="10%">
+                        @*<button type="button" v-on:click="edit(i)" class="btn btn-xs btn-primary">编辑</button>*@
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit_modal" v-on:click="show_edit_modal(i)">编辑</button>
+                        <button type="button" v-on:click="del($event, i)" class="btn btn-xs btn-primary">删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- add Modal -->
+        <div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group" v-show="show_add_win">
+                            <li class="list-group-item">
+                                <h3 class="panel-title">添加{{metadata.title}}</h3>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputColorName">{{metadata.item_dic['ColorName'].title}}</span>
+                                    <input id="inputColorName" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorName'].title" aria-describedby="basic-inputColorName" required autofocus v-model.trim="add_data.ColorName">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputColorCode">{{metadata.item_dic['ColorCode'].title}}</span>
+                                    <input id="inputColorCode" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorCode'].title" aria-describedby="basic-inputColorCode" required autofocus v-model.trim="add_data.ColorCode">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputColorUrl">{{metadata.item_dic['ColorUrl'].title}}</span>
+                                    <input id="inputColorUrl" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorUrl'].title" aria-describedby="basic-inputColorUrl" required autofocus v-model.trim="add_data.ColorUrl">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input id="inputIsEnable" type="checkbox" aria-label="..." v-model="add_data.IsEnable" v-bind:true-value="1" v-bind:false-value="0">
+                                    </span>
+                                    <label class="form-control" aria-label="...">{{metadata.item_dic['IsEnable'].title}}</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="close_add_modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="commit_add_modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- edit Modal -->
+        <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group" v-show="show_edit_win">
+                            <li class="list-group-item">
+                                <h3 class="panel-title">
+                                    编辑{{metadata.title}}
+                                    <span id="editSysNo" class="label label-default">{{edit_data.SysNo}}</span>
+                                </h3>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputEditColorName">{{metadata.item_dic['ColorName'].title}}</span>
+                                    <input id="inputEditColorName" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorCode'].title" aria-describedby="basic-inputEditColorName" required autofocus v-model.trim="edit_data.ColorName">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputEditColorCode">{{metadata.item_dic['ColorCode'].title}}</span>
+                                    <input id="inputEditColorCode" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorCode'].title" aria-describedby="basic-inputEditColorCode" required autofocus v-model.trim="edit_data.ColorCode">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-inputEditColorUrl">{{metadata.item_dic['ColorUrl'].title}}</span>
+                                    <input id="inputEditColorUrl" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['ColorUrl'].title" aria-describedby="basic-inputEditColorUrl" required autofocus v-model.trim="edit_data.ColorUrl">
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input id="inputEditIsEnable" type="checkbox" aria-label="..." v-model="edit_data.IsEnable" v-bind:true-value="1" v-bind:false-value="0">
+                                    </span>
+                                    <label class="form-control" aria-label="...">{{metadata.item_dic['IsEnable'].title}}</label>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="close_edit_modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="commit_edit_modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+
+    <!-- 开发环境版本，包含了用帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        // 开启显示添加窗口
+        var add_ok = function () {
+                    var vr = verifyData(v_app.add_data);
+                    if (!vr.status) {
+                        alert(vr.msg);
+                        return false;
+                    }
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: v_app.add_data,
+                        success: function (result) {
+                            if (result.Status == true) {
+                                alert('新增数据[\"' + result.Data + '\"]保存成功');
+                            }
+                            else {
+                                alert('保存失败！[\"' + result.Message + '\"]');
+                            }
+                        }
+                    });
+                }
+        // 开启显示编辑窗口，并装入数据
+        var edit_ok = function () {
+                    var vr = verifyData(v_app.edit_data);
+                    if (!vr.status) {
+                        alert(vr.msg);
+                        return false;
+                    }
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: v_cc_app.edit_data,
+                        success: function (result) {
+                            if (result.Status == true) {
+                                alert('编辑数据[\"' + result.Data + '\"]保存成功');
+                                //formClearAndHidden();
+                                var new_data = result.Data;
+                                var old_rows = v_app.main_data.Rows;
+                                for (var i in old_rows) {
+                                    if (old_rows[i].key == new_data.key) {
+                                        Vue.set(v_app.main_data.Rows, i, new_data);
+                                    }
+                                }
+                            }
+                            else {
+                                alert('保存失败！[\"' + result.Message + '\"]');
+                            }
+                        }
+                    });
+                }
+        // 定义一个空数据
+        var empty_data = function () {
+            var t = new Object();
+            t = { SysNo: 0, ColorName: '', ColorCode: '', ColorUrl: '', IsEnable: 0 };
+            return t;
+        }
+        // 清理添加窗口数据，和编辑窗口数据
+        var formClear = function () {
+            // 设置添加数据为空数据
+            v_app.add_data = empty_data();
+            // 设置修改数据为空数据
+            v_app.edit_data = empty_data();
+        }
+        // 清理添加和编辑窗口并隐藏
+        var formClearAndHidden = function () {
+            //formClear();
+            v_app.show_edit_win = false;
+            v_app.show_add_win = false;
+        }
+        // 用给定数据设置编辑窗口控件
+        var setEditData = function (data) {
+            v_app.edit_data.SysNo = data.SysNo;
+            v_app.edit_data.ColorName = data.ColorName;
+            v_app.edit_data.ColorCode = data.ColorCode;
+            v_app.edit_data.ColorUrl = data.ColorUrl;
+            v_app.edit_data.IsEnable = data.IsEnable;
+        }
+        // 用给定数据设置编辑窗口控件，并显示窗口
+        var setEditAndShow = function (data) {
+            setEditData(data);
+            v_app.show_edit_win = true;
+        }
+        // 清理数据并显示添加窗口
+        var clearAddAndShow = function () {
+            formClear();
+            v_app.show_add_win = true;
+        }
+        // 删除数据提交
+        var del = function (data) {
+            $.ajax({
+                url: 'del',
+                type: 'POST',
+                data: {
+                    SysNo: data.SysNo
+                },
+                success: function (result) {
+                    if (result.Status == true) {
+                        alert('删除数据[\"' + data.SysNo + '-' + data.Name + '\"]成功');
+                        reloadColorConfig();
+                    }
+                    else {
+                        alert('保存失败！[\"' + result.Message + '\"]');
+                    }
+                }
+            });
+        }
+        // 重新载入数据
+        var reloadColorConfig = function () {
+            //$.get('ColorConfigManage/index', { PageSize: 20, IsEnable: -1, PageNo: 1 }, function (data) {
+            //    v_cc_app.cc_data = data;
+            //});
+            this_app.main_data = {
+                PageSize: 20, PageNo: 1, Rows: [
+                    { SysNo: 1, ColorName: '1', ColorCode: '1', ColorUrl: '1', IsEnable: 1 },
+                { SysNo: 2, ColorName: '2', ColorCode: '2', ColorUrl: '2', IsEnable: 0 }]
+            }
+        }
+        // 验证数据
+        var verifyData = function (data) {
+            if (isNull(data)) {
+                return fail('无数据');
+            }
+            if (isNullEmptyStr(data.ColorName)) {
+                return fail('...为空');
+            }
+            if (isNullEmptyStr(data.ColorCode) && isNullEmptyStr(data.ColorUrl)) {
+                return fail('...为空');
+            }
+            return success();
+        }
+        // 构成一个成功结果
+        var success = function () {
+            return { status: true, msg: 'ok' };
+        }
+        // 构成一个失败结果
+        var fail = function (msgStr) {
+            return { status: false, msg: msgStr };
+        }
+        // 检查字符串是否null 或空字符串，好像效率低
+        var isNullEmptyStr = function (str) {
+            if (str == null || str == undefined || str === "") {
+                return true;
+            }
+            return false;
+        }
+        // 检查对象是否空，好像高效但不适合某些类型 比如 {} ""
+        var isNull = function (obj) {
+            for (var name in obj) {
+                if (obj.hasOwnProperty(name)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        var this_app = null;
+        // vue app 初始化，定义列表控件事件
+        var v_app = new Vue({
+            el: '#colorConfigAppv',
+            data: {
+                main_data: { PageSize: 20, PageNo: 1, Rows: [{ SysNo: 0, ColorName: '-', ColorCode: '-', ColorUrl: '-', IsEnable: 0 }] },
+                edit_data: { SysNo: 0, ColorName: '', ColorCode: '', ColorUrl: '', IsEnable: 0 },
+                show_edit_win: false,
+                add_data: { SysNo: 0, ColorName: '', ColorCode: '', ColorUrl: '', IsEnable: 0 },
+                show_add_win: false,
+                metadata: {
+                    key: "ColorConfig",
+                    title: "色彩配置",
+                    item_key: ["SysNo", "ColorName", "ColorCode", "ColorUrl", "IsEnable"],
+                    item_dic: {
+                        "SysNo": { key: "SysNo", title: "编号", type: "long", width: "5%", format: function () { }, trans: function () { }, verify: function () { } },
+                        "ColorName": { key: "ColorName", title: "颜色名称", type: "string", width: "15%", format: function () { }, trans: function () { }, verify: function () { } },
+                        "ColorCode": { key: "ColorCode", title: "颜色编码", type: "string", width: "10%", format: function () { }, trans: function () { }, verify: function () { } },
+                        "ColorUrl": { key: "ColorUrl", title: "颜色图片", type: "string", width: "", format: function () { }, trans: function () { }, verify: function () { } },
+                        "IsEnable": { key: "IsEnable", title: "启用", type: "int", width: "", format: function () { }, trans: function () { }, verify: function () { } }
+                    }
+                }
+            },
+            beforeCreate: function () {
+                this_app = this;
+                
+            },
+            created: function () {
+                reloadColorConfig();
+            },
+            methods: {
+                show_add_modal: function () {
+                    
+                    this.show_add_win = true;
+                },
+                close_add_modal: function () {
+                    this.show_add_win = false;
+                },
+                commit_add_modal: function () {
+                    this.show_add_win = false;
+                },
+                show_edit_modal: function (data) {
+                    setEditData(data);
+                    this.show_edit_win = true;
+                },
+                close_edit_modal: function () {
+                    this.show_edit_win = false;
+                },
+                commit_edit_modal: function () {
+                    this.show_edit_win = false;
+                },
+                del: function ($event, c_item) {
+                    if (confirm("是否删除【" + c_item.ColorName + "】数据？")) {
+                        del(c_item);
+                    }
+                },
+
+                upfile: function () {
+                    UI.Upload({
+                        config: 'ColorConfigImageUrl',
+                        callback: function (res) {
+                            this_app.imgurl = res;
+                        }
+                    });
+                }
+            }
+        });
+        
+    </script>
+
+}
