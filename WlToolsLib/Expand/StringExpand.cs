@@ -305,5 +305,18 @@ namespace WlToolsLib.Expand
 
         }
         #endregion
+
+        #region --string.Format 简化--
+        /// <summary>
+        /// string.Format 简化
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static string FormatStr(this string self, params object[] args)
+        {
+            return string.Format(self, args);
+        }
+        #endregion
     }
 }

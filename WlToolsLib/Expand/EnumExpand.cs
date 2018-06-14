@@ -19,9 +19,31 @@ namespace WlToolsLib.Expand
         public static string EnumToStr(this Enum self, int enumValue)
         {
             var enumType = self.GetType();
-            var result = enumType.GetEnumName(enumValue) ?? "NoValue";
-            return result;//这里变量转一下只是为了方便debug
+            var result = enumType.GetEnumName(enumValue) ?? "None";
+            return result;
         }
         #endregion
+
+        /// <summary>
+        /// 取得枚举编码
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static int EnumCode<TEnum>(this TEnum self)
+        {
+            return self.GetHashCode();
+        }
+
+        /// <summary>
+        /// 取得枚举名
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static string EnumStr<TEnum>(this TEnum self)
+        {
+            return self.ToString();
+        }
     }
 }
