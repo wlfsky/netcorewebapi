@@ -49,6 +49,17 @@ namespace WL.Core.ConsoleApp
             WriteLine(gl);
             #endregion
 
+            #region --路径扩展测试--
+            WriteLine(Common.Constant.BasePath);
+            var ps = Common.Constant.BasePath.PathSplit();
+            foreach (var i in ps)
+            {
+                WriteLine(i);
+            }
+            var nps = Common.Constant.BasePath.PathReturn(2);
+            WriteLine(nps);
+            #endregion
+
             Console.ReadKey();
         }
 
