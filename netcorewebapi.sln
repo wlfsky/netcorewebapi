@@ -31,9 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.WebApi", "WL.Core.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.WebApp", "WL.Core.WebApp\WL.Core.WebApp.csproj", "{9CE80A09-9B8B-4678-94DC-5E283EA1DC9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Core.BusinessCommon", "WL.Core.BusinessCommon\WL.Core.BusinessCommon.csproj", "{0122E6D9-6680-4E52-8C34-916E18A3DAC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.BusinessCommon", "WL.Core.BusinessCommon\WL.Core.BusinessCommon.csproj", "{0122E6D9-6680-4E52-8C34-916E18A3DAC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Core.DataCommon", "WL.Core.DataCommon\WL.Core.DataCommon.csproj", "{5FB699E1-D449-48F7-BAE1-5145DD3BD676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.DataCommon", "WL.Core.DataCommon\WL.Core.DataCommon.csproj", "{5FB699E1-D449-48F7-BAE1-5145DD3BD676}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Core.ConsoleApp", "WL.Core.ConsoleApp\WL.Core.ConsoleApp.csproj", "{82497607-DC2E-41F6-801D-C6CB5863D8EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{5FB699E1-D449-48F7-BAE1-5145DD3BD676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB699E1-D449-48F7-BAE1-5145DD3BD676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FB699E1-D449-48F7-BAE1-5145DD3BD676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82497607-DC2E-41F6-801D-C6CB5863D8EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82497607-DC2E-41F6-801D-C6CB5863D8EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82497607-DC2E-41F6-801D-C6CB5863D8EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82497607-DC2E-41F6-801D-C6CB5863D8EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
