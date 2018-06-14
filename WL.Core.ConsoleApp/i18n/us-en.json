@@ -1,0 +1,13 @@
+﻿{
+    "Enum.SexEnum.None": "None",
+    "Enum.SexEnum.Male": "Male",
+    "Enum.SexEnum.Female": "Female",
+    "Error..NullData": "Data Is Null",
+    "Error..NullInput": "Input is null",
+    "Info..OPSuccess": "op success",
+    "Info..OPFail": "op fail",
+    "Text..WebAppTitle": "my website",
+    "Text..WebAppKey": "superman",
+    "用户名": "User Name",
+    "密码": "Password"
+}

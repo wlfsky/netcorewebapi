@@ -45,7 +45,7 @@ namespace WlToolsLib.Expand
         #endregion --简化验证--
 
         /// <summary>
-        /// 返回两个字符串 之间的字符串，去两端空格
+        /// 从字符串左边开始查找，返回两个字符串 之间的字符串，去两端空格
         /// </summary>
         /// <param name="self"></param>
         /// <param name="leftStr"></param>
@@ -57,6 +57,31 @@ namespace WlToolsLib.Expand
             if (leftStr.NullStr() && rightStr.NullStr()) return self;
             var s = self.IndexOf(leftStr);
             var e = self.IndexOf(rightStr);
+            if (e <= s) return string.Empty;
+            if (s < 0 && e < 0) return self;
+            if (s < 0) s = 0;
+            if (e < 0) e = self.Length;
+            var leftLen = leftStr.Length;
+            var l = e - s - leftLen;
+            if (l <= 0) return string.Empty;
+            var sinceStr = self.Substring(s + leftLen, l);
+            if (sinceStr.NullEmpty()) return string.Empty;
+            return sinceStr.Trim();
+        }
+
+        /// <summary>
+        /// 从字符串右边开始查找，返回两个字符串 之间的字符串，去两端空格
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="leftStr"></param>
+        /// <param name="rightStr"></param>
+        /// <returns></returns>
+        public static string RightSinceStr(this string self, string leftStr, string rightStr)
+        {
+            if (self.NullEmpty()) return string.Empty;
+            if (leftStr.NullStr() && rightStr.NullStr()) return self;
+            var s = self.LastIndexOf(leftStr);
+            var e = self.LastIndexOf(rightStr);
             if (e <= s) return string.Empty;
             if (s < 0 && e < 0) return self;
             if (s < 0) s = 0;

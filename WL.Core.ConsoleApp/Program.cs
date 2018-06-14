@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using reg = System.Text.RegularExpressions;
 using static System.Console;
+using WlToolsLib.JsonHelper;
+using WlToolsLib.i18n;
 
 namespace WL.Core.ConsoleApp
 {
@@ -35,6 +37,16 @@ namespace WL.Core.ConsoleApp
 
             #region --测试 enum 和 language--
             WriteLine(SexEnum.Female.EnumToStr());
+            #endregion
+
+            #region --生成一个langkvjson--
+            var langjson = WL.Core.Model.Language.DefLangKV.LangKV.ToJson();
+            WriteLine(langjson);
+            #endregion
+
+            #region --打印--
+            var gl = "用户名".Global();
+            WriteLine(gl);
             #endregion
 
             Console.ReadKey();
@@ -87,14 +99,17 @@ namespace WL.Core.ConsoleApp
         #region --简单协程--
         public async Task B()
         {
-            Console.WriteLine("start");
-            var l = new[] { 1, 2, 3, 4, 5 };
-            foreach (var i in l)
+            await Task.Run(() =>
             {
-                Console.WriteLine("{0}......".FormatStr(i));
-                System.Threading.Thread.Sleep(1000);
-            }
-            Console.WriteLine("stop");
+                Console.WriteLine("start");
+                var l = new[] { 1, 2, 3, 4, 5 };
+                foreach (var i in l)
+                {
+                    Console.WriteLine("{0}......".FormatStr(i));
+                    System.Threading.Thread.Sleep(1000);
+                }
+                Console.WriteLine("stop");
+            });
         }
         public async Task P()
         {
@@ -109,7 +124,23 @@ namespace WL.Core.ConsoleApp
         #endregion
     }
 
-
+    #region --临时扩展--
+    public static class ex
+    {
+        #region --全球化支持多语言扩展(解决方案/项目级别扩展)--
+        public static string Global(this string self)
+        {
+            var cl = LanguageFactory.CurrLang(WL.Core.Model.Language.DefLangKV.LangKV);
+            if (cl.ContainsKey(self))
+            {
+                return cl[self];
+            }
+            cl.Add(self, self);
+            return self;
+        }
+        #endregion
+    }
+    #endregion
 
     #region --扩展string异步--
     public static class KvpbamjhKsvm

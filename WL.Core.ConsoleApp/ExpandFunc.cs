@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using WlToolsLib.i18n;
 
 namespace WL.Core.ConsoleApp
 {
@@ -730,5 +731,7 @@ namespace WL.Core.ConsoleApp
             }
         }
         #endregion
+
+        
     }
 }
