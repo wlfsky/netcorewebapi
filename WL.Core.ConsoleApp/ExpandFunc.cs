@@ -73,7 +73,7 @@ namespace WL.Core.ConsoleApp
         /// <param name="converter"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        public static string Junctor<T>(this IEnumerable<T> self, Func<T, string> converter, string separator = ",")
+        public static string JoinBy<T>(this IEnumerable<T> self, Func<T, string> converter, string separator = ",")
         {
             if (converter.IsNull() || self.NoItem())
             {
@@ -775,7 +775,7 @@ namespace WL.Core.ConsoleApp
                 else
                 {
                     var newPathList = pathList.Take(leftPathCount).ToList();
-                    var newPath = newPathList.Junctor(s => s, PathInterval);
+                    var newPath = newPathList.JoinBy(s => s, PathInterval);
                     return newPath + PathInterval;
                 }
             }

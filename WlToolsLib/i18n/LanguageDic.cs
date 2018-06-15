@@ -24,6 +24,27 @@ namespace WlToolsLib.i18n
         /// </summary>
         public string CurrLang { get; set; }
 
+        /// <summary>
+        /// 添加一个语言项
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public LanguageDic AddKV(string key, string value)
+        {
+            foreach (var i in this.Keys)
+            {
+                if (!this[i].ContainsKey(key))
+                {
+                    this[i].Add(key, value);
+                }
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// 存储所有语言
+        /// </summary>
         public void Save()
         {
             string path = "F:\\github\\netcorewebapi\\WL.Core.ConsoleApp\\i18n\\";

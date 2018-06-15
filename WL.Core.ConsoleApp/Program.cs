@@ -60,6 +60,11 @@ namespace WL.Core.ConsoleApp
             WriteLine(nps);
             #endregion
 
+            #region --加入语言项测试--
+            var g1 = "验证码".Global();
+            WriteLine(g1);
+            #endregion
+
             Console.ReadKey();
         }
 
@@ -141,13 +146,8 @@ namespace WL.Core.ConsoleApp
         #region --全球化支持多语言扩展(解决方案/项目级别扩展)--
         public static string Global(this string self)
         {
-            var cl = LanguageFactory.CurrLang(WL.Core.Model.Language.DefLangKV.LangKV);
-            if (cl.ContainsKey(self))
-            {
-                return cl[self];
-            }
-            cl.Add(self, self);
-            return self;
+            var val = LanguageFactory.Global(self, WL.Core.Model.Language.DefLangKV.LangKV);
+            return val;
         }
         #endregion
     }
