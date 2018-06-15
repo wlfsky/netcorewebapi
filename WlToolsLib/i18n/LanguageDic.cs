@@ -6,6 +6,9 @@ using WlToolsLib.JsonHelper;
 
 namespace WlToolsLib.i18n
 {
+    /// <summary>
+    /// 语言和全球容器
+    /// </summary>
     public class LanguageDic : Dictionary<string, LanguageKV>
     {
         public LanguageDic()

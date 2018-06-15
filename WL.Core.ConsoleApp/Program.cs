@@ -7,6 +7,7 @@ using reg = System.Text.RegularExpressions;
 using static System.Console;
 using WlToolsLib.JsonHelper;
 using WlToolsLib.i18n;
+using System.Threading;
 
 namespace WL.Core.ConsoleApp
 {
@@ -63,6 +64,63 @@ namespace WL.Core.ConsoleApp
             #region --加入语言项测试--
             var g1 = "验证码".Global();
             WriteLine(g1);
+            #endregion
+
+
+            #region --DateTime.Now.Ticks 生成测试--
+            var fileTicks = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "Ticks.txt");
+            for (int i = 0; i < 200; i++)
+            {
+                fileTicks.WriteLine(i.ToString() + "==" + DateTime.Now.Ticks.ToString());
+                Thread.Sleep(1);
+            }
+            fileTicks.Close();
+            #endregion
+
+
+            #region --处理集群测试--
+            var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log_00.txt");
+
+            TaskWork<int, string> tw = new TaskWork<int, string>();
+            tw.PCluster.ProcessHandle = (i) =>
+            {
+                //Task.Delay(2000);
+                Thread.Sleep(1000);
+                var str = "===={0}====".FormatStr(i.TaskPID);
+
+                //fsio00.WriteLine(str);
+                return new TaskID<string>() { TaskPID = i.TaskPID, TaskData = str };
+            };
+            
+            tw.OutputTask.PullProcess = (p) =>
+            {
+                //Task.Delay(200);
+                Thread.Sleep(200);
+                fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
+            };
+
+            tw.RunTask();
+            tw.OutputStatus();
+            WriteLine("==start push==");
+            for (int i = 0; i < 50; i++)
+            {
+                tw.InputTask.PushTask(i);
+            }
+            Thread.Sleep(20000);
+            //Task.Delay(10000);
+            //for (int i = 50; i < 100; i++)
+            //{
+            //    tw.InputTask.PushTask(i);
+            //}
+            Thread.Sleep(20000);
+            ////Task.Delay(10000);
+            //for (int i = 100; i < 120; i++)
+            //{
+            //    tw.InputTask.PushTask(i);
+            //}
+            //Thread.Sleep(40000);
+            tw.PCluster.Stop();
+            fsio00.Close();
             #endregion
 
             Console.ReadKey();
