@@ -1,24 +1,24 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;// 并发容器ConcurrentQueue先进先出
+using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace WlToolsLib
+namespace WlToolsLib.Diverter
 {
 
     /// <summary>
-    /// 输入分流器
+    /// 杈撳叆鍒嗘祦鍣?
     /// </summary>
     /// <typeparam name="TIn"></typeparam>
     public class InDiverter<TIn> : BaseDiverter<TIn>
     {
         /// <summary>
-        /// 输入分流器具体处理
+        /// 杈撳叆鍒嗘祦鍣ㄥ叿浣撳鐞?
         /// </summary>
         public override void Distribute()
         {

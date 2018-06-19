@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Authors>WL</Authors>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

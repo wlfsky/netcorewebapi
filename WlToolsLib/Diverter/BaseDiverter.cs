@@ -1,87 +1,87 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;// 并发容器ConcurrentQueue先进先出
+using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace WlToolsLib
+namespace WlToolsLib.Diverter
 {
 
     /// <summary>
-    /// 分流器
+    /// 鍒嗘祦鍣?
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class BaseDiverter<T>
     {
         /// <summary>
-        /// 任务分流器容器
+        /// 浠诲姟鍒嗘祦鍣ㄥ鍣?
         /// </summary>
         public ConcurrentQueue<TaskID<T>> TaskDiverter { get; set; }
         /// <summary>
-        /// 分流器容器内任务数量
+        /// 鍒嗘祦鍣ㄥ鍣ㄥ唴浠诲姟鏁伴噺
         /// </summary>
         private long diverterCount = 0;
         /// <summary>
-        /// 分流器容器内任务数量
+        /// 鍒嗘祦鍣ㄥ鍣ㄥ唴浠诲姟鏁伴噺
         /// </summary>
         public long DiverterCount { get { return Interlocked.Read(ref diverterCount); } }
 
         /// <summary>
-        /// 任务拉取处理，任务处理分发到处理集群时执行
+        /// 浠诲姟鎷夊彇澶勭悊锛屼换鍔″鐞嗗垎鍙戝埌澶勭悊闆嗙兢鏃舵墽琛?
         /// </summary>
         public Action<TaskID<T>> PullProcess { get; set; }
         /// <summary>
-        /// 循环延迟时间
+        /// 寰幆寤惰繜鏃堕棿
         /// </summary>
         protected int loopDelay = 10;
         /// <summary>
-        /// 是否停止
+        /// 鏄惁鍋滄
         /// </summary>
         protected bool stop = false;
 
         /// <summary>
-        /// 是否停止处理
+        /// 鏄惁鍋滄澶勭悊
         /// </summary>
         public bool IsStop { get { return stop; } }
         /// <summary>
-        /// 向容器内推送任务数据
+        /// 鍚戝鍣ㄥ唴鎺ㄩ€佷换鍔℃暟鎹?
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
         public BaseDiverter<T> PushTask(T task)
         {
-            // 无传入数据不处理
+            // 鏃犱紶鍏ユ暟鎹笉澶勭悊
             if(task == null)
             {
                 return this;
             }
-            // 先检查分流容器是否空，空则创建
+            // 鍏堟鏌ュ垎娴佸鍣ㄦ槸鍚︾┖锛岀┖鍒欏垱寤?
             if (TaskDiverter == null)
             {
                 TaskDiverter = new ConcurrentQueue<TaskID<T>>();
             }
-            // 创建新任务
+            // 鍒涘缓鏂颁换鍔?
             var new_task = new TaskID<T>() { TaskPID = 0, TaskData = task };
             TaskDiverter.Enqueue(new_task);
             Interlocked.Increment(ref this.diverterCount);
             return this;
         }
         /// <summary>
-        /// 向容器内推送任务数据，数据带有任务id
+        /// 鍚戝鍣ㄥ唴鎺ㄩ€佷换鍔℃暟鎹紝鏁版嵁甯︽湁浠诲姟id
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
         public BaseDiverter<T> PushTask(TaskID<T> task)
         {
-            // 无传入数据不处理
+            // 鏃犱紶鍏ユ暟鎹笉澶勭悊
             if (task == null)
             {
                 return this;
             }
-            // 先检查分流容器是否空，空则创建
+            // 鍏堟鏌ュ垎娴佸鍣ㄦ槸鍚︾┖锛岀┖鍒欏垱寤?
             if (TaskDiverter == null)
             {
                 TaskDiverter = new ConcurrentQueue<TaskID<T>>();
@@ -93,12 +93,12 @@ namespace WlToolsLib
         }
 
         /// <summary>
-        /// 取出任务
+        /// 鍙栧嚭浠诲姟
         /// </summary>
         /// <returns></returns>
         public TaskID<T> PullTask()
         {
-            // 先检查分流容器是否空，空则创建
+            // 鍏堟鏌ュ垎娴佸鍣ㄦ槸鍚︾┖锛岀┖鍒欏垱寤?
             if (TaskDiverter == null)
             {
                 TaskDiverter = new ConcurrentQueue<TaskID<T>>();
@@ -113,24 +113,24 @@ namespace WlToolsLib
         }
 
         /// <summary>
-        /// 分配任务，要重写
+        /// 鍒嗛厤浠诲姟锛岃閲嶅啓
         /// </summary>
         public virtual void Distribute()
         {
 
         }
         /// <summary>
-        /// 产生id，时间ticks，能表现先后顺序
+        /// 浜х敓id锛屾椂闂磘icks锛岃兘琛ㄧ幇鍏堝悗椤哄簭
         /// </summary>
         /// <returns></returns>
         private long NewPID()
         {
-            // 会发生重复，所以要做一个微型操作纯当延迟
-            long x = 103453553534l;//微型操作，
+            // 浼氬彂鐢熼噸澶嶏紝鎵€浠ヨ鍋氫竴涓井鍨嬫搷浣滅函褰撳欢杩?
+            long x = 103453553534l;//寰瀷鎿嶄綔锛?
             return DateTime.Now.Ticks;
         }
         /// <summary>
-        /// 下一个循环停止执行
+        /// 涓嬩竴涓惊鐜仠姝㈡墽琛?
         /// </summary>
         public void Stop()
         {

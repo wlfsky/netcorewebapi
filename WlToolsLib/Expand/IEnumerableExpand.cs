@@ -8,6 +8,7 @@ namespace WlToolsLib.Expand
 {
     public static class IEnumerableExpand
     {
+        #region --枚举类型 Foreach 带index/yield/action纯执行--
         /// <summary>
         /// 创建一个迭代器带有索引的
         /// </summary>
@@ -57,8 +58,10 @@ namespace WlToolsLib.Expand
                 action(item);
             }
         }
+        #endregion
 
 
+        #region --枚举类型有无对象（含空判断）--
         /// <summary>
         /// 检查list是否含有值，判null和any
         /// </summary>
@@ -75,6 +78,41 @@ namespace WlToolsLib.Expand
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 枚举中没有项
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static bool NoItem<T>(this IEnumerable<T> self)
+        {
+            return !self.HasItem();
+        } 
+        #endregion
+
+        /// <summary>
+        /// 用指定的字符串拼接由制定转换器转换出来的字符串组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="converter"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string JoinBy<T>(this IEnumerable<T> self, Func<T, string> converter, string separator = ",")
+        {
+            if (converter.IsNull() || self.NoItem())
+            {
+                return string.Empty;
+            }
+            List<string> t = new List<string>();
+            foreach (var i in self)
+            {
+                t.Add(converter(i));
+            }
+            string r = string.Join(separator, t);
+            return r;
         }
     }
 }

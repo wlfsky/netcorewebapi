@@ -1,51 +1,51 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;// 并发容器ConcurrentQueue先进先出
+using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace WlToolsLib
+namespace WlToolsLib.Diverter
 {
 
     /// <summary>
-    /// 处理集群
+    /// 澶勭悊闆嗙兢
     /// </summary>
     /// <typeparam name="TIn"></typeparam>
     /// <typeparam name="TOut"></typeparam>
     public class ProcessingCluster<TIn, TOut>
     {
         /// <summary>
-        /// 处理塔容器，可容纳多个处理塔，处理管道
+        /// 澶勭悊濉斿鍣紝鍙绾冲涓鐞嗗锛屽鐞嗙閬?
         /// </summary>
         public Dictionary<string, ProcessingTower<TIn, TOut>> Clusters { get; set; }
         /// <summary>
-        /// 主处理程序，赋值给每个处理塔
+        /// 涓诲鐞嗙▼搴忥紝璧嬪€肩粰姣忎釜澶勭悊濉?
         /// </summary>
         public Func<TaskID<TIn>, TaskID<TOut>> ProcessHandle { get; set; }
         /// <summary>
-        /// 处理塔处理完结后分发程序
+        /// 澶勭悊濉斿鐞嗗畬缁撳悗鍒嗗彂绋嬪簭
         /// </summary>
         public Action<TaskID<TOut>> ProcessEndHandle { get; set; }
         /// <summary>
-        /// 是否停止执行标记
+        /// 鏄惁鍋滄鎵ц鏍囪
         /// </summary>
         protected bool isStop = false;
         /// <summary>
-        /// 向处理集群推送处理数据
+        /// 鍚戝鐞嗛泦缇ゆ帹閫佸鐞嗘暟鎹?
         /// </summary>
         /// <param name="pitem"></param>
         public void PushCluster(TaskID<TIn> pitem)
         {
             Init();
 
-            var min_saturation = MinCountTower();// 最小饱和
+            var min_saturation = MinCountTower();// 鏈€灏忛ケ鍜?
             min_saturation.PushProcess(pitem);
         }
         /// <summary>
-        /// 初始化处理集群
+        /// 鍒濆鍖栧鐞嗛泦缇?
         /// </summary>
         private void Init()
         {
@@ -63,7 +63,7 @@ namespace WlToolsLib
             }
         }
         /// <summary>
-        /// 处理启动程序
+        /// 澶勭悊鍚姩绋嬪簭
         /// </summary>
         public void Process()
         {
@@ -77,7 +77,7 @@ namespace WlToolsLib
         }
 
         /// <summary>
-        /// 获取当前有最小处理量的处理塔
+        /// 鑾峰彇褰撳墠鏈夋渶灏忓鐞嗛噺鐨勫鐞嗗
         /// </summary>
         /// <returns></returns>
         public ProcessingTower<TIn, TOut> MinCountTower()
@@ -85,7 +85,7 @@ namespace WlToolsLib
             return Clusters.Values.OrderBy(t => t.ProcessorTaskCount).First();
         }
         /// <summary>
-        /// 停止每个处理塔的下一个工作循环
+        /// 鍋滄姣忎釜澶勭悊濉旂殑涓嬩竴涓伐浣滃惊鐜?
         /// </summary>
         public void Stop()
         {
