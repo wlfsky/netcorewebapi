@@ -40,6 +40,11 @@ namespace WL.Core.ConsoleApp
         /// 是否停止
         /// </summary>
         protected bool stop = false;
+
+        /// <summary>
+        /// 是否停止处理
+        /// </summary>
+        public bool IsStop { get { return stop; } }
         /// <summary>
         /// 向容器内推送任务数据
         /// </summary>
@@ -58,7 +63,7 @@ namespace WL.Core.ConsoleApp
                 TaskDiverter = new ConcurrentQueue<TaskID<T>>();
             }
             // 创建新任务
-            var new_task = new TaskID<T>() { TaskPID = NewPID(), TaskData = task };
+            var new_task = new TaskID<T>() { TaskPID = 0, TaskData = task };
             TaskDiverter.Enqueue(new_task);
             Interlocked.Increment(ref this.diverterCount);
             return this;
@@ -120,7 +125,7 @@ namespace WL.Core.ConsoleApp
         private long NewPID()
         {
             // 会发生重复，所以要做一个微型操作纯当延迟
-            long x = 103453553534l;
+            long x = 103453553534l;//微型操作，
             return DateTime.Now.Ticks;
         }
         /// <summary>
@@ -285,6 +290,7 @@ namespace WL.Core.ConsoleApp
         {
             Init();
             var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log0"+ this.ProcessorKey + ".txt");
+            fsio00.AutoFlush = true;
             while (Stop == false)
             {
                 var c = this.processorTaskCount;
@@ -307,6 +313,7 @@ namespace WL.Core.ConsoleApp
                     ProcessEndHandle(result);
                 }
                 Thread.Sleep(loopDelay);
+                
             }
             fsio00.Close();
         }
@@ -483,9 +490,11 @@ namespace WL.Core.ConsoleApp
             OutputTask = new OutDiverter<TOut>();
 
             InputTask.PullProcess = (t) => {
+                // 并发进入队列时不领取时间戳id，而是排队出队列时领取时间戳id
+                t.TaskPID = DateTime.Now.Ticks;
                 PCluster.PushCluster(t);
                 WriteLine("INPUT TO ProcessingTower..." + t.TaskPID.ToString());
-                Thread.Sleep(20);
+                //Thread.Sleep(5);
             };
 
             PCluster.ProcessEndHandle = (t) =>

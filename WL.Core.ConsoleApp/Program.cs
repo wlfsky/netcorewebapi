@@ -8,6 +8,7 @@ using static System.Console;
 using WlToolsLib.JsonHelper;
 using WlToolsLib.i18n;
 using System.Threading;
+using System.Diagnostics;
 
 namespace WL.Core.ConsoleApp
 {
@@ -68,7 +69,7 @@ namespace WL.Core.ConsoleApp
 
 
             #region --DateTime.Now.Ticks 生成测试--
-            var fileTicks = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "Ticks.txt");
+            var fileTicks = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "TicksMakeTest.txt");
             for (int i = 0; i < 200; i++)
             {
                 fileTicks.WriteLine(i.ToString() + "==" + DateTime.Now.Ticks.ToString());
@@ -85,7 +86,7 @@ namespace WL.Core.ConsoleApp
             tw.PCluster.ProcessHandle = (i) =>
             {
                 //Task.Delay(2000);
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 var str = "===={0}====".FormatStr(i.TaskPID);
 
                 //fsio00.WriteLine(str);
@@ -95,30 +96,55 @@ namespace WL.Core.ConsoleApp
             tw.OutputTask.PullProcess = (p) =>
             {
                 //Task.Delay(200);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
             };
 
             tw.RunTask();
             tw.OutputStatus();
             WriteLine("==start push==");
-            for (int i = 0; i < 50; i++)
+            Thread t = new Thread(new ThreadStart(() => {
+                for (int i = 100; i < 200; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            }));
+            t.Start();
+            Thread t2 = new Thread(new ThreadStart(() => {
+                for (int i = 200; i < 400; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            }));
+            t2.Start();
+            System.Threading.Tasks.Parallel.Invoke(() =>{
+                for (int i = 0; i < 100; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            },() => {
+                for (int i = 100; i < 200; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            });
+            for (int i = 0; i < 100; i++)
             {
-                tw.InputTask.PushTask(i);
+                if(tw.OutputTask.DiverterCount > 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    break;
+                }
             }
-            Thread.Sleep(20000);
+            //Thread.Sleep(20000);
             //Task.Delay(10000);
-            //for (int i = 50; i < 100; i++)
-            //{
-            //    tw.InputTask.PushTask(i);
-            //}
-            Thread.Sleep(20000);
-            ////Task.Delay(10000);
-            //for (int i = 100; i < 120; i++)
-            //{
-            //    tw.InputTask.PushTask(i);
-            //}
-            //Thread.Sleep(40000);
             tw.PCluster.Stop();
             fsio00.Close();
             #endregion
@@ -150,7 +176,19 @@ namespace WL.Core.ConsoleApp
             var d = b.GetType().GetProperties().First().PropertyType.Name;
         }
 
-        
+        public static void TimeOf_Shell(Action xn = null)
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            if (xn.NotNull())
+            {
+                xn();
+            }
+            watch.Stop();
+            Console.WriteLine("Elapsed: {0}", watch.Elapsed);
+            Console.WriteLine("In milliseconds: {0}", watch.ElapsedMilliseconds);
+            Console.WriteLine("In timer ticks: {0}", watch.ElapsedTicks);
+        }
 
 
         static (string name, string site) Foo()
