@@ -166,6 +166,11 @@ namespace WlToolsLib.DataShell
         /// </summary>
         public IList<Exception> ExceptionList { get; set; } = new List<Exception>();
 
+        /// <summary>
+        /// 操作者
+        /// </summary>
+        public IOperator Operator { get; set; }
+
         #endregion --属性组--
 
         #region --方法--
