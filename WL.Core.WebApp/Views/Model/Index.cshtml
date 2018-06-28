@@ -1,0 +1,367 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Model Manage";
+}
+<h2>@ViewData["Title"]</h2>
+
+
+<section class="container-fluid">
+    <div id="Appv" class="container">
+        <h2>{{metadata.title}}管理 <button type="button" v-on:click="show_add_modal" class="btn btn-xs btn-primary">添加</button></h2>
+
+        <div id="data_table_list" class="panel panel-default">
+            <div class="panel-heading">{{metadata.title}}数据列表</div>
+            <table id="v_list_box" class="table table-bordered">
+                <tr>
+                    <template v-for="k in metadata.item_dic">
+                        <td class="t_c">{{k.title}}</td>
+                    </template>
+                    <td class="t_c">管理</td>
+                </tr>
+                <tr v-for="i in list_data.rows" v-bind:class="['alert', i.isEnable == true ? 'alert-success' : 'alert-warning']">
+                    <td>{{i.modelID}}</td>
+                    <td>{{i.modelName}}</td>
+                    <td>{{i.modelRemark}}</td>
+                    <td>{{i.isEnable==true?'是':'否'}}</td>
+                    <td width="15%">
+                        <button type="button" v-on:click="submit_enable($event, i)" class="btn btn-xs btn-primary">启/停用</button>
+                        <button type="button" v-on:click="show_edit_modal($event, i)" class="btn btn-xs btn-primary">编辑</button>
+                        <button type="button" v-on:click="submit_del($event, i)" class="btn btn-xs btn-primary">删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!--添加窗口-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="add_modal" v-show="is_show_add_modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">添加{{metadata.title}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h3 class="panel-title">添加{{metadata.title}}</h3>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-inputmodelName">{{metadata.item_dic['modelName'].title}}</span>
+                                        <input id="inputmodelName" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['modelName'].title" aria-describedby="basic-inputmodelName" required autofocus v-model.trim="add_data.modelName">
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-inputmodelRemark">{{metadata.item_dic['modelRemark'].title}}</span>
+                                        <input id="inputmodelRemark" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['modelRemark'].title" aria-describedby="basic-inputmodelRemark" required autofocus v-model.trim="add_data.modelRemark">
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <input id="inputisEnable" type="checkbox" aria-label="..." v-model="add_data.isEnable"><!--v-bind:true-value="true" v-bind:false-value="false"-->
+                                        </span>
+                                        <label class="form-control" aria-label="...">{{metadata.item_dic['isEnable'].title}}</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="submit_add()">Submit</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!--编辑窗口-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="edit_modal" v-show="is_show_edit_modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">添加{{metadata.title}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <h3 class="panel-title">
+                                        编辑{{metadata.title}}
+                                        <span id="editmodelID" class="label label-default">{{edit_data.modelID}}</span>
+                                    </h3>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-inputEditmodelName">{{metadata.item_dic['modelName'].title}}</span>
+                                        <input id="inputEditmodelName" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['modelName'].title" aria-describedby="basic-inputEditmodelName" required autofocus v-model.trim="edit_data.modelName">
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-inputEditmodelRemark">{{metadata.item_dic['modelRemark'].title}}</span>
+                                        <input id="inputEditmodelRemark" type="text" class="form-control" v-bind:placeholder="metadata.item_dic['modelRemark'].title" aria-describedby="basic-inputEditmodelRemark" required autofocus v-model.trim="edit_data.modelRemark">
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <input id="inputEditisEnable" type="checkbox" aria-label="..." v-model="edit_data.isEnable"><!--v-bind:true-value="1" v-bind:false-value="0"-->
+                                        </span>
+                                        <label class="form-control" aria-label="...">{{metadata.item_dic['isEnable'].title}}</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="submit_edit()">Submit</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!--警告信息-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="alert_modal" v-show="is_show_alert_modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Alert - 警告信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{alert_info}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+
+        // 定义一个空数据
+        var empty_data = function () {
+            var t = new Object();
+            t = { modelID: 0, modelName: '', modelRemark: '', isEnable: true };
+            return t;
+        }
+        // 用给定数据设置编辑窗口控件
+        var setEditData = function (data) {
+            v_app.edit_data.modelID = data.modelID;
+            v_app.edit_data.modelName = data.modelName;
+            v_app.edit_data.modelRemark = data.modelRemark;
+            v_app.edit_data.isEnable = data.isEnable;
+        }
+
+        // 验证数据
+        var verifyData = function (data) {
+            if (isNull(data)) {
+                return fail('无数据');
+            }
+            if (isNullEmptyStr(data.ModelName)) {
+                return fail('平台名为空');
+            }
+            return success();
+        }
+        // 构成一个成功结果
+        var success = function () {
+            return { success: true, info: 'ok' };
+        }
+        // 构成一个失败结果
+        var fail = function (msgStr) {
+            return { success: false, info: msgStr };
+        }
+        // 检查字符串是否null 或空字符串，好像效率低
+        var isNullEmptyStr = function (str) {
+            if (str == null || str == undefined || str === "") {
+                return true;
+            }
+            return false;
+        }
+        // 检查对象是否空，好像高效但不适合某些类型 比如 {} ""
+        var isNull = function (obj) {
+            for (var name in obj) {
+                if (obj.hasOwnProperty(name)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        var alertBox = function (alert_info) {
+            v_app.alert_info = alert_info;
+            $('#alert-box').modal();
+        }
+
+        $('#alert-box').on('hidden.bs.modal', function (e) {
+            v_app.alert_info = '';
+        })
+
+        var callApi = function (url, submit_data, succcess_fn) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: submit_data,
+                success: function (result) {
+                    if (result.success == true) {
+                        succcess_fn(result.data);
+                    }
+                    else {
+                        alertBox('处理失败！[\"' + result.info + '\"]');
+                    }
+                }
+            });
+
+        }
+
+        // vue app 初始化，定义列表控件事件
+        var v_app = new Vue({
+            el: '#Appv',
+            data: {
+                reload_url: 'Model/AllList',
+                add_url: 'Model/Insert',
+                edit_url: 'Model/Update',
+                del_url: 'Model/Del',
+                enable_url: 'Model/Enable',
+                list_data: { pageSize: 20, pageNo: 1, rows: [{ modelID: 0, modelName: '', modelRemark: '', isEnable: true }] },
+                is_show_add_modal: false,
+                add_data: { modelID: 0, modelName: '', modelRemark: '', isEnable: true },
+                is_show_edit_modal: false,
+                edit_data: { modelID: 0, modelName: '', modelRemark: '', isEnable: true },
+                is_show_alert_modal: false,
+                alert_info: '',
+                metadata: {
+                    key: "Model",
+                    title: "模块",
+                    item_key: ["modelID", "modelName", "modelRemark", "isEnable"],
+                    item_dic: {
+                        "modelID": { key: "modelID", title: "模块Id", type: "NUMBER", format: function () { }, trans: function () { }, verify: function () { } },
+                        "modelName": { key: "modelName", title: "模块名称", type: "VARCHAR2", format: function () { }, trans: function () { }, verify: function () { } },
+                        "modelRemark": { key: "modelRemark", title: "模块备注", type: "VARCHAR2", format: function () { }, trans: function () { }, verify: function () { } },
+                        "isEnable": { key: "isEnable", title: "是否启用", type: "NUMBER", format: function () { }, trans: function () { }, verify: function () { } }
+                    }
+                }
+            },
+            beforeCreate: function () {
+            },
+            created: function () {
+            },
+            mounted: function () {
+                this.reload_data();
+            },
+            methods: {
+                reload_data: function () {
+                    $.get(this.reload_url, { pageSize: 40, isEnable: -1, pageNo: 1 }, function (result) {
+                        if (result.success == true) {
+                            v_app.list_data = result.data;
+                        }
+                        else {
+                            alert('发生了一个令程序员毛骨悚然的恐怖错误：[\"' + result.info + '\"]');
+                        }
+                    });
+                },
+                show_add_modal: function () {
+                    v_app.is_show_add_modal = true;
+                    $('#add_modal').modal();
+                },
+                submit_add: function () {
+                    var new_data = v_app.add_data;
+                    callApi(v_app.add_url, new_data, function (result) { 
+                        alertBox('编辑数据[\"' + result.modelID + '-' + result.modelName + '\"]保存成功');
+                        var new_data = result;
+                        var old_rows = v_app.list_data.rows;
+                        $('#add_modal').modal('hide');
+                    });
+                    this.is_show_add_modal = false;
+                },
+                show_edit_modal: function ($event, data) {
+                    setEditData(data);
+                    this.is_show_edit_modal = true;
+                    $('#edit_modal').modal();
+                },
+                submit_edit: function () {
+                    var edit_data = v_app.edit_data;
+                    callApi(v_app.edit_url, edit_data, function (result) {
+                        alertBox('编辑数据[\"' + result.modelID + '-' + result.modelName + '\"]保存成功');
+                        var new_data = result;
+                        var old_rows = v_app.list_data.rows;
+                        for (var i in old_rows) {
+                            if (old_rows[i].modelID == new_data.modelID) {
+                                new_data.isEnable = new_data.isEnable;
+                                Vue.set(v_app.list_data.rows, i, new_data);
+                            }
+                        }
+                        $('#edit_modal').modal('hide');
+                    });
+                    this.is_show_edit_modal = false;
+                },
+                submit_del: function ($event, data) {
+                    if (confirm("是否删除【" + data.modelName + "】数据？")) {
+                        delData(data);
+                    }
+                },
+                submit_enable: function ($event, data) {
+                    $.ajax({
+                        url: v_app.enable_url,
+                        type: 'POST',
+                        data: data,
+                        success: function (result) {
+                            if (result.Status == true) {
+                                alertBox('编辑数据[\"' + result.data.modelID + '-' + result.data.modelName + '\"]保存成功');
+                                var new_data = result.data;
+                                var old_rows = v_app.list_data.rows;
+                                for (var i in old_rows) {
+                                    if (old_rows[i].modelID == new_data.modelID) {
+                                        new_data.isEnable = !new_data.isEnable;
+                                        Vue.set(v_app.list_data.rows, i, new_data);
+                                    }
+                                }
+                            }
+                            else {
+                                alertBox('保存失败！[\"' + result.info + '\"]');
+                            }
+                        }
+                    });
+                },
+                showalert: function (msg) {
+                    this.is_show_alert_modal = true;
+                    this.alert_info = msg;
+                }
+            }
+        });
+    </script>
+}

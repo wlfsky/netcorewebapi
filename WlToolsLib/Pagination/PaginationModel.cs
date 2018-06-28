@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,7 @@ namespace WlToolsLib.Pagination
         /// <summary>
         /// 数据队列
         /// </summary>
+        [JsonProperty("rows")]
         public List<T> PageData { get; set; }
         /// <summary>
         /// 初始化分页
