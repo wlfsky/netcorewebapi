@@ -16,9 +16,11 @@ namespace WlToolsLib.Pagination
     using System.Threading.Tasks;
 
 
-    public class PageCondition
+    public class PageCondition<TCondition>
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
+
+        public TCondition Condition { get; set; }
     }
 }

@@ -41,12 +41,15 @@ namespace WL.Core.WebApp.Controllers
 
         public IActionResult Del(ModelEntity model)
         {
-            return Json(1);
+            var result = model.Success();
+            return Json(result);
         }
 
         public IActionResult Enable(ModelEntity model)
         {
-            return Json(1);
+            model.IsEnable = !model.IsEnable;
+            var result = model.Success();
+            return Json(result);
         }
 
         public IActionResult AllList()
@@ -55,8 +58,9 @@ namespace WL.Core.WebApp.Controllers
             return Json(result);
         }
 
-        public IActionResult PageList(ModelEntity model)
+        public IActionResult PageList(PageCondition<ModelEntity> model)
         {
+            var result = Data.PageForList(1, 40).Success();
             return Json(1);
         }
 

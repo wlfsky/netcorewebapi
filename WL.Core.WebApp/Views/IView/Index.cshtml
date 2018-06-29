@@ -1,0 +1,157 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Model Manage";
+}
+
+@section Style{
+    <link rel="stylesheet" href="~/lib/iview/styles/iview.css" />
+}
+
+
+<div id="vapp" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <template>
+        <Table width="550" height="200" border :columns="meta_columns" :data="data_list"></Table>
+    </template>
+</div>
+
+
+@section Scripts{
+    <script src="~/lib/iview/iview.min.js"></script>
+    <script>
+
+        var vapp = new Vue({
+            el: '#vapp',
+            data: {
+                    meta_columns: [
+                        {
+                            title: 'Name',
+                            key: 'name',
+                            width: 100,
+                            fixed: 'left'
+                        },
+                        {
+                            title: 'Age',
+                            key: 'age',
+                            width: 100
+                        },
+                        {
+                            title: 'Province',
+                            key: 'province',
+                            width: 100
+                        },
+                        {
+                            title: 'City',
+                            key: 'city',
+                            width: 100
+                        },
+                        {
+                            title: 'Address',
+                            key: 'address',
+                            width: 200
+                        },
+                        {
+                            title: 'Postcode',
+                            key: 'zip',
+                            width: 100
+                        },
+                        {
+                            title: 'Action',
+                            key: 'action',
+                            fixed: 'right',
+                            width: 120,
+                            render: (h, params) => {
+                                return h('div', [
+                                    h('Button', {
+                                        props: {
+                                            type: 'text',
+                                            size: 'small'
+                                        }
+                                    }, 'View'),
+                                    h('Button', {
+                                        props: {
+                                            type: 'text',
+                                            size: 'small'
+                                        }
+                                    }, 'Edit')
+                                ]);
+                            }
+                        }
+                    ],
+                    data_list: [
+                        {
+                            name: 'John Brown',
+                            age: 18,
+                            address: 'New York No. 1 Lake Park',
+                            province: 'America',
+                            city: 'New York',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Jim Green',
+                            age: 24,
+                            address: 'Washington, D.C. No. 1 Lake Park',
+                            province: 'America',
+                            city: 'Washington, D.C.',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Joe Black',
+                            age: 30,
+                            address: 'Sydney No. 1 Lake Park',
+                            province: 'Australian',
+                            city: 'Sydney',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Jon Snow',
+                            age: 26,
+                            address: 'Ottawa No. 2 Lake Park',
+                            province: 'Canada',
+                            city: 'Ottawa',
+                            zip: 100000
+                        },
+                        {
+                            name: 'John Brown',
+                            age: 18,
+                            address: 'New York No. 1 Lake Park',
+                            province: 'America',
+                            city: 'New York',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Jim Green',
+                            age: 24,
+                            address: 'Washington, D.C. No. 1 Lake Park',
+                            province: 'America',
+                            city: 'Washington, D.C.',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Joe Black',
+                            age: 30,
+                            address: 'Sydney No. 1 Lake Park',
+                            province: 'Australian',
+                            city: 'Sydney',
+                            zip: 100000
+                        },
+                        {
+                            name: 'Jon Snow',
+                            age: 26,
+                            address: 'Ottawa No. 2 Lake Park',
+                            province: 'Canada',
+                            city: 'Ottawa',
+                            zip: 100000
+                        }
+                    ]
+            },
+            methods: {
+                show: function () {
+                    this.visible = true;
+                }
+            }
+        });
+    </script>
+}
