@@ -13,7 +13,7 @@
 
 <div id="vapp" class="carousel slide" data-ride="carousel" data-interval="6000">
     <template>
-        <Table width="550" height="200" border :columns="meta_columns" :data="data_list"></Table>
+        <i-table width="1050" height="400" border :columns="meta_columns" :data="data_list"></i-table>
     </template>
 </div>
 
@@ -61,21 +61,48 @@
                             title: 'Action',
                             key: 'action',
                             fixed: 'right',
-                            width: 120,
+                            width: 200,
                             render: (h, params) => {
                                 return h('div', [
                                     h('Button', {
                                         props: {
-                                            type: 'text',
+                                            type: 'primary',
                                             size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.show(params.index)
+                                            }
                                         }
-                                    }, 'View'),
+                                    }, '启/停用'),
                                     h('Button', {
                                         props: {
-                                            type: 'text',
+                                            type: 'primary',
                                             size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.show(params.index)
+                                            }
                                         }
-                                    }, 'Edit')
+                                    }, '编辑'),
+                                    h('Button', {
+                                        props: {
+                                            type: 'error',
+                                            size: 'small'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.show(params.index)
+                                            }
+                                        }
+                                    }, '删除')
                                 ]);
                             }
                         }

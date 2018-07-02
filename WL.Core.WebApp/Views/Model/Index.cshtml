@@ -172,6 +172,19 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>
+
+    <div id="appv2">
+        <template>
+            <i-table :row-class-name="rowClassName" width="1050" height="400" border :columns="meta_columns" :data="data_list.rows"></i-table>
+        </template>
+        <template>
+            <div style="margin: 10px;overflow: hidden">
+                <div style="float: right;">
+                    <Page :total="data_list.totalRecordCount" :current="data_list.pageIndex" size="small" show-total show-elevator show-sizer @@on-change="changePage"></Page>
+                </div>
+            </div>
+        </template>
+    </div>
 </section>
 
 @section Scripts{
@@ -247,7 +260,7 @@
                         succcess_fn(result.data);
                     }
                     else {
-                        alertBox('处理失败！[\"' + result.info + '\"]');
+                        alertBox('[发生了一个令程序员毛骨悚然的恐怖错误]处理失败！[\"' + result.info + '\"]');
                     }
                 }
             });
@@ -362,4 +375,114 @@
         });
     </script>
 
+    <script>
+
+        var appv2 = new Vue({
+            el: '#appv2',
+            data: {
+                reload_url: 'Model/AllList',
+                add_url: 'Model/Insert',
+                edit_url: 'Model/Update',
+                del_url: 'Model/Del',
+                enable_url: 'Model/Enable',
+                meta_columns: [
+                    {
+                        title: '编号',
+                        key: 'modelID',
+                        width: 100,
+                        fixed: 'left'
+                    },
+                    {
+                        title: '模块名称',
+                        key: 'modelName',
+                        width: 100
+                    },
+                    {
+                        title: '模块备注',
+                        key: 'modelRemark',
+                        width: 100
+                    },
+                    {
+                        title: '启/停用',
+                        key: 'isEnable',
+                        width: 100
+                    },
+                    {
+                        title: '管理',
+                        key: 'action',
+                        fixed: 'right',
+                        width: 200,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            alert(params.index);
+                                        }
+                                    }
+                                }, '启/停用'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
+                                }, '删除')
+                            ]);
+                        }
+                    }
+                ],
+                data_list: { pageSize: 20, pageNo: 1, rows: [{ modelID: 0, modelName: '', modelRemark: '', isEnable: true }] }
+            },
+            mounted: function () {
+                this.reload_data();
+            },
+            methods: {
+                reload_data: function () {
+                    callApi(this.reload_url, { pageSize: 40, pageNo: 1 }, function (result) {
+                        appv2.data_list = result;
+                    });
+                },
+                submitEnable: function () {
+                    this.visible = true;
+                },
+                rowClassName: function(row, index) {
+                    if (row.isEnable === true) {
+                        return 'alert' + ' alert-success';
+                    } else {
+                        return 'alert' + ' alert-warning';
+                    }
+                    return 'alert';
+                },
+                changePage: function () {
+
+                }
+            }
+        });
+    </script>
 }
