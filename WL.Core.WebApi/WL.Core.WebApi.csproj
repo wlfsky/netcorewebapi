@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>WL</Authors>
     <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.5.2</AssemblyVersion>
+    <FileVersion>1.0.5.2</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
