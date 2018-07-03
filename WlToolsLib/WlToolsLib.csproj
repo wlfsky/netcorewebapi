@@ -15,7 +15,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="pinyin4net" Version="1.0.0" />
     <PackageReference Include="QrCode.Net" Version="0.4.0" />
-    <PackageReference Include="ServiceStack.Text" Version="5.0.2" />
+    <PackageReference Include="ServiceStack.Text" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>

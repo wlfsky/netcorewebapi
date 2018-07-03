@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WlToolsLib.DataShell;
 using WlToolsLib.Expand;
 using WL.Core.Model;
+using WlToolsLib.Pagination;
 
 namespace WL.Core.DataService.UserSystem
 {
@@ -41,7 +42,7 @@ namespace WL.Core.DataService.UserSystem
         {
             string conditionStr = "";
             string orderStr = "AddTime DESC";
-            var resultPageList = GetListPaged<UserAccount>(condition.PageIndex, condition.PageSize, conditionStr, orderStr, condition.ConditionObj);
+            var resultPageList = GetListPaged<UserAccount>(condition.PageIndex, condition.PageSize, conditionStr, orderStr, condition.Condition);
             return resultPageList.Success();
         }
 

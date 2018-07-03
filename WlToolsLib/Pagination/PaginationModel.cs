@@ -37,11 +37,11 @@ namespace WlToolsLib.Pagination
         /// <summary>
         /// 总记录数
         /// </summary>
-        public int TotalRecordCount { get; set; }
+        public int RecordCount { get; set; }
         /// <summary>
         /// 总页数
         /// </summary>
-        public int TotalPageCount { get; set; }
+        public int PageCount { get; set; }
         /// <summary>
         /// SQL server下，分页第一次查询的数量
         /// </summary>
@@ -49,8 +49,7 @@ namespace WlToolsLib.Pagination
         /// <summary>
         /// 数据队列
         /// </summary>
-        [JsonProperty("rows")]
-        public List<T> PageData { get; set; }
+        public List<T> Rows { get; set; }
         /// <summary>
         /// 初始化分页
         /// </summary>
@@ -60,9 +59,9 @@ namespace WlToolsLib.Pagination
         protected PaginationModel(int pageSize, int pageIndex, int totalRecordCount)
         {
             this.PageSize = pageSize;
-            this.TotalRecordCount = totalRecordCount;
+            this.RecordCount = totalRecordCount;
             this.PageIndex = pageIndex;
-            PageData = new List<T>();
+            Rows = new List<T>();
             Compute();
         }
         /// <summary>
@@ -83,12 +82,12 @@ namespace WlToolsLib.Pagination
         {
             #region -- 计算分页数据 --
             PageSize = PageSize < 1 ? 20 : PageSize;//默认20
-            int lastPage = Convert.ToInt32(TotalRecordCount % PageSize);//计算最后一页记录数
-            TotalPageCount = Convert.ToInt32(TotalRecordCount / PageSize) + (lastPage > 0 ? 1 : 0);//计算总页数
-            PageIndex = PageIndex > TotalPageCount ? TotalPageCount : PageIndex;//检查当前页数大
+            int lastPage = Convert.ToInt32(RecordCount % PageSize);//计算最后一页记录数
+            PageCount = Convert.ToInt32(RecordCount / PageSize) + (lastPage > 0 ? 1 : 0);//计算总页数
+            PageIndex = PageIndex > PageCount ? PageCount : PageIndex;//检查当前页数大
             PageIndex = PageIndex < 1 ? 1 : PageIndex;//检查当前页小
             TopCount = PageIndex * PageSize;//sqlite中用的 top 多少记录数，比sql server少pagesize个
-            ActualPageSize = (PageIndex == TotalPageCount && lastPage != 0) ? lastPage : PageSize;//判断是否最后一页，并指定页记录数
+            ActualPageSize = (PageIndex == PageCount && lastPage != 0) ? lastPage : PageSize;//判断是否最后一页，并指定页记录数
             PageStartCount = (PageIndex - 1) * PageSize;//sql server用的
             #endregion -- 计算分页完成 --
         }
@@ -98,9 +97,9 @@ namespace WlToolsLib.Pagination
         /// <param name="item"></param>
         public PaginationModel<T> AddItem(T item)
         {
-            if (this.PageData.NotNull() && item.NotNull())
+            if (this.Rows.NotNull() && item.NotNull())
             {
-                this.PageData.Add(item);
+                this.Rows.Add(item);
             }
             return this;
         }
@@ -111,9 +110,9 @@ namespace WlToolsLib.Pagination
         /// <param name="items"></param>
         public PaginationModel<T> AddItems(IEnumerable<T> items)
         {
-            if (this.PageData.NotNull() && items.NotNull())
+            if (this.Rows.NotNull() && items.NotNull())
             {
-                this.PageData.AddRange(items);
+                this.Rows.AddRange(items);
             }
             return this;
         }
@@ -124,9 +123,9 @@ namespace WlToolsLib.Pagination
         /// <returns></returns>
         public PaginationModel<T> ClearItem()
         {
-            if (this.PageData.HasItem())
+            if (this.Rows.HasItem())
             {
-                this.PageData.Clear();
+                this.Rows.Clear();
             }
             return this;
         }

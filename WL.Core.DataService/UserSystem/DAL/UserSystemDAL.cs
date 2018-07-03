@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WlToolsLib.DataShell;
 using WL.Core.Model;
+using WlToolsLib.Pagination;
 
 namespace WL.Core.DataService.UserSystem
 {

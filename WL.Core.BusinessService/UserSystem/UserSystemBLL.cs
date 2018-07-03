@@ -9,6 +9,7 @@ using Autofac;
 using WlToolsLib.DataShell;
 using WL.Core.Model.UserSystem;
 using WL.Core.DataService.UserSystem;
+using WlToolsLib.Pagination;
 
 namespace WL.Core.BusinessService
 {

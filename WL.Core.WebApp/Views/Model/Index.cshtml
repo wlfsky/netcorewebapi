@@ -175,6 +175,9 @@
 
     <div id="appv2">
         <template>
+            <i-button type="primary" @@click="modal_add_show">添加</i-button>
+        </template>
+        <template>
             <i-table :row-class-name="rowClassName" width="1050" height="400" border :columns="meta_columns" :data="data_list.rows"></i-table>
         </template>
         <template>
@@ -183,6 +186,62 @@
                     <Page :total="data_list.totalRecordCount" :current="data_list.pageIndex" size="small" show-total show-elevator show-sizer @@on-change="changePage"></Page>
                 </div>
             </div>
+        </template>
+        <template>
+            <Modal v-model="modal_edit_isshow"
+                   title="编辑"
+                   @@on-ok="modal_edit_ok"
+                   @@on-cancel="modal_edit_cancel">
+                <p>
+                    <template>
+                        <i-input disabled v-model="edit_data.modelID">
+                            <span :width="100" slot="prepend">{{meta_columns[0].title}}</span>
+                        </i-input>
+                        <i-input v-model="edit_data.modelName">
+                            <span :width="100" slot="prepend">{{meta_columns[1].title}}</span>
+                        </i-input>
+                        <i-input v-model="edit_data.modelRemark">
+                            <span :width="100" slot="prepend">{{meta_columns[2].title}}</span>
+                        </i-input>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon3">{{meta_columns[3].title}}</span>
+                            <i-switch v-model="edit_data.isEnable">
+                                <span slot="open">启用</span>
+                                <span slot="close">停用</span>
+                            </i-switch>
+                        </div>
+
+                    </template>
+                </p>
+            </Modal>
+        </template>
+
+        <template>
+            <Modal v-model="modal_add_isshow"
+                   title="添加"
+                   @@on-ok="modal_add_ok"
+                   @@on-cancel="modal_add_cancel">
+                <p>
+                    <template>
+                        <i-input disabled v-model="add_data.modelID">
+                            <span slot="prepend">{{meta_columns[0].title}}</span>
+                        </i-input>
+                        <i-input v-model="add_data.modelName">
+                            <span slot="prepend">{{meta_columns[1].title}}</span>
+                        </i-input>
+                        <i-input v-model="add_data.modelRemark">
+                            <span slot="prepend">{{meta_columns[2].title}}</span>
+                        </i-input>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon3">{{meta_columns[3].title}}</span>
+                            <i-switch v-model="add_data.isEnable">
+                                <span slot="open">启用</span>
+                                <span slot="close">停用</span>
+                            </i-switch>
+                        </div>
+                    </template>
+                </p>
+            </Modal>
         </template>
     </div>
 </section>
@@ -198,11 +257,11 @@
             return t;
         }
         // 用给定数据设置编辑窗口控件
-        var setEditData = function (data) {
-            v_app.edit_data.modelID = data.modelID;
-            v_app.edit_data.modelName = data.modelName;
-            v_app.edit_data.modelRemark = data.modelRemark;
-            v_app.edit_data.isEnable = data.isEnable;
+        var setEditData = function (edit_obj, data) {
+            edit_obj.modelID = data.modelID;
+            edit_obj.modelName = data.modelName;
+            edit_obj.modelRemark = data.modelRemark;
+            edit_obj.isEnable = data.isEnable;
         }
 
         // 验证数据
@@ -266,12 +325,12 @@
             });
         }
 
-        var editDataRow = function (new_data) {
-            var old_rows = v_app.list_data.rows;
+        var editDataRow = function (old_rows, new_data) {
+            var old_rows = old_rows;
             for (var i in old_rows) {
                 var old_data = old_rows[i];
                 if (old_data.modelID == new_data.modelID) {
-                    Vue.set(v_app.list_data.rows, i, new_data);
+                    Vue.set(old_rows, i, new_data);
                 }
             }
         }
@@ -341,7 +400,7 @@
                     this.is_show_add_modal = false;
                 },
                 show_edit_modal: function ($event, data) {
-                    setEditData(data);
+                    setEditData(v_app.edit_data, data);
                     this.is_show_edit_modal = true;
                     $('#edit_modal').modal();
                 },
@@ -350,7 +409,7 @@
                     callApi(v_app.edit_url, edit_data, function (result) {
                         alertBox('编辑数据[\"' + summary(result) + '\"]保存成功');
                         var new_data = result;
-                        editDataRow(new_data);
+                        editDataRow(v_app.data_list.rows, new_data);
                         $('#edit_modal').modal('hide');
                     });
                     this.is_show_edit_modal = false;
@@ -364,7 +423,7 @@
                     callApi(v_app.enable_url, data, function (result) {
                         alertBox('编辑数据[\"' + summary(result) + '\"]保存成功');
                         var new_data = result;
-                        editDataRow(new_data);
+                        editDataRow(v_app.data_list.rows, new_data);
                     });
                 },
                 showalert: function (msg) {
@@ -385,6 +444,10 @@
                 edit_url: 'Model/Update',
                 del_url: 'Model/Del',
                 enable_url: 'Model/Enable',
+                add_data: { modelID: 0, modelName: '', modelRemark: '', isEnable: true },
+                edit_data: { modelID: 0, modelName: '', modelRemark: '', isEnable: true },
+                modal_edit_isshow: false,
+                modal_add_isshow: false,
                 meta_columns: [
                     {
                         title: '编号',
@@ -405,7 +468,14 @@
                     {
                         title: '启/停用',
                         key: 'isEnable',
-                        width: 100
+                        width: 100,
+                        render: (h, params) => {
+                            if (params.row.isEnable === true) {
+                                return h('strong', '启用');
+                            } else {
+                                return h('strong', '停用');
+                            }
+                        }
                     },
                     {
                         title: '管理',
@@ -424,7 +494,12 @@
                                     },
                                     on: {
                                         click: () => {
-                                            alert(params.index);
+                                            //params.index
+                                            //params.row.modelName
+                                            callApi(appv2.enable_url, params.row, function (result) {
+                                                this.alert('编辑数据[\"' + summary(result) + '\"]保存成功');
+                                                params.row.isEnable = result.isEnable;
+                                            });
                                         }
                                     }
                                 }, '启/停用'),
@@ -438,7 +513,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.show(params.index)
+                                            setEditData(appv2.edit_data, params.row)
+                                            appv2.modal_edit_isshow = true;
                                         }
                                     }
                                 }, '编辑'),
@@ -471,7 +547,7 @@
                 submitEnable: function () {
                     this.visible = true;
                 },
-                rowClassName: function(row, index) {
+                rowClassName: function (row, index) {
                     if (row.isEnable === true) {
                         return 'alert' + ' alert-success';
                     } else {
@@ -481,8 +557,35 @@
                 },
                 changePage: function () {
 
+                },
+                modal_edit_ok() {
+                    var edit_data = appv2.edit_data;
+                    callApi(appv2.edit_url, edit_data, function (result) {
+                        this.alert('编辑数据[\"' + summary(result) + '\"]保存成功');
+                        var new_data = result;
+                        editDataRow(appv2.data_list.rows, new_data);
+                    });
+                    this.modal_edit_isshow = false;
+                },
+                modal_edit_cancel() {
+                    this.$Message.info('Clicked cancel');
+                    this.modal_edit_isshow = false;
+                },
+                modal_add_show() {
+                    this.modal_add_isshow = true;
+                },
+                modal_add_ok() {
+                    callApi(appv2.add_url, appv2.add_data, function (result) {
+                        this.alert('编辑数据[\"' + summary(result) + '\"]保存成功');
+                        var new_data = result;
+                        appv2.data_list.rows.push(result);
+                    });
+                    this.modal_edit_isshow = false;
+                },
+                modal_add_cancel() {
+                    this.modal_add_isshow = false;
                 }
             }
         });
     </script>
-}
+    }

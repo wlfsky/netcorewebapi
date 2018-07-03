@@ -16,11 +16,11 @@ namespace WL.Core.Model
         /// <summary>
         /// 创建时间|
         /// </summary>
-        public DateTime AddTime { get; set; } = DateTime.Now;
+        public DateTime CreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 创建人|
         /// </summary>
-        public string AddUser { get; set; } = string.Empty;
+        public string CreateUser { get; set; } = string.Empty;
         /// <summary>
         /// 最后修改时间|
         /// </summary>
