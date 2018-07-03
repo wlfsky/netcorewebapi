@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WL.Core.WebApp</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    @RenderSection("Style", required: false)
+</head>
+<body>
+    <template id="vappm">
+        <div class="layout">
+            <Layout>
+                <Header>
+                    <Menu mode="horizontal" theme="dark" active-name="1">
+                        <div class="layout-logo">logo</div>
+                        <div class="layout-nav">
+                            <MenuItem name="1">
+                                <Icon type="ios-navigate"></Icon>
+                                Item 1
+                            </MenuItem>
+                            <MenuItem name="2">
+                                <Icon type="ios-keypad"></Icon>
+                                Item 2
+                            </MenuItem>
+                            <MenuItem name="3">
+                                <Icon type="ios-analytics"></Icon>
+                                Item 3
+                            </MenuItem>
+                            <MenuItem name="4">
+                                <Icon type="ios-paper"></Icon>
+                                Item 4
+                            </MenuItem>
+                        </div>
+                    </Menu>
+                </Header>
+                <Layout>
+                    <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+                        <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
+                            <MenuItem name="1-1">
+                                <Icon type="ios-navigate"></Icon>
+                                <span>Option 1</span>
+                            </MenuItem>
+                            <MenuItem name="1-2">
+                                <Icon type="search"></Icon>
+                                <span>Option 2</span>
+                            </MenuItem>
+                            <MenuItem name="1-3">
+                                <Icon type="settings"></Icon>
+                                <span>Option 3</span>
+                            </MenuItem>
+                        </Menu>
+                    </Sider>
+                    <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+                        <Icon @@click.native="collapsedSider" :class="rotateIcon" :style="{margin: '20px 20px 0'}" type="navicon-round" size="24"></Icon>
+                        @RenderBody()
+                    </Content>
+                </Layout>
+                <Footer>copy right wl 2018</Footer>
+            </Layout>
+
+        </div>
+    </template>
+
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/vue/vue.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        var vappm = new Vue({
+            el: '#vappm',
+            data() {
+                return {
+                    isCollapsed: false
+                }
+            },
+            computed: {
+                rotateIcon() {
+                    return [
+                        'menu-icon',
+                        this.isCollapsed ? 'rotate-icon' : ''
+                    ];
+                },
+                menuitemClasses() {
+                    return [
+                        'menu-item',
+                        this.isCollapsed ? 'collapsed-menu' : ''
+                    ]
+                }
+            },
+            methods: {
+                collapsedSider() {
+                    this.$refs.side1.toggleCollapse();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

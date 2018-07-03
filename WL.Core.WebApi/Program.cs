@@ -16,7 +16,7 @@ namespace WL.Core.WebApi
         public static void Main(string[] args)
         {
 
-            Test_Th_Pool();
+            //Test_Th_Pool();
 
 
             BuildWebHost(args).Run();
@@ -56,7 +56,7 @@ namespace WL.Core.WebApi
                 var Tempaction = action;
                 System.Threading.ThreadPool.QueueUserWorkItem(callBack: ststus => Tempaction());
             }
-            Console.ReadKey();
+            //Console.ReadKey();
             #endregion
         }
     }

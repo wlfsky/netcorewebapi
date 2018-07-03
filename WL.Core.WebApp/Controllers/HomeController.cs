@@ -8,8 +8,13 @@ using WL.Core.WebApp.Models;
 
 namespace WL.Core.WebApp.Controllers
 {
+    
+    [Route("Home/[action]")]
     public class HomeController : Controller
     {
+        [Route("/")]
+        [Route("")]
+        [Route("Index")]
         public IActionResult Index()
         {
             return View();
