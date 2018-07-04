@@ -6,3 +6,37 @@
 
 <h2>Index222222222</h2>
 
+<div id="components-demo">
+    <button-counter></button-counter>
+    <button-counter-b></button-counter-b>
+</div>
+<div id="my-c-box" class="hidden"></div>
+
+@section Scripts{
+    <script>
+        $('#my-c-box').load("~/lib/component/my_component.vue");
+        Vue.component('button-counter', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.111</button>'
+        });
+        var ButtonCounterB = {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.222</button>'
+        };
+        var cd_vdome = new Vue({
+            el: '#components-demo',
+            components: {
+                'button-counter-b': ButtonCounterB,
+            }
+        })
+    </script>
+
+}
