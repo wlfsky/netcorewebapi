@@ -8,28 +8,37 @@
 
 <div id="components-demo">
     <button-counter></button-counter>
+    <h3>===============</h3>
     <button-counter-b></button-counter-b>
 </div>
 <div id="my-c-box" class="hidden"></div>
 
+<script type="text/x-template" id="button-counter-b">
+    <button v-on:click="count++">You clicked me {{ count }} times.222</button>
+</script>
+<h3>-----------------</h3>
+<script type="text/x-template" id="button-counter-template">
+    <button v-on:click="count++">You clicked me {{ count }} times.1111</button>
+</script>
+
 @section Scripts{
     <script>
-        $('#my-c-box').load("~/lib/component/my_component.vue");
+        //$('#my-c-box').load("~/lib/component/my_component.vue");
         Vue.component('button-counter', {
+            template: '#button-counter-template',
             data: function () {
                 return {
                     count: 0
                 }
-            },
-            template: '<button v-on:click="count++">You clicked me {{ count }} times.111</button>'
+            }
         });
         var ButtonCounterB = {
+            template: '#button-counter-b',
             data: function () {
                 return {
                     count: 0
                 }
-            },
-            template: '<button v-on:click="count++">You clicked me {{ count }} times.222</button>'
+            }
         };
         var cd_vdome = new Vue({
             el: '#components-demo',

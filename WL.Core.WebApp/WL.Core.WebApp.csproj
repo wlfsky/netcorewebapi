@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\新文件夹\**" />
+    <Content Remove="wwwroot\lib\新文件夹\**" />
+    <EmbeddedResource Remove="wwwroot\lib\新文件夹\**" />
+    <None Remove="wwwroot\lib\新文件夹\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Vue.js.Developers.Version" Version="2.4.2" />
