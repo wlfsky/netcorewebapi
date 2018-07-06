@@ -9,17 +9,14 @@
 <div id="components-demo">
     <button-counter></button-counter>
     <h3>===============</h3>
-    <button-counter-b></button-counter-b>
+    <b-c></b-c>
 </div>
 <div id="my-c-box" class="hidden"></div>
 
-<script type="text/x-template" id="button-counter-b">
-    <button v-on:click="count++">You clicked me {{ count }} times.222</button>
-</script>
+
 <h3>-----------------</h3>
-<script type="text/x-template" id="button-counter-template">
-    <button v-on:click="count++">You clicked me {{ count }} times.1111</button>
-</script>
+
+
 
 @section Scripts{
     <script>
@@ -28,24 +25,26 @@
             template: '#button-counter-template',
             data: function () {
                 return {
+                    title: "-TITLE-",
                     count: 0
                 }
             }
         });
-        var ButtonCounterB = {
-            template: '#button-counter-b',
+
+        var BC = {
+            template: '#bc-template',
             data: function () {
                 return {
+                    title: "-TITLE-",
                     count: 0
                 }
             }
         };
-        var cd_vdome = new Vue({
-            el: '#components-demo',
-            components: {
-                'button-counter-b': ButtonCounterB,
-            }
-        })
     </script>
-
+    <script type="text/x-template" id="button-counter-template">
+        <button v-on:click="count++">You clicked me {{ count }} times.【{{title}}】1111</button>
+    </script>
+    <script type="text/x-template" id="bc-template">
+        <button v-on:click="count++">You clicked me {{ count }} times.【{{title}}】2222</button>
+    </script>
 }

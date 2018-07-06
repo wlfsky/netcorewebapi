@@ -80,73 +80,81 @@ namespace WL.Core.ConsoleApp
 
 
             #region --处理集群测试--
-            var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log_00.txt");
+            //var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log_00.txt");
 
-            TaskWork<int, string> tw = new TaskWork<int, string>();
-            tw.PCluster.ProcessHandle = (i) =>
-            {
-                //Task.Delay(2000);
-                Thread.Sleep(500);
-                var str = "===={0}====".FormatStr(i.TaskPID);
+            //TaskWork<int, string> tw = new TaskWork<int, string>();
+            //tw.PCluster.ProcessHandle = (i) =>
+            //{
+            //    //Task.Delay(2000);
+            //    Thread.Sleep(500);
+            //    var str = "===={0}====".FormatStr(i.TaskPID);
 
-                //fsio00.WriteLine(str);
-                return new TaskID<string>() { TaskPID = i.TaskPID, TaskData = str };
-            };
+            //    //fsio00.WriteLine(str);
+            //    return new TaskID<string>() { TaskPID = i.TaskPID, TaskData = str };
+            //};
             
-            tw.OutputTask.PullProcess = (p) =>
-            {
-                //Task.Delay(200);
-                Thread.Sleep(100);
-                fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
-            };
+            //tw.OutputTask.PullProcess = (p) =>
+            //{
+            //    //Task.Delay(200);
+            //    Thread.Sleep(100);
+            //    fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
+            //};
 
-            tw.RunTask();
-            tw.OutputStatus();
-            WriteLine("==start push==");
-            Thread t = new Thread(new ThreadStart(() => {
-                for (int i = 100; i < 200; i++)
-                {
-                    WriteLine("==> input ..." + i.ToString());
-                    tw.InputTask.PushTask(i);
-                }
-            }));
-            t.Start();
-            Thread t2 = new Thread(new ThreadStart(() => {
-                for (int i = 200; i < 400; i++)
-                {
-                    WriteLine("==> input ..." + i.ToString());
-                    tw.InputTask.PushTask(i);
-                }
-            }));
-            t2.Start();
-            System.Threading.Tasks.Parallel.Invoke(() =>{
-                for (int i = 0; i < 100; i++)
-                {
-                    WriteLine("==> input ..." + i.ToString());
-                    tw.InputTask.PushTask(i);
-                }
-            },() => {
-                for (int i = 100; i < 200; i++)
-                {
-                    WriteLine("==> input ..." + i.ToString());
-                    tw.InputTask.PushTask(i);
-                }
-            });
-            for (int i = 0; i < 100; i++)
+            //tw.RunTask();
+            //tw.OutputStatus();
+            //WriteLine("==start push==");
+            //Thread t = new Thread(new ThreadStart(() => {
+            //    for (int i = 100; i < 200; i++)
+            //    {
+            //        WriteLine("==> input ..." + i.ToString());
+            //        tw.InputTask.PushTask(i);
+            //    }
+            //}));
+            //t.Start();
+            //Thread t2 = new Thread(new ThreadStart(() => {
+            //    for (int i = 200; i < 400; i++)
+            //    {
+            //        WriteLine("==> input ..." + i.ToString());
+            //        tw.InputTask.PushTask(i);
+            //    }
+            //}));
+            //t2.Start();
+            //System.Threading.Tasks.Parallel.Invoke(() =>{
+            //    for (int i = 0; i < 100; i++)
+            //    {
+            //        WriteLine("==> input ..." + i.ToString());
+            //        tw.InputTask.PushTask(i);
+            //    }
+            //},() => {
+            //    for (int i = 100; i < 200; i++)
+            //    {
+            //        WriteLine("==> input ..." + i.ToString());
+            //        tw.InputTask.PushTask(i);
+            //    }
+            //});
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    if(tw.OutputTask.DiverterCount > 0)
+            //    {
+            //        Thread.Sleep(1000);
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
+            ////Thread.Sleep(20000);
+            ////Task.Delay(10000);
+            //tw.PCluster.Stop();
+            //fsio00.Close();
+            #endregion
+
+            #region --真能转换--
+            var x1 = new List<int>() { 1, 2, 3, 4 };
+            foreach (var item in new Program().TrueCanTrans(x1, z=>z>1, z=>z+1))
             {
-                if(tw.OutputTask.DiverterCount > 0)
-                {
-                    Thread.Sleep(1000);
-                }
-                else
-                {
-                    break;
-                }
+                Console.WriteLine(item.ToString());
             }
-            //Thread.Sleep(20000);
-            //Task.Delay(10000);
-            tw.PCluster.Stop();
-            fsio00.Close();
             #endregion
 
             Console.ReadKey();
@@ -232,6 +240,41 @@ namespace WL.Core.ConsoleApp
         public void R()
         {
             Task.Run(async () => { await B(); await B(); });
+        }
+        #endregion
+
+        #region --测试写法--
+
+        public IEnumerable<TOut> TrueCanTrans<TIn, TOut>(IEnumerable<TIn> sou, Func<TIn, bool> checker, Func<TIn, TOut> trans)
+        {
+            var result = new List<TOut>();
+            foreach (var item in YieldEachFunc(YieldEachPredicate(sou, checker), trans))
+            {
+                result.Add(item);
+                //yield return item;
+            }
+            return result;
+        }
+
+
+        public IEnumerable<T> YieldEachPredicate<T>(IEnumerable<T> sou, Func<T, bool> predicate)
+        {
+            foreach (var item in sou)
+            {
+                if (predicate(item))
+                {
+                    Console.WriteLine("predicate");
+                    yield return item;
+                }
+            }
+        }
+        public IEnumerable<TOut> YieldEachFunc<TIn, TOut>(IEnumerable<TIn> sou, Func<TIn, TOut> func)
+        {
+            foreach (var item in sou)
+            {
+                Console.WriteLine("func");
+                yield return func(item);
+            }
         }
         #endregion
     }
