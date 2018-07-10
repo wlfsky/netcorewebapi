@@ -13,7 +13,7 @@ namespace WlToolsLib.i18n
     {
         public LanguageDic()
         {
-            this.CurrLang = "us-en";
+            this.CurrLang = "zh-cn";
             this.DefLang = "def";
         }
 
