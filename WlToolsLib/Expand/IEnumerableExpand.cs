@@ -26,8 +26,8 @@ namespace WlToolsLib.Expand
 
         /// <summary>
         /// 扩展IEnumerable<T> Foreach
-        /// 调用此方法，如果没有 循环 好像会使循环不执行
-        /// 此方法需要在外部包裹一个foreach才能被执行
+        /// 调用此方法，如果没有在foreach结构中循环不执行
+        /// 此方法需要在一个foreach才能被执行
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
@@ -35,11 +35,13 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static IEnumerable<T> Foreach<T>(this IEnumerable<T> self, Func<T, T> func)
         {
-            // self 没有元素时，不会foreach
-            foreach (var item in self)
+            if (self.HasItem())
             {
-                var result = func(item);
-                yield return result;
+                foreach (var item in self)
+                {
+                    var result = func(item);
+                    yield return result;
+                }
             }
         }
 
