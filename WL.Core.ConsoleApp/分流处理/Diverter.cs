@@ -125,7 +125,7 @@ namespace WL.Core.ConsoleApp
         private long NewPID()
         {
             // 会发生重复，所以要做一个微型操作纯当延迟
-            long x = 103453553534l;//微型操作，
+            long x = 103453553534L+23545432234L;//微型操作，
             return DateTime.Now.Ticks;
         }
         /// <summary>
