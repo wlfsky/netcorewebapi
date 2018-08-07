@@ -7,9 +7,13 @@
 
     <Version>1.0.5</Version>
 
-    <AssemblyVersion>1.0.5.2</AssemblyVersion>
+    <AssemblyVersion>1.0.5.3</AssemblyVersion>
 
-    <FileVersion>1.0.5.2</FileVersion>
+    <FileVersion>1.0.5.3</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

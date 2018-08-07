@@ -181,7 +181,7 @@ namespace WL.Core.ConsoleApp
         /// </summary>
         public static void default_val()
         {
-            int i = default(int);
+            int i = default;
             Func<int, string> fu = default(Func<int, string>);
         }
         /// <summary>
