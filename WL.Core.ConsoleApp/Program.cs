@@ -17,8 +17,9 @@ namespace WL.Core.ConsoleApp
         static void Main(string[] args)
         {
             WriteLine("Hello World!");
+            WriteLine("开始测试！");
             ref_func();
-            WriteLine("Hello World!");
+            
 
             //new Program().R();
             //Task.Run(async () => { 
@@ -74,76 +75,10 @@ namespace WL.Core.ConsoleApp
 
 
             #region --处理集群测试--
-            //var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log_00.txt");
-
-            //TaskWork<int, string> tw = new TaskWork<int, string>();
-            //tw.PCluster.ProcessHandle = (i) =>
-            //{
-            //    //Task.Delay(2000);
-            //    Thread.Sleep(500);
-            //    var str = "===={0}====".FormatStr(i.TaskPID);
-
-            //    //fsio00.WriteLine(str);
-            //    return new TaskID<string>() { TaskPID = i.TaskPID, TaskData = str };
-            //};
-            
-            //tw.OutputTask.PullProcess = (p) =>
-            //{
-            //    //Task.Delay(200);
-            //    Thread.Sleep(100);
-            //    fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
-            //};
-
-            //tw.RunTask();
-            //tw.OutputStatus();
-            //WriteLine("==start push==");
-            //Thread t = new Thread(new ThreadStart(() => {
-            //    for (int i = 100; i < 200; i++)
-            //    {
-            //        WriteLine("==> input ..." + i.ToString());
-            //        tw.InputTask.PushTask(i);
-            //    }
-            //}));
-            //t.Start();
-            //Thread t2 = new Thread(new ThreadStart(() => {
-            //    for (int i = 200; i < 400; i++)
-            //    {
-            //        WriteLine("==> input ..." + i.ToString());
-            //        tw.InputTask.PushTask(i);
-            //    }
-            //}));
-            //t2.Start();
-            //System.Threading.Tasks.Parallel.Invoke(() =>{
-            //    for (int i = 0; i < 100; i++)
-            //    {
-            //        WriteLine("==> input ..." + i.ToString());
-            //        tw.InputTask.PushTask(i);
-            //    }
-            //},() => {
-            //    for (int i = 100; i < 200; i++)
-            //    {
-            //        WriteLine("==> input ..." + i.ToString());
-            //        tw.InputTask.PushTask(i);
-            //    }
-            //});
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    if(tw.OutputTask.DiverterCount > 0)
-            //    {
-            //        Thread.Sleep(1000);
-            //    }
-            //    else
-            //    {
-            //        break;
-            //    }
-            //}
-            ////Thread.Sleep(20000);
-            ////Task.Delay(10000);
-            //tw.PCluster.Stop();
-            //fsio00.Close();
+            //test_the_cluster();
             #endregion
 
-            #region --真能转换--
+            #region --yield 简化 连续的 是真时能转换 委托====测试--
             var x1 = new List<int>() { 1, 2, 3, 4 };
             foreach (var item in new Program().TrueCanTrans(x1, z=>z>1, z=>z+1))
             {
@@ -151,10 +86,32 @@ namespace WL.Core.ConsoleApp
             }
             #endregion
 
-            Console.ReadKey();
+            #region --测试7.1-7.3新语法--
+            test_71_73_new();
+            #endregion
+
+            ReadKey();
         }
 
         #region --c#7.1新特性测试--
+        /*
+         * 项目-右键-属性-生成-高级-语言版本：改为最新！
+        */
+
+        public static void test_71_73_new()
+        {
+            WriteLine("7.1-7.3新语法测试");
+            WriteLine("7.1新语法测试");
+            default_val();
+            InferredTupleElementNames();
+            WriteLine("7.2新语法测试");
+
+            WriteLine("7.3新语法测试");
+            test_enhanced_generic_constraints();
+            test_in_overload();
+        }
+
+        #region --7.1新语法测试--
         /// <summary>
         /// 7.1才支持的一部main方法，编译失败
         /// </summary>
@@ -164,15 +121,16 @@ namespace WL.Core.ConsoleApp
         {
             await Task.Run(() =>
             {
-                Console.WriteLine("start");
+                WriteLine("start");
                 var l = new[] { 6, 7, 8, 9, 10 };
                 foreach (var i in l)
                 {
-                    Console.WriteLine("{0}......".FormatStr(i));
+                    WriteLine("{0}......".FormatStr(i));
                     System.Threading.Thread.Sleep(100);
                 }
-                Console.WriteLine("stop");
+                WriteLine("stop");
             });
+            ReadKey();
         }
 
         /// <summary>
@@ -182,8 +140,13 @@ namespace WL.Core.ConsoleApp
         public static void default_val()
         {
             int i = default;
-            Func<int, string> fu = default(Func<int, string>);
+            WriteLine("default 推断默认值测试（int）：{0}".FormatStr(i));
+            Func<int, string> fu = default;
+            fu = x => x.ToString();
+            var r = fu(123);
+            WriteLine("default 推断默认值测试（委托）：{0}".FormatStr(r));
         }
+
         /// <summary>
         /// 推断元组元素名 编译不通过，但是提示错误含有对7.1的指引。表示ide认识此语法
         /// </summary>
@@ -192,8 +155,72 @@ namespace WL.Core.ConsoleApp
             int count = 5;
             string label = "Colors used in the map";
             var pair = (count, label);
-            //WriteLine("{0}".FormatStr(pair.count));
+            WriteLine("元组推断元组变量名称：{0}".FormatStr(pair.count));
         }
+        #endregion
+
+        #region --7.2新语法测试--
+
+        #endregion
+
+        #region --7.3新语法测试--
+        #region --泛型约束支持enum 和 delegate--
+        public enum XTYPE
+        {
+            XT01 = 1,
+            XT02 = 2
+        }
+
+        public static string ToStr<T>(T t) where T : System.Enum
+        {
+            var r = t.ToString();
+            WriteLine("委托枚举约束结果：{0}".FormatStr(r));
+            return r;
+        }
+
+        public delegate string FN(int i);
+        public static FN f = i => i.ToString();
+
+        public static string ToRun<F>(F f, int i) where F : System.Delegate
+        {
+            var r = f.DynamicInvoke(i).ToString();
+            WriteLine("委托泛型约束结果：{0}".FormatStr(r));
+            return r;
+        }
+
+        public static void test_enhanced_generic_constraints()
+        {
+            ToStr<XTYPE>(XTYPE.XT01);
+            ToRun<FN>(f, 5);
+        }
+        #endregion
+
+        #region --修复in 重载问题--
+
+        public static void test_in_overload()
+        {
+            WriteLine("in参数方法重载修复测试");
+            var r1 = M(1923);
+            int ref_num = 234_32;
+            var r2 = M(in ref_num);
+        }
+
+        public static string M(int i)
+        {
+            var r = i.ToString();
+            WriteLine("这是没有in的方法M：{0}".FormatStr(r));
+            return r;
+        }
+
+        public static string M(in int i)
+        {
+            var r = i.ToString();
+            WriteLine("这是有in的方法in M：{0}".FormatStr(r));
+            return r;
+        }
+        #endregion
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -294,6 +321,15 @@ namespace WL.Core.ConsoleApp
 
         #region --测试写法--
 
+        /// <summary>
+        /// yield 简化 连续的 是真时能转换 委托====测试
+        /// </summary>
+        /// <typeparam name="TIn"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
+        /// <param name="sou"></param>
+        /// <param name="checker"></param>
+        /// <param name="trans"></param>
+        /// <returns></returns>
         public IEnumerable<TOut> TrueCanTrans<TIn, TOut>(IEnumerable<TIn> sou, Func<TIn, bool> checker, Func<TIn, TOut> trans)
         {
             var result = new List<TOut>();
@@ -324,6 +360,83 @@ namespace WL.Core.ConsoleApp
                 Console.WriteLine("func");
                 yield return func(item);
             }
+        }
+        #endregion
+
+        #region --集群分体处理测试方法入口--
+        public static void test_the_cluster()
+        {
+            var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log_00.txt");
+
+            TaskWork<int, string> tw = new TaskWork<int, string>();
+            tw.PCluster.ProcessHandle = (i) =>
+            {
+                //Task.Delay(2000);
+                Thread.Sleep(500);
+                var str = "===={0}====".FormatStr(i.TaskPID);
+
+                //fsio00.WriteLine(str);
+                return new TaskID<string>() { TaskPID = i.TaskPID, TaskData = str };
+            };
+
+            tw.OutputTask.PullProcess = (p) =>
+            {
+                //Task.Delay(200);
+                Thread.Sleep(100);
+                fsio00.WriteLine("===> Saved {0}.".FormatStr(p.TaskPID));
+            };
+
+            tw.RunTask();
+            tw.OutputStatus();
+            WriteLine("==start push==");
+            Thread t = new Thread(new ThreadStart(() =>
+            {
+                for (int i = 100; i < 200; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            }));
+            t.Start();
+            Thread t2 = new Thread(new ThreadStart(() =>
+            {
+                for (int i = 200; i < 400; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            }));
+            t2.Start();
+            System.Threading.Tasks.Parallel.Invoke(() =>
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            }, () =>
+            {
+                for (int i = 100; i < 200; i++)
+                {
+                    WriteLine("==> input ..." + i.ToString());
+                    tw.InputTask.PushTask(i);
+                }
+            });
+            for (int i = 0; i < 100; i++)
+            {
+                if (tw.OutputTask.DiverterCount > 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            //Thread.Sleep(20000);
+            //Task.Delay(10000);
+            tw.PCluster.Stop();
+            fsio00.Close();
         }
         #endregion
     }
