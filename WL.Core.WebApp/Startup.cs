@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WL.Core.BusinessService;
 
 namespace WL.Core.WebApp
 {
@@ -22,6 +23,10 @@ namespace WL.Core.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            #region --注入业务层  业务服务--
+            services.AddSingleton<IUserSystemBLL, UserSystemBLL>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -29,16 +34,14 @@ namespace WL.Core.WebApp
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseBrowserLink();
             app.UseStaticFiles();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WL.Core.BusinessService\WL.Core.BusinessService.csproj" />
     <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>
 

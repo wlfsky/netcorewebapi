@@ -338,7 +338,8 @@
         var summary = function (data) {
             return data.modelID + '-' + data.modelName
         }
-
+        var v_app;
+        var appv2;
         // vue app 初始化，定义列表控件事件
         var v_app = new Vue({
             el: '#Appv',
@@ -432,9 +433,6 @@
                 }
             }
         });
-    </script>
-
-    <script>
 
         var appv2 = new Vue({
             el: '#appv2',
