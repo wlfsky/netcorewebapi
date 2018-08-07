@@ -16,15 +16,9 @@ namespace WL.Core.ConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            ref int GetValue(int[] array, int index) => ref array[index];
-            int[] array1 = { 1, 2, 3, 4, 5 };
-            ref int x = ref GetValue(array1, 2);
-            Console.WriteLine(x);
-            x = 4;
-            Console.WriteLine(x);
-            Console.WriteLine(array1[2]);
-            Console.WriteLine("Hello World!");
+            WriteLine("Hello World!");
+            ref_func();
+            WriteLine("Hello World!");
 
             //new Program().R();
             //Task.Run(async () => { 
@@ -160,6 +154,61 @@ namespace WL.Core.ConsoleApp
             Console.ReadKey();
         }
 
+        #region --c#7.1新特性测试--
+        /// <summary>
+        /// 7.1才支持的一部main方法，编译失败
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        static async Task Main()
+        {
+            await Task.Run(() =>
+            {
+                Console.WriteLine("start");
+                var l = new[] { 6, 7, 8, 9, 10 };
+                foreach (var i in l)
+                {
+                    Console.WriteLine("{0}......".FormatStr(i));
+                    System.Threading.Thread.Sleep(100);
+                }
+                Console.WriteLine("stop");
+            });
+        }
+
+        /// <summary>
+        /// 默认值，default 编译失败，其他不测试了肯定没有到7.1
+        /// 感觉要叫 推断默认值比较好
+        /// </summary>
+        public static void default_val()
+        {
+            int i = default(int);
+            Func<int, string> fu = default(Func<int, string>);
+        }
+        /// <summary>
+        /// 推断元组元素名 编译不通过，但是提示错误含有对7.1的指引。表示ide认识此语法
+        /// </summary>
+        public static void InferredTupleElementNames()
+        {
+            int count = 5;
+            string label = "Colors used in the map";
+            var pair = (count, label);
+            //WriteLine("{0}".FormatStr(pair.count));
+        }
+        #endregion
+
+        /// <summary>
+        /// 引用局部变量
+        /// </summary>
+        public static void ref_func()
+        {
+            ref int GetValue(int[] array, int index) => ref array[index];
+            int[] array1 = { 1, 2, 3, 4, 5 };
+            ref int x = ref GetValue(array1, 2);
+            Console.WriteLine(x);
+            x = 4;
+            Console.WriteLine(x);
+            Console.WriteLine(array1[2]);
+        }
 
         public void Check()
         {
