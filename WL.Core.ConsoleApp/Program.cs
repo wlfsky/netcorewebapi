@@ -82,7 +82,7 @@ namespace WL.Core.ConsoleApp
             var x1 = new List<int>() { 1, 2, 3, 4 };
             foreach (var item in new Program().TrueCanTrans(x1, z=>z>1, z=>z+1))
             {
-                Console.WriteLine(item.ToString());
+                WriteLine(item.ToString());
             }
             #endregion
 
