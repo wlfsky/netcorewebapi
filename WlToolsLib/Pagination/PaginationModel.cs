@@ -12,9 +12,9 @@ namespace WlToolsLib.Pagination
     /// 分页实体
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PaginationModel<T>
+    public class PageShell<T>
     {
-        public PaginationModel()
+        public PageShell()
         {
 
         }
@@ -56,7 +56,7 @@ namespace WlToolsLib.Pagination
         /// <param name="pageSize">每页记录数</param>
         /// <param name="pageIndex">当前页索引数</param>
         /// <param name="totalRecordCount">总记录数</param>
-        protected PaginationModel(int pageSize, int pageIndex, int totalRecordCount)
+        protected PageShell(int pageSize, int pageIndex, int totalRecordCount)
         {
             this.PageSize = pageSize;
             this.RecordCount = totalRecordCount;
@@ -71,9 +71,9 @@ namespace WlToolsLib.Pagination
         /// <param name="pageIndex"></param>
         /// <param name="totalRecordCount"></param>
         /// <returns></returns>
-        public static PaginationModel<T> CreatePageData(int pageSize, int pageIndex, int totalRecordCount)
+        public static PageShell<T> CreatePageData(int pageSize, int pageIndex, int totalRecordCount)
         {
-            return new PaginationModel<T>(pageSize, pageIndex, totalRecordCount);
+            return new PageShell<T>(pageSize, pageIndex, totalRecordCount);
         }
         /// <summary>
         /// 计算分页数据
@@ -95,7 +95,7 @@ namespace WlToolsLib.Pagination
         /// 添加一个数据
         /// </summary>
         /// <param name="item"></param>
-        public PaginationModel<T> AddItem(T item)
+        public PageShell<T> AddItem(T item)
         {
             if (this.Rows.NotNull() && item.NotNull())
             {
@@ -108,7 +108,7 @@ namespace WlToolsLib.Pagination
         /// 添加一组数据
         /// </summary>
         /// <param name="items"></param>
-        public PaginationModel<T> AddItems(IEnumerable<T> items)
+        public PageShell<T> AddItems(IEnumerable<T> items)
         {
             if (this.Rows.NotNull() && items.NotNull())
             {
@@ -121,7 +121,7 @@ namespace WlToolsLib.Pagination
         /// 清空数据
         /// </summary>
         /// <returns></returns>
-        public PaginationModel<T> ClearItem()
+        public PageShell<T> ClearItem()
         {
             if (this.Rows.HasItem())
             {

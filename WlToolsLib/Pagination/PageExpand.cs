@@ -16,10 +16,10 @@ namespace WlToolsLib.Pagination
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public static PaginationModel<TData> PageForList<TData>(this List<TData> self, int pageIndex, int pageSize)
+        public static PageShell<TData> PageForList<TData>(this List<TData> self, int pageIndex, int pageSize)
         {
-            if (self == null || !self.Any()) return PaginationModel<TData>.CreatePageData(pageSize, pageIndex, 0);
-            PaginationModel<TData> p = PaginationModel<TData>.CreatePageData(pageSize, pageIndex, self.Count);
+            if (self == null || !self.Any()) return PageShell<TData>.CreatePageData(pageSize, pageIndex, 0);
+            PageShell<TData> p = PageShell<TData>.CreatePageData(pageSize, pageIndex, self.Count);
             // 分页 Skip跳过前[p.PageStartCount]条，Take获取[Size]条数据
             var pageOrder = self.Skip(p.PageStartCount).Take(p.PageSize).ToList();
             p.AddItems(pageOrder);
