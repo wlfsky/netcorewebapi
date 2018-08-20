@@ -37,7 +37,7 @@ namespace WlToolsLib.Pagination
         /// <summary>
         /// 总记录数
         /// </summary>
-        public int RecordCount { get; set; }
+        public long RecordCount { get; set; }
         /// <summary>
         /// 总页数
         /// </summary>
