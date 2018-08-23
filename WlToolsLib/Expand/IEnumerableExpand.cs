@@ -117,5 +117,29 @@ namespace WlToolsLib.Expand
             string r = string.Join(separator, t);
             return r;
         }
+
+        /// <summary>
+        /// 是否在某个队列中
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self">值</param>
+        /// <param name="tList">队列</param>
+        /// <returns></returns>
+        public static bool In<T>(this T self, IEnumerable<T> tList)
+        {
+            return tList.Contains(self);
+        }
+
+        /// <summary>
+        /// 是否不在某个队列中
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self">值</param>
+        /// <param name="tList">队列</param>
+        /// <returns></returns>
+        public static bool NotIn<T>(this T self, IEnumerable<T> tList)
+        {
+            return !tList.Contains(self);
+        }
     }
 }
