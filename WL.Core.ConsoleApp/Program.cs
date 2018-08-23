@@ -19,7 +19,8 @@ namespace WL.Core.ConsoleApp
             WriteLine("Hello World!");
             WriteLine("开始测试！");
             ref_func();
-            
+
+            JoinUs();
 
             //new Program().R();
             //Task.Run(async () => { 
@@ -93,7 +94,23 @@ namespace WL.Core.ConsoleApp
             ReadKey();
         }
 
-        
+        #region --同类型数组拼接--
+        // 这个应该是 列拼接，而非队列拼接
+        public static void JoinUs()
+        {
+            WriteLine("同类型数组拼接");
+            var a = new int[] { 1, 2, 3, 4 };
+            var b = new int[] { 5, 6, 7, 8 };
+            var c = new int[] { 9, 10, 11, 12 };
+
+            var d = a.Join(b, i => i, i => i, (i, j) => i);
+            foreach (var item in d)
+            {
+                WriteLine("{0}", item);
+            }
+            WriteLine("同类型数组拼接 end");
+        }
+        #endregion
 
         /// <summary>
         /// 引用局部变量

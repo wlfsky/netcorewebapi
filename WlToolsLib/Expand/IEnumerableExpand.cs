@@ -11,6 +11,7 @@ namespace WlToolsLib.Expand
         #region --枚举类型 Foreach 带index/yield/action纯执行--
         /// <summary>
         /// 创建一个迭代器带有索引的
+        /// 通过yield返回
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>

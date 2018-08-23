@@ -206,6 +206,19 @@ namespace WlToolsLib.Expand
             return shortDateStr;
         }
 
+        /// <summary>
+        /// 时间到字符串yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="dateIntervalChar"></param>
+        /// <param name="timeIntervalChar"></param>
+        /// <returns></returns>
+        public static string DateTimeStr(this DateTime self, string dateIntervalChar = "-", string timeIntervalChar = ":")
+        {
+            var shortDateStr = self.ToString($"yyyy{dateIntervalChar}MM{dateIntervalChar}dd HH{timeIntervalChar}mm{timeIntervalChar}ss");
+            return shortDateStr;
+        }
+
 
         /// <summary>
         /// 20170707 2017-07-07 字符串直接转换日期
@@ -471,6 +484,27 @@ namespace WlToolsLib.Expand
             new CodeNameMap<TimeLevelEnum, int, string>() {  Enum = TimeLevelEnum.Millisecond, Code =7, Name ="毫秒"}
         };
         #endregion
+
+
         #endregion --时间扩展，时间扩展和结构--
+
+        #region --可空时间类型扩展--
+        /// <summary>
+        /// 可空时间类型 日期时间字符串
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static string DateTimeStr(this DateTime? self)
+        {
+            if (self.HasValue)
+            {
+                return self.Value.DateTimeStr();
+            }
+            else
+            {
+                return "";
+            }
+        }
+        #endregion
     }
 }

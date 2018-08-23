@@ -291,6 +291,31 @@ namespace WlToolsLib.Expand
         }
         #endregion
 
+        #region --用给定的转换器 用指定字符串拼接 任意类型的 字符串--
+        /// <summary>
+        /// 用指定的字符串拼接由制定转换器转换出来的字符串组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="processor"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string JoinBy<T>(this IEnumerable<T> self, Func<T, string> converter, string separator = ",")
+        {
+            if (converter.IsNull() || self.NoItem())
+            {
+                return string.Empty;
+            }
+            List<string> t = new List<string>();
+            foreach (var i in self)
+            {
+                t.Add(converter(i));
+            }
+            string r = string.Join(separator, t);
+            return r;
+        }
+        #endregion
+
         #region --编辑字符串--
         /// <summary>
         /// 首字母大写
@@ -341,6 +366,43 @@ namespace WlToolsLib.Expand
         public static string FormatStr(this string self, params object[] args)
         {
             return string.Format(self, args);
+        }
+        #endregion
+
+        #region --检查字符串长度--
+        /// <summary>
+        /// 检查字符串长度
+        /// 在指定范围内返回true，其他任何异常都返回false
+        /// 不提供最大值，就是必须等于最小值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static bool LenCheck(this string self, int min, int? max = null)
+        {
+            if (max.HasValue == false)
+            {
+                max = min;
+            }
+            if (min < 0 || max < 0 || min > max)//小值小于0，大值小于0，小值大于大值均返回false
+            {
+                return false;
+            }
+            if (self.NullEmpty())//检查字符串为空或0长度 且小值等于0时返回true，否则返回false
+            {
+                return min == 0 ? true : false;
+            }
+            var len = self.Length;
+            if (len < min || len > max)
+            {
+                return false;
+            }
+            else if (len >= min && len <= max)
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
     }

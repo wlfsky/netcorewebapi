@@ -12,6 +12,7 @@ namespace WlToolsLib.Expand
         #region --枚举扩展--
         /// <summary>
         /// 枚举值翻译文字
+        /// 应用场景：枚举值存储时采用的int类型，在有int的枚举值和枚举时可直接转换
         /// </summary>
         /// <param name="self"></param>
         /// <param name="enumValue"></param>
