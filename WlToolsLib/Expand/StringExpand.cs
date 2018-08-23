@@ -291,31 +291,6 @@ namespace WlToolsLib.Expand
         }
         #endregion
 
-        #region --用给定的转换器 用指定字符串拼接 任意类型的 字符串--
-        /// <summary>
-        /// 用指定的字符串拼接由制定转换器转换出来的字符串组
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="self"></param>
-        /// <param name="processor"></param>
-        /// <param name="separator"></param>
-        /// <returns></returns>
-        public static string JoinBy<T>(this IEnumerable<T> self, Func<T, string> converter, string separator = ",")
-        {
-            if (converter.IsNull() || self.NoItem())
-            {
-                return string.Empty;
-            }
-            List<string> t = new List<string>();
-            foreach (var i in self)
-            {
-                t.Add(converter(i));
-            }
-            string r = string.Join(separator, t);
-            return r;
-        }
-        #endregion
-
         #region --编辑字符串--
         /// <summary>
         /// 首字母大写

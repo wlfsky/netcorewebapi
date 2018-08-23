@@ -92,9 +92,10 @@ namespace WlToolsLib.Expand
         public static bool NoItem<T>(this IEnumerable<T> self)
         {
             return !self.HasItem();
-        } 
+        }
         #endregion
 
+        #region --用给定的转换器 用指定字符串拼接 任意类型的 字符串--
         /// <summary>
         /// 用指定的字符串拼接由制定转换器转换出来的字符串组
         /// </summary>
@@ -117,6 +118,7 @@ namespace WlToolsLib.Expand
             string r = string.Join(separator, t);
             return r;
         }
+        #endregion
 
         /// <summary>
         /// 是否在某个队列中
