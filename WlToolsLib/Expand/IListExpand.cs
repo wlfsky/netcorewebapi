@@ -64,6 +64,7 @@ namespace WlToolsLib.Expand
 
         #endregion --创建一个属于 IList 的 foreach循环--
 
+        #region --检查IList是否有元素，空和0元素一起处理--
         /// <summary>
         /// 检查list是否含有值，判null和any
         /// </summary>
@@ -81,6 +82,7 @@ namespace WlToolsLib.Expand
                 return false;
             }
         }
+        #endregion
 
         #region --给IList加入AddRange--
         /// <summary>

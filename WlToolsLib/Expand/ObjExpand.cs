@@ -110,5 +110,33 @@ namespace WlToolsLib.Expand
         }
 
         #endregion
+
+        #region --去除重复的元素。生成新非重复元素组返回.无元素时原样返回 -- RemoveSame<T>--
+        /// <summary>
+        /// 去除重复的元素。生成新非重复元素组返回.无元素时原样返回
+        /// 借助了Dictionary，的去重能力
+        /// </summary>
+        /// <typeparam name="T">主体类型</typeparam>
+        /// <param name="self"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> RemoveSame<T>(this IEnumerable<T> self)
+        {
+            if (self.NoItem())
+            {
+                return self;
+            }
+            Dictionary<T, int> temp_dic = new Dictionary<T, int>();
+            foreach (var item in self)
+            {
+                if (temp_dic.ContainsKey(item) == false)
+                {
+                    temp_dic.Add(item, 1);
+                }
+            }
+            var result = temp_dic.Keys;
+            return result;
+        }
+        #endregion
     }
 }
