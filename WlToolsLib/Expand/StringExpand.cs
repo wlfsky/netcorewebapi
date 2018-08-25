@@ -118,7 +118,7 @@ namespace WlToolsLib.Expand
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static string XTrim(this string self)
+        public static string PowerTrim(this string self)
         {
             if (self.NotNullEmpty())
             {
@@ -140,7 +140,7 @@ namespace WlToolsLib.Expand
             {
                 self = defVal;
             }
-            return self.XTrim();
+            return self.PowerTrim();
 
         }
 
