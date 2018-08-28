@@ -12,6 +12,7 @@ using WlToolsLib.Pagination;
 namespace WL.Core.DataService.UserSystem
 {
     /// <summary>
+    /// 用户帐号dal
     /// 以表为单位
     /// </summary>
     public class UserAccountTDAL : BaseConn
@@ -33,7 +34,7 @@ namespace WL.Core.DataService.UserSystem
 
 
 
-        #region --查询类方法范例--
+        #region --查询类方法，范例--
         /// <summary>
         /// 获取用户信息分页
         /// </summary>
@@ -89,7 +90,7 @@ namespace WL.Core.DataService.UserSystem
 
 
         /// <summary>
-        /// 根据条件提取指定的数据字段
+        /// 根据用户名获取用户名和密码组合
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>

@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WL.Core.DataCommon\WL.Core.DataCommon.csproj" />
     <ProjectReference Include="..\WL.Core.Model\WL.Core.Model.csproj" />
     <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>

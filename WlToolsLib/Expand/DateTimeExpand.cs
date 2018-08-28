@@ -174,7 +174,7 @@ namespace WlToolsLib.Expand
         }
 
         /// <summary>
-        /// 返回日期时间日期部分
+        /// 返回日期时间日期部分 yyyy-MM-dd
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
@@ -185,7 +185,7 @@ namespace WlToolsLib.Expand
         }
 
         /// <summary>
-        /// 返回日期时间时间部分
+        /// 返回日期时间时间部分 HH:mm:ss
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
@@ -196,7 +196,7 @@ namespace WlToolsLib.Expand
         }
 
         /// <summary>
-        /// 返回日期时间完整字符串
+        /// 返回日期时间完整字符串 yyyy-MM-dd HH:mm:ss.fff
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
@@ -207,7 +207,7 @@ namespace WlToolsLib.Expand
         }
 
         /// <summary>
-        /// 时间到字符串yyyy-MM-dd HH:mm:ss
+        /// 时间转换字符串 yyyy-MM-dd HH:mm:ss
         /// </summary>
         /// <param name="self"></param>
         /// <param name="dateIntervalChar"></param>
@@ -217,6 +217,13 @@ namespace WlToolsLib.Expand
         {
             var shortDateStr = self.ToString($"yyyy{dateIntervalChar}MM{dateIntervalChar}dd HH{timeIntervalChar}mm{timeIntervalChar}ss");
             return shortDateStr;
+        }
+
+
+        public static long DateTimeID(this DateTime self)
+        {
+            var id = long.Parse(self.ToString("yyyyMMddHHmmssffff"));
+            return id;
         }
 
 

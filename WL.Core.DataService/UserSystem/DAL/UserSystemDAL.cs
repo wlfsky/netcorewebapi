@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WlToolsLib.DataShell;
 using WL.Core.Model;
 using WlToolsLib.Pagination;
+using WL.Core.DataCommon;
 
 namespace WL.Core.DataService.UserSystem
 {
@@ -73,8 +74,7 @@ namespace WL.Core.DataService.UserSystem
                     }
                     catch(Exception ex)
                     {
-                        var e = ex;
-                        throw ex;
+                        return ex.ToFailShell<IEnumerable<UserAccount>>();
                     }
                     return new DataShell<IEnumerable<UserAccount>>();
 #else
@@ -85,6 +85,7 @@ namespace WL.Core.DataService.UserSystem
             }
             //return "未能提取到数据".Fail<IEnumerable<BimUser>>();
         }
+
 
         public DataShell<UserAccount> GetWithProject(UserAccount user)
         {
@@ -99,7 +100,7 @@ namespace WL.Core.DataService.UserSystem
             //return "未能提取到数据".Fail<BimUser>();
         }
 
-#region --更新类功能--
+        #region --更新类功能--
         /// <summary>
         /// 插入新纪录
         /// </summary>
@@ -196,6 +197,6 @@ namespace WL.Core.DataService.UserSystem
                 }
             }
         }
-#endregion
+        #endregion
     }
 }
