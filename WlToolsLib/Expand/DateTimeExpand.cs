@@ -219,7 +219,12 @@ namespace WlToolsLib.Expand
             return shortDateStr;
         }
 
-
+        /// <summary>
+        /// 产生一个 时间为基准的 18位数 long id
+        /// yyyyMMddHHmmssffff
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static long DateTimeID(this DateTime self)
         {
             var id = long.Parse(self.ToString("yyyyMMddHHmmssffff"));

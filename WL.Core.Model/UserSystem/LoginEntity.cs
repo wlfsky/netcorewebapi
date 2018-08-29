@@ -11,7 +11,7 @@ namespace WL.Core.Model.UserSystem
     /// </summary>
     public class LoginEntity
     {
-        public int CoreID { get; set; }
+        public long CoreID { get; set; }
         /// <summary>
         /// 登录名
         /// </summary>

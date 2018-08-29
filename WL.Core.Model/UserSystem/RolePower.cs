@@ -18,7 +18,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 权限编号|
         /// </summary>
-        public int PowerID { get; set; } = 0;
+        public long PowerID { get; set; } = 0;
         ///// <summary>
         ///// 工程编号|
         ///// </summary>
@@ -26,7 +26,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 部门编号|
         /// </summary>
-        public int DepID { get; set; } = 0;
+        public long DepID { get; set; } = 0;
         /// <summary>
         /// 部门路径|/dep/dep
         /// </summary>
@@ -34,7 +34,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 角色编号|
         /// </summary>
-        public int RoleID { get; set; } = 0;
+        public long RoleID { get; set; } = 0;
         /// <summary>
         /// 角色路径|/role/role
         /// </summary>
@@ -42,7 +42,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 功能编号|
         /// </summary>
-        public int FuncID { get; set; } = 0;
+        public long FuncID { get; set; } = 0;
         /// <summary>
         /// 功能路径|/func/func
         /// </summary>

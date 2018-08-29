@@ -18,7 +18,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 职员编号|
         /// </summary>
-        public int EmployeeID { get; set; } = 0;
+        public long EmployeeID { get; set; } = 0;
         /// <summary>
         /// 职员名字|
         /// </summary>

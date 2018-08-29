@@ -74,7 +74,7 @@ namespace WL.Core.DataService.UserSystem
                     }
                     catch(Exception ex)
                     {
-                        return ex.ToFailShell<IEnumerable<UserAccount>>();
+                        return ex.Fail<IEnumerable<UserAccount>>();
                     }
                     return new DataShell<IEnumerable<UserAccount>>();
 #else

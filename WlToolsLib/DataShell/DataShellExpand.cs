@@ -68,6 +68,20 @@ namespace WlToolsLib.DataShell
         }
 
         #endregion --用一组错误信息初始化一个失败结果--
+
+        #region --用异常直接初始化一个错误结果--
+        /// <summary>
+        /// 根据异常信息生成一个失败的DataShell
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static DataShell<T> Fail<T>(this Exception self)
+        {
+            // 用错误信息创建失败，且加入堆栈信息
+            return self.Message.Fail<T>().AddInfo(self.StackTrace).AddInfo(self.Source);
+        }
+        #endregion
     }
 
 #endregion --返回结果扩展方法--

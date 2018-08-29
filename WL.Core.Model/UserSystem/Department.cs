@@ -18,7 +18,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 部门编号|
         /// </summary>
-        public int DepID { get; set; } = 0;
+        public long DepID { get; set; } = 0;
         /// <summary>
         /// 部门名字|
         /// </summary>

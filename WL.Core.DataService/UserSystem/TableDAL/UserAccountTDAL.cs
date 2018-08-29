@@ -104,14 +104,13 @@ namespace WL.Core.DataService.UserSystem
 
         #region --修改类型方法，范例--
         /// <summary>
-        /// 创建一个UserAccount ID，seq
+        /// 创建一个UserAccount ID
+        /// 使用的是oracle seq
         /// </summary>
         /// <returns></returns>
         public DataShell<long> NewUserID()
         {
-            string sqlStr = "SELECT WL_ACCOUNT_UserID_SEQ.Nextval from DUAL";
-            var result = ExecuteScalar<long>(sqlStr);
-            return result.Success();
+            return DateTime.Now.DateTimeID().Success();
         }
 
         /// <summary>

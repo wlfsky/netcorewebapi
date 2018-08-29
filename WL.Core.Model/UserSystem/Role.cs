@@ -18,7 +18,7 @@ namespace WL.Core.Model
         /// <summary>
         /// ½ÇÉ«±àºÅ|
         /// </summary>
-        public int RoleID { get; set; } = 0;
+        public long RoleID { get; set; } = 0;
         /// <summary>
         /// ½ÇÉ«Ãû×Ö|
         /// </summary>
@@ -26,7 +26,7 @@ namespace WL.Core.Model
         /// <summary>
         /// ½ÇÉ«¸¸¼¶±àºÅ|
         /// </summary>
-        public int RolePID { get; set; } = 0;
+        public long RolePID { get; set; } = 0;
         /// <summary>
         /// ½ÇÉ«±àºÅÂ·¾¶|/id/id
         /// </summary>

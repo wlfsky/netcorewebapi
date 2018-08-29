@@ -21,7 +21,7 @@ namespace WL.Core.Model
         /// </summary>
         [Key]
         //[Required]
-        public int UserID { get; set; } = 0;
+        public long UserID { get; set; } = 0;
         /// <summary>
         /// ÓÃ»§µÇÂ¼Ãû|
         /// </summary>

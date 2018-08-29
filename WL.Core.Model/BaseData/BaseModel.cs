@@ -12,7 +12,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 核心编号
         /// </summary>
-        public int CoreID { get; set; } = 0;
+        public long CoreID { get; set; } = 0;
         /// <summary>
         /// 创建时间|
         /// </summary>

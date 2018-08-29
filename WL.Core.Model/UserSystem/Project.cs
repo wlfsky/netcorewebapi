@@ -8,7 +8,7 @@ namespace WL.Core.Model
 {
     public class Project
     {
-        public int ProjectID { get; set; }
+        public long ProjectID { get; set; }
         public string ProjectName { get; set; }
     }
 }

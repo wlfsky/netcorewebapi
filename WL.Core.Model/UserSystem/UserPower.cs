@@ -18,15 +18,15 @@ namespace WL.Core.Model
         /// <summary>
         /// 用户角色关系id|
         /// </summary>
-        public int URRID { get; set; } = 0;
+        public long URRID { get; set; } = 0;
         /// <summary>
         /// 用户编号|
         /// </summary>
-        public int UserID { get; set; } = 0;
+        public long UserID { get; set; } = 0;
         /// <summary>
         /// 角色编号|
         /// </summary>
-        public int RoleID { get; set; } = 0;
+        public long RoleID { get; set; } = 0;
         /// <summary>
         /// 角色路径|
         /// </summary>

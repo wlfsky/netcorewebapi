@@ -18,7 +18,11 @@ namespace WL.Core.Model
         /// <summary>
         /// 功能编号|
         /// </summary>
-        public int FuncID { get; set; } = 0;
+        public long FuncID { get; set; } = 0;
+        /// <summary>
+        /// 系统功能代码，简短代码
+        /// </summary>
+        public string FuncCode { get; set; } = string.Empty;
         /// <summary>
         /// 功能名字|
         /// </summary>
@@ -26,7 +30,7 @@ namespace WL.Core.Model
         /// <summary>
         /// 功能父级编号|
         /// </summary>
-        public int FuncPID { get; set; } = 0;
+        public long FuncPID { get; set; } = 0;
         /// <summary>
         /// 功能编号路径|/id/id
         /// </summary>
