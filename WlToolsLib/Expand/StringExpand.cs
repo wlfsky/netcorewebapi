@@ -380,5 +380,48 @@ namespace WlToolsLib.Expand
             return false;
         }
         #endregion
+
+        #region --字符串转换utf-8的 byte--
+        /// <summary>
+        /// 字符串转编码
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="code">默认null，是null就用utf8处理</param>
+        /// <returns></returns>
+        public static byte[] ToByte(this string self, Encoding code = null)
+        {
+            if (self.NullEmpty())
+            {
+                return null;
+            }
+            if (code == null)
+            {
+                code = Encoding.UTF8;
+            }
+            var t = code.GetBytes(self);
+            return t;
+        }
+        #endregion
+        #region --字符串转换utf-8的 ReadOnlyMemory<byte>--
+        /// <summary>
+        /// 字符串转编码
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="code">默认null，是null就用utf8处理</param>
+        /// <returns></returns>
+        public static ReadOnlyMemory<byte> ToReadOnlyMemoryByte(this string self, Encoding code = null)
+        {
+            if (self.NullEmpty())
+            {
+                return null;
+            }
+            if (code == null)
+            {
+                code = Encoding.UTF8;
+            }
+            var t = new ReadOnlyMemory<byte>(code.GetBytes(self));
+            return t;
+        }
+        #endregion
     }
 }
