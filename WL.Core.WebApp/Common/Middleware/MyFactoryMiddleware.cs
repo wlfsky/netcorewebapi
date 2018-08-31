@@ -11,9 +11,9 @@ namespace WL.Core.WebApp.Common.Middleware
     {
         private readonly string _db;
 
-        public MyFactoryMiddleware(string db)
+        public MyFactoryMiddleware()
         {
-            _db = db;
+            _db = "def val";
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -22,7 +22,7 @@ namespace WL.Core.WebApp.Common.Middleware
 
             if (!string.IsNullOrWhiteSpace(keyValue))
             {
-                await context.Response.WriteAsync(_db);
+                await context.Response.WriteAsync(_db+keyValue);
             }
 
             await next(context);
@@ -33,10 +33,12 @@ namespace WL.Core.WebApp.Common.Middleware
     {
 
         public static IApplicationBuilder UseMyFactoryMiddleware(
-    this IApplicationBuilder builder, bool option)
+    this IApplicationBuilder builder, string name)
         {
             // Passing 'option' as an argument throws a NotSupportedException at runtime.
-            return builder.UseMiddleware<MyFactoryMiddleware>(option);
+            // 下面这句代码会提示错误，就像上面这句英语说的，传递option会引发NotSupportedException异常
+            // return builder.UseMiddleware<MyFactoryMiddleware>(option);
+            return builder.UseMiddleware<MyFactoryMiddleware>();
         }
     }
 }

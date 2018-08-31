@@ -22,7 +22,7 @@ namespace WL.Core.WebApp.Common.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var godHeader = context.Request.Query["key"];//context.Request.Headers["godisagirl"];
+            var godHeader = context.Request.Query["girl"];//context.Request.Headers["godisagirl"];
             if (godHeader.HasItem())
             {
                 Console.WriteLine("God Is Come! and She Is a Girl!");
