@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WL.Core.BusinessService;
 using WL.Core.Model;
+using WL.Core.WebApi.Common;
 using WL.Core.WebApi.Filter;
 using WlToolsLib.DataShell;
 
@@ -14,6 +15,7 @@ namespace WL.Core.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/UserSystem")]
+    //[ApiController]
     public class UserSystemController : BaseApiController
     {
         private readonly IUserSystemBLL _userSystemBLL; //#构造函数注入
@@ -38,13 +40,13 @@ namespace WL.Core.WebApi.Controllers
 
         [HttpGet]
         [Route("gets")]
-        public DataShell<string> Get()
+        public async Task<ActionResult<DataShell<string>>> Get()
         {
             //throw new Exception("异常演示");
             // 抛出错误后会被中间件引导到error控制器
-            
-            
-            return "fail".Success<string>();
+
+            var r = await "fail".Success<string>().ToTaskActResult();//阻塞了～！为什么？
+            return r;
         }
     }
 }
