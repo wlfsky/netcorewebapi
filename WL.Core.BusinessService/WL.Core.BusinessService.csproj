@@ -22,4 +22,8 @@
     <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BusinessService\MatchingService\" />
+  </ItemGroup>
+
 </Project>
