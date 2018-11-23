@@ -143,5 +143,46 @@ namespace WlToolsLib.Expand
         {
             return !tList.Contains(self);
         }
+
+        #region --是否重复--
+        /// <summary>
+        /// 元素是否重复
+        /// 自定义对比方式，不提供默认是指对比（Equals）；
+        /// 自身绕开用下标相等方法绕开；
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static bool HaveRepeated<T>(this IEnumerable<T> source, Func<T, T, bool> comparer = null)
+        {
+            if (source != null && source.Any())
+            {
+                Dictionary<T, T> dic = new Dictionary<T, T>();
+                int out_idx = 0;// 通过下标对比，绕开自身的对比
+                foreach (var item in source)
+                {
+                    int in_idx = 0;
+                    foreach (var iteminside in source)
+                    {
+                        if (out_idx == in_idx)
+                        {
+                            in_idx++;
+                            continue;
+                        }
+                        if (comparer == null) { comparer = (x, y) => { return x.Equals(y); }; }
+                        if (comparer(item, iteminside))
+                        {
+                            return true;
+                        }
+                        in_idx++;
+                    }
+                    out_idx++;
+                }
+                return false;
+            }
+            return false;
+        }
+        #endregion
     }
 }
