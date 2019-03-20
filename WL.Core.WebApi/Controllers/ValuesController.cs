@@ -23,7 +23,7 @@ namespace WL.Core.WebApi.Controllers
         [Route("get")]
         public DataShell<string> Get()
         {
-            return "欢迎使用 WL.Core.WebApi 2018".Success(info:"欢迎信息");
+            return "欢迎使用 WL.Core.WebApi 2019".Success(info:"欢迎信息");
         }
 
 
@@ -50,6 +50,18 @@ namespace WL.Core.WebApi.Controllers
                 var file_ex = header["Content-Disposition"].ToString().LastIndexOfRight(".").RemoveFileNameIllegalChar();
                 var filepath = Constant.CurrDir + "temp" + DateTime.Now.DataStr("") + "." + file_ex;
                 return filepath;
+            });
+        }
+
+        [HttpPost]
+        [Route("upload")]
+        public Task Upload()
+        {
+            return SingleUpload(req =>
+            {
+                var fileName = Request.Headers["FileName"].FirstOrDefault();
+                var filePath = Constant.CurrDir + "audio\\" + fileName;
+                return filePath;
             });
         }
 

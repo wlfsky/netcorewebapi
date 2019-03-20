@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WL.Core.BusinessService;
 using WlToolsLib.Expand;
+using System.Linq;
 
 namespace WL.Core.WebApi.Controllers
 {
@@ -56,6 +57,35 @@ namespace WL.Core.WebApi.Controllers
         {
             logger.LogInformation($"{info} --[{DateTime.Now.FullStr()}]");
         }
+
+        #region --单个上传文件 application/octet-stream --
+
+        /// <summary>
+        /// 接收单个上传文件 application/octet-stream
+        /// </summary>
+        /// <param name="filePathFunc"></param>
+        /// <returns></returns>
+        protected async Task<IActionResult> SingleUpload(Func<HttpRequest, string> filePathFunc)
+        {
+            try
+            {
+                if (Request.Headers["Content-Type"].FirstOrDefault() == "application/octet-stream")
+                {
+                    string targetFilePath = filePathFunc(Request);
+                    using (Stream s = new FileStream(targetFilePath, FileMode.OpenOrCreate))
+                    {
+                        await Request.Body.CopyToAsync(s);
+                    }
+                }
+                return Json("ok");
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        #endregion
 
         #region --上传接收程序，貌似能上传超大文件--
 
