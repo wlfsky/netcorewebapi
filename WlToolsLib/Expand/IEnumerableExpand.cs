@@ -10,7 +10,7 @@ namespace WlToolsLib.Expand
     {
         #region --枚举类型 Foreach 带index/yield/action纯执行--
         /// <summary>
-        /// 创建一个迭代器带有索引的
+        /// 创建一个迭代器带有索引的,0->n
         /// 通过yield返回
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -18,17 +18,38 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static IEnumerable<Tuple<int, T>> ForIndex<T>(this IEnumerable<T> source)
         {
-            for (int i = 0; i < source.Count(); i++)
+            if (source.HasItem())
             {
-                var souTemp = source.ElementAt(i);
-                yield return new Tuple<int, T>(i, souTemp);
+                for (int i = 0; i < source.Count(); i++)
+                {
+                    var souTemp = source.ElementAt(i);
+                    yield return new Tuple<int, T>(i, souTemp);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 反转的迭代器带有索引,n->0
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<Tuple<int, T>> ReverseForIndex<T>(this IEnumerable<T> source)
+        {
+            if (source.HasItem())
+            {
+                var count = source.Count();
+                for (int i = count - 1; i >= 0; i--)
+                {
+                    var souTemp = source.ElementAt(i);
+                    yield return new Tuple<int, T>(i, souTemp);
+                }
             }
         }
 
         /// <summary>
         /// 扩展IEnumerable<T> Foreach
-        /// 调用此方法，如果没有在foreach结构中循环不执行
-        /// 此方法需要在一个foreach才能被执行
+        /// 调用此方法需要在一个foreach才被执行
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
@@ -184,5 +205,139 @@ namespace WlToolsLib.Expand
             return false;
         }
         #endregion
+
+        #region --数据对比--
+        /// <summary>
+        /// 自定义对比去重复
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="property"></param>
+        /// <param name="expr"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> items, Func<TSource, TSource, bool> property, Func<TSource, TKey> expr)
+        {
+            EqualityComparer<TSource, TKey> comparer = new EqualityComparer<TSource, TKey>(property, expr);
+            return items.Distinct(comparer);
+        }
+
+        #region --定义对比--
+        /// <summary>
+        /// 自定义对比
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        public class EqualityComparer<TSource, TKey> : IEqualityComparer<TSource>
+        {
+            /// <summary>
+            /// 初始化自定义对比
+            /// </summary>
+            /// <param name="comparer"></param>
+            /// <param name="keyselecter"></param>
+            public EqualityComparer(Func<TSource, TSource, bool> comparer, Func<TSource, TKey> keyselecter)
+            {
+                _comparer = comparer;
+                _keyselecter = keyselecter;
+            }
+            /// <summary>
+            /// 主键
+            /// </summary>
+            Func<TSource, TKey> _keyselecter = null;
+            /// <summary>
+            /// 对比器
+            /// </summary>
+            Func<TSource, TSource, bool> _comparer = null;
+            /// <summary>
+            /// 对比接口实现
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public bool Equals(TSource x, TSource y)
+            {
+                if (_comparer == null)
+                {
+                    _comparer = (m, n) => { return _keyselecter(m).GetHashCode().Equals(_keyselecter(n).GetHashCode()); };
+                }
+                return _comparer(x, y);
+            }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="obj"></param>
+            /// <returns></returns>
+            public int GetHashCode(TSource obj)
+            {
+                return _keyselecter(obj).GetHashCode();
+            }
+        }
+        #endregion
+        #endregion
+
+        #region --去除重复的元素。生成新非重复元素组返回.无元素时原样返回 -- RemoveSame<T>--
+        /// <summary>
+        /// 去除重复的元素。生成新非重复元素组返回.无元素时原样返回
+        /// 借助了Dictionary，的去重能力
+        /// </summary>
+        /// <typeparam name="T">主体类型</typeparam>
+        /// <param name="self"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> RemoveSame<T>(this IEnumerable<T> self)
+        {
+            if (self.NoItem())
+            {
+                return self;
+            }
+            Dictionary<T, int> temp_dic = new Dictionary<T, int>();
+            foreach (var item in self)
+            {
+                if (!temp_dic.ContainsKey(item))
+                {
+                    temp_dic.Add(item, 1);
+                }
+            }
+            var result = temp_dic.Keys;
+            return result;
+        }
+        /// <summary>
+        /// 返回一组不不重复的 IEnumerable<T>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="predicate">自定义重复断言, 不带此参数用dic的key直接对比元素</param>
+        /// <returns></returns>
+        public static IEnumerable<T> NoRepeat<T>(this IEnumerable<T> self, Func<T, T, bool> predicate = null)
+        {
+            if (self.HasItem() && predicate.IsNull())
+            {
+                // 没有对比断言 用字典key实现对比
+                Dictionary<T, int> temp_dic = new Dictionary<T, int>();
+                foreach (var item in self)
+                {
+                    if (!temp_dic.ContainsKey(item))
+                    {
+                        temp_dic.Add(item, 1);
+                        yield return item;
+                    }
+                }
+            }
+            else if (self.HasItem() && predicate.NotNull())
+            {
+                foreach (var (k, v) in self.ForIndex())
+                {
+                    foreach (var (rk, rv) in self.ReverseForIndex())
+                    {
+                        if (k != rk && !predicate(v, rv))//排除自身，不相等返回
+                        {
+                            yield return v;
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
     }
 }

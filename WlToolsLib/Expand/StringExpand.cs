@@ -114,7 +114,7 @@ namespace WlToolsLib.Expand
         #region --去除两端空格--
 
         /// <summary>
-        /// 去两端空格，如果无值或者null原样返回，不会报异常
+        /// 去两端空格，如果无值或者null用Empty返回，不会报异常
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
@@ -134,7 +134,7 @@ namespace WlToolsLib.Expand
         /// <param name="self"></param>
         /// <param name="defVal"></param>
         /// <returns></returns>
-        public static string TrimOrDef(this string self, string defVal)
+        public static string TrimOrDef(this string self, string defVal = "")
         {
             if (self.NullEmpty())
             {
@@ -392,7 +392,7 @@ namespace WlToolsLib.Expand
         {
             if (self.NullEmpty())
             {
-                return null;
+                return default(byte[]);
             }
             if (code == null)
             {

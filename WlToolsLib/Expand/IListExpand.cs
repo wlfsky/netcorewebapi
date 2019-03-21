@@ -56,6 +56,10 @@ namespace WlToolsLib.Expand
         /// <param name="action">执行动作</param>
         public static void Foreach<TData>(this IList<TData> self, Action<TData> action)
         {
+            if (action.IsNull())
+            {
+                return;
+            }
             foreach (var item in self)
             {
                 action(item);
@@ -94,9 +98,9 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static IList<T> AddRange<T>(this IList<T> self, IList<T> itemList)
         {
-            if (itemList == null || !itemList.Any() || self == null)
+            if (self.IsNull() || itemList.NoItem())
             {
-                return null;
+                return self;
             }
             else
             {
@@ -115,12 +119,12 @@ namespace WlToolsLib.Expand
         #region --返回带index索引的foreach--
 
         /// <summary>
-        /// 返回带index索引的foreach
+        /// 返回带index索引的foreach,0->n
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
         /// <param name="source">源容器实体</param>
         /// <returns></returns>
-        public static IEnumerable<Tuple<int, T>> ForeachIndex<T>(IEnumerable<T> source)
+        public static IEnumerable<Tuple<int, T>> ForIndex<T>(IEnumerable<T> source)
         {
             for (int i = 0; i < source.Count(); i++)
             {
@@ -129,7 +133,26 @@ namespace WlToolsLib.Expand
             }
         }
 
-        #endregion --返回带index索引的foreach--
+        /// <summary>
+        /// 返回反序的带index索引的foreach，n->0
+        /// </summary>
+        /// <typeparam name="T">实体</typeparam>
+        /// <param name="source">源容器实体</param>
+        /// <returns></returns>
+        public static IEnumerable<Tuple<int, T>> ReverseForIndex<T>(IEnumerable<T> source)
+        {
+            if (source.HasItem())
+            {
+                var total = source.Count();
+                for (int i = total - 1; i >= 0; i--)
+                {
+                    var souTemp = source.ElementAt(i);
+                    yield return new Tuple<int, T>(i, souTemp);
+                }
+            }
+        }
+
+        #endregion
 
         #region --IList多级排序--
         /// <summary>
