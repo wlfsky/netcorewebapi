@@ -4,11 +4,11 @@
     <van-row type="flex" justify="center">
       <van-col span="18" class="main-title-sty">学不死就往死里学！</van-col>
     </van-row>
-    <div v-for="cate in categoryList" :key="cate.Cid">
-    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/Category/${cate.Cid}`}">
+    <div v-for="cate in categoryList" :key="cate.CateId">
+    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/Category/${cate.CateId}`}">
     <template slot="title">
         <span>{{cate.Title}}</span>
-        <van-tag type="danger">{{cate.HaveNew}}</van-tag>
+        <van-tag type="danger">{{cate.NewCount}}</van-tag>
     </template>
     </van-cell>
     </div>
@@ -47,6 +47,7 @@ export default class IndexView extends App {
 
   created () {
     CMSApi.RootCategory(new CategoryRequest('1')).then((res) => {
+      console.log('== RootCategory Result')
       console.log(res)
       if (res.IsSucc) {
         console.log('RootCategory buss Succ')

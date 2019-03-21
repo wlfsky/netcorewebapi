@@ -2,5 +2,5 @@
  *
 */
 export default {
-    BaseUrl: 'http://localhost:8080'
+    BaseUrl: 'http://localhost:42660'
   }

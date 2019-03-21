@@ -8,7 +8,7 @@
       <ul v-for="os in about.OpenSourceInfo" :key="os.OpenSourceName">
           <li>{{os.OpenSourceName}} | {{os.Version}}</li>
       </ul>
-      <router-link to="/sing">签名测试</router-link>
+      <!-- <router-link to="/sing">签名测试</router-link> -->
   </div>
 </template>
 

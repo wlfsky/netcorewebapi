@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using WL.Core.BusinessService;
 
 namespace WL.Core.WebApi
@@ -35,6 +36,10 @@ namespace WL.Core.WebApi
 
 
             services.AddMvc();
+            // 默认可以跨域
+            services.AddCors((option) => option.AddPolicy("AllowCors", builder => builder.AllowAnyOrigin().AllowAnyMethod()));
+            // 默认用大写开头和实体一致
+            services.AddMvc().AddJsonOptions(options=>{ options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
 
             #region --注入业务层  业务服务--
             services.AddSingleton<IUserSystemBLL, UserSystemBLL>();
@@ -70,7 +75,7 @@ namespace WL.Core.WebApi
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
+            app.UseCors("AllowCors");
             //app.Run(async context =>
             //{
             //    await context.Response.WriteAsync("hello api");

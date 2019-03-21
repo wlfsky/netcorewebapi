@@ -1,10 +1,10 @@
 <template>
     <div>
-    <div v-for="cate in categoryList" :key="cate.Cid">
-    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/ContentListView/${cate.Cid}`, params: { categoryid: cate.Cid }}">
+    <div v-for="cate in categoryList" :key="cate.CateId">
+    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/ContentListView/${cate.CateId}`, params: { categoryid: cate.CateId }}">
     <template slot="title">
         <span>{{cate.Title}}</span>
-        <van-tag type="danger">{{cate.HaveNew}}</van-tag>
+        <van-tag type="danger">{{cate.NewCount}}</van-tag>
     </template>
     </van-cell>
     </div>
@@ -42,7 +42,7 @@ export default class Category extends App {
   created () {
     console.log('category route query')
     console.log(this.$route)
-    if(this.$route.params.cid===undefined||this.$route.params.cid===null){
+    if(typeof(this.$route.params.cid)==='undefined'||this.$route.params.cid===null){
       Toast.fail('参数不正确');
     }
     let currCategoryId: string = this.$route.params.cid;

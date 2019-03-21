@@ -35,8 +35,8 @@ import { Button } from 'vant'
 import { Panel } from 'vant'
 import { Row, Col } from 'vant'
 import { Toast } from 'vant'
-import ImgView from '@/components/ImgView.vue'
-import AdView from '@/components/AdView.vue'
+import ImgView from '@/components/ImgView.vue';
+import AdView from '@/components/AdView.vue';
 
 Vue.use(Toast)
 Vue.use(Row)

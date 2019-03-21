@@ -27,7 +27,12 @@ export default class HttpClient {
     baseURL: Config.HttpConfig.BaseUrl,
     transformRequest: null,
     transformResponse: [function (data) {
-      return new Result(data.Status, data.Message, data.Data)
+      if(data === null){
+        return new Result(false, '无返回数据', null);
+      }
+      else{
+        return new Result(data.Success, data.Msg, data.Data);
+      }
     }],
     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     params: {},
@@ -58,14 +63,16 @@ export default class HttpClient {
   static ErrDuration: number = 6 * 1000
 
   static Get<Tin, Tou> (url: string, data: Tin): Promise<Tou> {
-    const loading = Toast.loading({ mask: true, message: '加载中...' })
+    const loading = Toast.loading({ mask: true, message: '加载中...' });
+    console.log('get 请求 ');
+    console.log(data);
     return new Promise<Tou>(function (resolve, reject) {
       let hc = new HttpClient()
       hc.config.url = url
       hc.config.method = 'GET'
       hc.config.data = data
       let errfn: Function = null
-      if (errfn == null) {
+      if (errfn === null) {
         errfn = (e) => {
           console.log('Get Err:--')
           console.log(e)
@@ -83,7 +90,10 @@ export default class HttpClient {
         console.log('Get :--')
         console.log(res)
         if (res.status === 200) {
-          resolve(res.data as Tou)
+          let result = res.data as Tou;
+          console.log(typeof(result));
+          console.log(result);
+          resolve(result)
           loading.close()
           Toast.clear()
         } else {

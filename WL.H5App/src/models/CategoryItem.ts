@@ -1,13 +1,14 @@
 
 export default class CategoryItem {
-  Cid: string
+  CateId: string;
   ParentId: string
   CidPath: string
   Alias: string
   AliasPath: string
   Title: string
   Remark: string
-  HaveNew: number
+  NewCount: number
+  TotalCount: number
 
-  constructor (cid: string, title: string) { this.Cid = cid; this.Title = title }
+  constructor (cateid: string, title: string) { this.CateId = cateid; this.Title = title }
 }

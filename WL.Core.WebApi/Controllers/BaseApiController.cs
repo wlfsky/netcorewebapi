@@ -17,10 +17,12 @@ using System.Threading.Tasks;
 using WL.Core.BusinessService;
 using WlToolsLib.Expand;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace WL.Core.WebApi.Controllers
 {
     [Produces("application/json")]
+    [EnableCors("AllowCors")]
     public abstract class BaseApiController : Controller
     {
         //public BaseApiController(IUserSystemBLL userSystemBLL)
