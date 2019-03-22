@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.DataCommon", "WL.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Core.ConsoleApp", "WL.Core.ConsoleApp\WL.Core.ConsoleApp.csproj", "{82497607-DC2E-41F6-801D-C6CB5863D8EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WL.H5App", "WL.H5App", "{58B97F40-B5B8-4651-8FB3-A5E2D9B21330}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
