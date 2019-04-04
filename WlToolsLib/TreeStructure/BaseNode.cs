@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WlToolsLib.Extension;
 
 namespace WlToolsLib.TreeStructure
 {
@@ -12,7 +13,7 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 子节点
         /// </summary>
-        public List<BaseLeaf<TKey>> ChildrenNode
+        public List<BaseLeaf<TKey>> ChildrenNodes
         {
             get { return childrenNode; }
             set { childrenNode = value; }
@@ -22,7 +23,7 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         public BaseNode()
         {
-
+            this.NodeType = NodeType.Node;
         }
         /// <summary>
         /// 添加叶子
@@ -32,6 +33,7 @@ namespace WlToolsLib.TreeStructure
         {
             childrenNode.Add(item);
         }
+
         /// <summary>
         /// 移除指定叶子
         /// </summary>
@@ -40,6 +42,7 @@ namespace WlToolsLib.TreeStructure
         {
             childrenNode.Remove(item);
         }
+
         /// <summary>
         /// 检查给定节点是否其子节点
         /// </summary>
@@ -47,7 +50,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns></returns>
         public bool IsChildNode(BaseNode<TKey> child)
         {
-            if (this.ID.Equals(child.PID) == true)
+            if (this.ID.Equals(child.PID))
             {
                 return true;
             }
@@ -56,12 +59,13 @@ namespace WlToolsLib.TreeStructure
                 return false;
             }
         }
+
         /// <summary>
         /// 在给定源节点队列中检查本节点有多少子节点
         /// </summary>
         /// <param name="sourceList">给定源节点队列</param>
         /// <returns></returns>
-        public int HasChildNode(List<BaseNode<TKey>> sourceList)
+        public int CountChildNode(List<BaseNode<TKey>> sourceList)
         {
             int temp = 0;
             foreach (var n in sourceList)
@@ -73,6 +77,23 @@ namespace WlToolsLib.TreeStructure
             }
             return temp;
         }
+
+        /// <summary>
+        /// 检查节点中是否有子节点，有1个就算
+        /// </summary>
+        /// <returns></returns>
+        public bool HasChildNode()
+        {
+            if (this.ChildrenNodes.HasItem())
+            {
+                foreach (var n in this.ChildrenNodes)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// 检查给定叶子节点是否是其子叶子节点
         /// </summary>
@@ -80,7 +101,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns></returns>
         public bool IsChildLeaf(BaseLeaf<TKey> child)
         {
-            if (this.ID.Equals(child.PID) == true)
+            if (this.ID.Equals(child.PID))
             {
                 return true;
             }
@@ -89,6 +110,7 @@ namespace WlToolsLib.TreeStructure
                 return false;
             }
         }
+
         /// <summary>
         /// 显示或 打印
         /// </summary>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using WlToolsLib.Extension;
 
 namespace WlToolsLib.TreeStructure
 {
@@ -44,6 +46,7 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         public void Build()
         {
+            TreeRoot.Deep = 1;
             BindNodeLeaf(TreeRoot, SourceNodeList, SourceLeafList);
         }
         /// <summary>
@@ -93,6 +96,9 @@ namespace WlToolsLib.TreeStructure
                 {
                     continue;
                 }
+                node.Deep = parent.Deep + 1;
+                node.NodeType = NodeType.Node;
+                node.Parent = parent;
                 parent.Add(node);
                 //sourceNode.Remove(node);
                 //递归
@@ -105,9 +111,59 @@ namespace WlToolsLib.TreeStructure
                 {
                     continue;
                 }
+                leaf.Deep = parent.Deep + 1;
+                leaf.NodeType = NodeType.Leaf;
+                leaf.Parent = parent;
                 parent.Add(leaf);
                 //sourceLeaf.Remove(leaf);
             }
         }
+
+
+        #region --查找某个节点--
+        /// <summary>
+        /// 查找相关节点信息，可能是节点，也可能是叶子
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public BaseLeaf<TKey> FindNode(Func<BaseLeaf<TKey>, bool> predicate)
+        {
+            return FindChildrenNode(TreeRoot, predicate);
+        }
+
+        /// <summary>
+        /// 递归的查找子节点。此方法深度优先
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        protected BaseLeaf<TKey> FindChildrenNode(BaseNode<TKey> parent, Func<BaseLeaf<TKey>, bool> predicate)
+        {
+            // 传入节点检查（主要处理根节点）
+            if (predicate(parent))
+            {
+                return parent;
+            }
+            foreach (var leaf in parent.ChildrenNodes.Foreach())
+            {
+                // 如果有符合的子节点返回
+                if (predicate(leaf))
+                {
+                    return leaf;
+                }
+                // 没有则去下层检查
+                return FindChildrenNode(leaf as BaseNode<TKey>, predicate);
+
+            }
+            return null;
+        }
+        #endregion
+
+        #region --获取给定节点的所有父级节点--
+        private void FindParents(List<BaseNode<TKey>> result, BaseNode<TKey> parent, BaseNode<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> func = null)
+        {
+            
+        }
+        #endregion
     }
 }

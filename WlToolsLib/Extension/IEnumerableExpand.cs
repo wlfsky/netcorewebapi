@@ -48,14 +48,38 @@ namespace WlToolsLib.Extension
         }
 
         /// <summary>
-        /// 扩展IEnumerable<T> Foreach
+        /// 扩展IEnumerable<T> Foreach 允许对原数据做某些事情
         /// 调用此方法需要在一个foreach才被执行
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IEnumerable<T> Foreach<T>(this IEnumerable<T> self, Func<T, T> func)
+        public static IEnumerable<T> Foreach<T>(this IEnumerable<T> self, Func<T, T> func = null)
+        {
+            if (self.HasItem())
+            {
+                foreach (var item in self)
+                {
+                    T result = item;
+                    if (func != null)
+                    {
+                        result = func(item);
+                    }
+                    yield return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 扩展IEnumerable<T> Foreach 允许对原数据做某些事情，允许返回一个不同类型
+        /// </summary>
+        /// <typeparam name="TIn"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IEnumerable<TOut> Foreach<TIn,TOut>(this IEnumerable<TIn> self, Func<TIn, TOut> func)
         {
             if (self.HasItem())
             {

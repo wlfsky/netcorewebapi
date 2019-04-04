@@ -11,13 +11,16 @@ namespace WlToolsLib.TreeStructure
         public TKey PID { get; set; }
         public TKey ID { get; set; }
         public string Name { get; set; }
+        public int Deep { get; set; }
+        public NodeType NodeType { get; set; }
+        public BaseLeaf<TKey> Parent { get; set; }
 
         /// <summary>
         /// 空初始化
         /// </summary>
         public BaseLeaf()
         {
-            
+            this.NodeType = NodeType.Leaf;
         }
         /// <summary>
         /// 显示方法
