@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
+using System.Collections.Concurrent;// 并发容器ConcurrentQueue先进先出
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
@@ -12,48 +12,48 @@ namespace WlToolsLib.Diverter
 {
 
     /// <summary>
-    /// 澶勭悊濉旓紝澶勭悊绠￠亾
+    /// 处理塔，处理管道
     /// </summary>
     /// <typeparam name="TIn"></typeparam>
     /// <typeparam name="TOut"></typeparam>
     public class ProcessingTower<TIn, TOut>
     {
-        #region --ID鍜岀姸鎬?-
+        #region --ID和状态--
         /// <summary>
-        /// 澶勭悊濉?閿?
+        /// 处理塔 键
         /// </summary>
         public string ProcessorKey { get; set; }
         /// <summary>
-        /// 澶勭悊濉攊d
+        /// 处理塔id
         /// </summary>
         public int ProcessorID { get; set; }
         /// <summary>
-        /// 褰撳墠澶勭悊濉斾换鍔￠噺
+        /// 当前处理塔任务量
         /// </summary>
         private long processorTaskCount = 0;
         /// <summary>
-        /// 褰撳墠澶勭悊濉斾换鍔￠噺
+        /// 当前处理塔任务量
         /// </summary>
         public long ProcessorTaskCount { get { return processorTaskCount; } }
         /// <summary>
-        /// 涓嬩竴涓惊鐜仠姝㈡爣璁?
+        /// 下一个循环停止标记
         /// </summary>
         public bool Stop { get; set; }
         /// <summary>
-        /// 姣忎釜澶勭悊濉斿鐞嗙▼搴?
+        /// 每个处理塔处理程序
         /// </summary>
         public Func<TaskID<TIn>, TaskID<TOut>> ProcessHandle { get; set; }
         /// <summary>
-        /// 澶勭悊濉斿畬鎴愬鐞嗗悗鍒嗗彂绋嬪簭
+        /// 处理塔完成处理后分发程序
         /// </summary>
         public Action<TaskID<TOut>> ProcessEndHandle { get; set; }
 
         /// <summary>
-        /// 澶勭悊濉旀瘡涓惊鐜欢杩熸绉掓暟
+        /// 处理塔每个循环延迟毫秒数
         /// </summary>
         private int loopDelay = 10;
         /// <summary>
-        /// 鎺ㄩ€佸鐞嗘暟鎹?
+        /// 推送处理数据
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
@@ -64,7 +64,7 @@ namespace WlToolsLib.Diverter
             return Add1Count();
         }
         /// <summary>
-        /// 澶勭悊鏁?1
+        /// 处理数+1
         /// </summary>
         /// <returns></returns>
         private long Add1Count()
@@ -73,7 +73,7 @@ namespace WlToolsLib.Diverter
             return Interlocked.Read(ref this.processorTaskCount);
         }
         /// <summary>
-        /// 澶勭悊鏁?1
+        /// 处理数-1
         /// </summary>
         /// <returns></returns>
         private long Sub1Count()
@@ -83,19 +83,19 @@ namespace WlToolsLib.Diverter
         }
         #endregion
         /// <summary>
-        /// 澶勭悊濉旀暟鎹鍣?
+        /// 处理塔数据容器
         /// </summary>
         Queue<TaskID<TIn>> InList { get; set; }
 
         //public ConcurrentQueue<TaskID<TOut>> TaskDiverter { get; set; }
 
         /// <summary>
-        /// 澶勭悊绋嬪簭
+        /// 处理程序
         /// </summary>
         public void Process()
         {
             Init();
-            var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log0"+ this.ProcessorKey + ".txt");
+            var fsio00 = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "log0" + this.ProcessorKey + ".txt");
             fsio00.AutoFlush = true;
             while (Stop == false)
             {
@@ -125,11 +125,11 @@ namespace WlToolsLib.Diverter
         }
 
         /// <summary>
-        /// 鍒濆鍖栫▼搴?
+        /// 初始化程序
         /// </summary>
         private void Init()
         {
-            if(InList == null)
+            if (InList == null)
             {
                 InList = new Queue<TaskID<TIn>>();
             }

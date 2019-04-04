@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
+using System.Collections.Concurrent;// 并发容器ConcurrentQueue先进先出
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
@@ -12,19 +12,19 @@ namespace WlToolsLib.Diverter
 {
 
     /// <summary>
-    /// 杈撳嚭鍒嗘祦鍣?
+    /// 输出分流器
     /// </summary>
     /// <typeparam name="TOut"></typeparam>
     public class OutDiverter<TOut> : BaseDiverter<TOut>
     {
         /// <summary>
-        /// 杈撳嚭鍒嗘祦鍏蜂綋澶勭悊
+        /// 输出分流具体处理
         /// </summary>
         public override void Distribute()
         {
             Task.Run(() =>
             {
-                while (stop == false)
+                while (!stop)
                 {
                     if (this.DiverterCount <= 0)
                     {
