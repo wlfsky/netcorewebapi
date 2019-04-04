@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using WL.Core.BusinessService;
 using WL.Core.WebApp.Common.Middleware;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 
 namespace WL.Core.WebApp
 {

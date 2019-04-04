@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WL.Core.WebApi.Common;
 using WlToolsLib.DataShell;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 
 namespace WL.Core.WebApi.Controllers
 {

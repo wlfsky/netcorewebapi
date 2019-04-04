@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WlToolsLib.JsonHelper;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     /// <summary>
     /// 其他扩展方法

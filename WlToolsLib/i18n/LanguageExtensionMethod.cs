@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 using WlToolsLib.JsonHelper;
 
 namespace WlToolsLib.i18n

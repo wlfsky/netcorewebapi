@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WlToolsLib.i18n;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 using static WlToolsLib.KV.KVEntityNew;
 
 namespace WL.Core.Model.Enum

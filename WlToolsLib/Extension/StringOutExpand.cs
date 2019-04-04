@@ -6,7 +6,7 @@ using Gma.QrCodeNet.Encoding;
 using Pinyin4net;
 using Pinyin4net.Format;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     public static class StringOutExpand
     {

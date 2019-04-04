@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using Dapper;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 using Microsoft.Data.Sqlite;
 using WL.Core.Model;
 

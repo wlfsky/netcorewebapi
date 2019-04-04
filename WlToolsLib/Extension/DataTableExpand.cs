@@ -7,7 +7,7 @@
 // ------------------------------------
 
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     using System;
     using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using static WlToolsLib.KV.KVEntityNew;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     /// <summary>
     /// 时间扩展方法类

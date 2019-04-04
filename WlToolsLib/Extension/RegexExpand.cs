@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     public static class RegexExpand
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     public static class IListExpand
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     public static class StringExpand
     {
@@ -212,7 +212,7 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static string LastIndexOfRight(this string self, string positionStr)
         {
-            if (self.NullEmpty()) { return null; }
+            if (self.NullEmpty()) { return self; }
             var position = self.LastIndexOf(positionStr);
             if (position < 0) { return string.Empty; }
             position += 1;
@@ -229,7 +229,7 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static string LastIndexOfLeft(this string self, string positionStr)
         {
-            if (self.NullEmpty()) { return null; }
+            if (self.NullEmpty()) { return self; }
             var position = self.LastIndexOf(positionStr);
             if (position < 0) { return string.Empty; }
             var lastStr = self.Substring(0, position);
@@ -245,7 +245,7 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static string IndexOfLeft(this string self, string positionStr)
         {
-            if (self.NullEmpty()) { return null; }
+            if (self.NullEmpty()) { return self; }
             var position = self.IndexOf(positionStr);
             if (position < 0) { return string.Empty; }
             var lastStr = self.Substring(0, position);
@@ -261,7 +261,7 @@ namespace WlToolsLib.Expand
         /// <returns></returns>
         public static string IndexOfRight(this string self, string positionStr)
         {
-            if (self.NullEmpty()) { return null; }
+            if (self.NullEmpty()) { return self; }
             var position = self.IndexOf(positionStr);
             if (position < 0) { return string.Empty; }
             position += 1;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WlToolsLib.DataShell;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 using WL.Core.Model;
 using WlToolsLib.Pagination;
 

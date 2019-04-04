@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 
 namespace WL.Core.WebApp.Common.Middleware
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WlToolsLib.Expand
+namespace WlToolsLib.Extension
 {
     /// <summary>
     /// 枚举扩展方法类

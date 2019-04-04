@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WlToolsLib.TreeStructure;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 
 namespace WL.Core.Common
 {

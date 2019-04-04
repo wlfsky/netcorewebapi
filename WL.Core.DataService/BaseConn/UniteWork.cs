@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 
 namespace WL.Core.DataService
 {

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Collections.Concurrent;// 骞跺彂瀹瑰櫒ConcurrentQueue鍏堣繘鍏堝嚭
 using System.Linq;
 using System.Threading.Tasks;
-using WlToolsLib.Expand;
+using WlToolsLib.Extension;
 using static System.Console;
 
 namespace WlToolsLib.Diverter
