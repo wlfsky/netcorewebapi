@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WL.Core.Common
 {
-    public class DepatmentTree : BaseTree<int, Employee, Depatment>
+    public class DepatmentTree : BaseTree<int, Depatment, Employee>
     {
         public DepatmentTree()
         {

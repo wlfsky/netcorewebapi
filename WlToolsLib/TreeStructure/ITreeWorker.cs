@@ -9,11 +9,11 @@ namespace WlToolsLib.TreeStructure
     /// 整合 树结构各种接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public interface ITreeWorker<TKey, TLeaf, TNode> : ITreePrinter<TKey, TLeaf, TNode> , ITreeBuilder<TKey, TLeaf, TNode>, IFathers<TKey, TLeaf, TNode>, IChildren<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public interface ITreeWorker<TKey, TNode, TLeaf> : ITreePrinter<TKey, TNode, TLeaf> , ITreeBuilder<TKey, TNode, TLeaf>, IFathers<TKey, TNode, TLeaf>, IChildren<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         ///// <summary>
         ///// 叶子源列表

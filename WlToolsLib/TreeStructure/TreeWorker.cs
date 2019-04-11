@@ -10,20 +10,22 @@ namespace WlToolsLib.TreeStructure
     /// 完整树工作器，组合了组装和打印
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public class TreeWorker<TKey, TLeaf, TNode> : ITreeWorker<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public class TreeWorker<TKey, TNode, TLeaf> : ITreeWorker<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
+
     {
-        /// <summary>
-        /// 叶子源列表
-        /// </summary>
-        public List<TLeaf> SourceLeafList { get; set; }
         /// <summary>
         /// 节点源列表
         /// </summary>
         public List<TNode> SourceNodeList { get; set; }
+        /// <summary>
+        /// 叶子源列表
+        /// </summary>
+        public List<TLeaf> SourceLeafList { get; set; }
+        
         /// <summary>
         /// 树根
         /// </summary>
@@ -39,23 +41,37 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 建造过滤器
         /// </summary>
-        protected IBuildFilter<TKey, TLeaf, TNode> buildFilter { get; set; }
+        protected IBuildFilter<TKey, TNode, TLeaf> buildFilter { get; set; }
         /// <summary>
         /// 显示过滤器
         /// </summary>
-        protected IShowFilter<TKey, TLeaf, TNode> showFilter { get; set; }
+        protected IShowFilter<TKey, TNode, TLeaf> showFilter { get; set; }
         //
 
         public TreeWorker()
         {
             if (buildFilter == null)
             {
-                buildFilter = new DefaultBuildFilter<TKey, TLeaf, TNode>();
+                buildFilter = new DefaultBuildFilter<TKey, TNode, TLeaf>();
             }
             if (showFilter == null)
             {
-                showFilter = new DefaultShowFilter<TKey, TLeaf, TNode>();
+                showFilter = new DefaultShowFilter<TKey, TNode, TLeaf>();
             }
+        }
+
+        public TreeWorker(TNode root, List<TNode> nodeList, List<TLeaf> leafList = null) : this()
+        {
+            this.TreeRoot = root;
+            this.SourceNodeList = nodeList;
+            this.SourceLeafList = leafList;
+        }
+
+        public static TreeWorker<TKey, TNode, TLeaf> CreateBuilder(BaseNode<TKey> root, List<TNode> nodeList, List<TLeaf> leafList = null)
+        {
+            TreeWorker<TKey, TNode, TLeaf> worker = new TreeWorker<TKey, TNode, TLeaf>(root as TNode, nodeList, leafList);
+            worker.Build();
+            return worker;
         }
 
         #region -- 构建 --
@@ -108,6 +124,8 @@ namespace WlToolsLib.TreeStructure
                 {
                     continue;
                 }
+                node.Deep = parent.Deep + 1;
+                node.Parent = parent;
                 parent.Add(node);
                 //sourceNode.Remove(node);
                 BindNodeLeaf(node, sourceNode, sourceLeaf);//递归
@@ -119,6 +137,8 @@ namespace WlToolsLib.TreeStructure
                 {
                     continue;
                 }
+                leaf.Deep = parent.Deep + 1;
+                leaf.Parent = parent;
                 parent.Add(leaf);
                 //sourceLeaf.Remove(leaf);
             }
@@ -142,7 +162,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns>枚举返回值</returns>
         private IEnumerable<TNode> ChildNode(TNode parentNode)
         {
-            foreach (var n in parentNode.ChildrenNode)
+            foreach (var n in parentNode.ChildrenNodes)
             {
                 if (n is TNode)
                 {
@@ -157,7 +177,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns>枚举返回值</returns>
         private IEnumerable<TLeaf> ChildLeaf(TNode parentNode)
         {
-            foreach (var l in parentNode.ChildrenNode)
+            foreach (var l in parentNode.ChildrenNodes)
             {
                 if (l is TLeaf)
                 {
@@ -210,7 +230,7 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         /// <param name="childNode"></param>
         /// <returns></returns>
-        private TNode Father(TLeaf childNode)
+        private TNode Father(BaseLeaf<TKey> childNode)
         {
             TNode temp = null;
             foreach (TNode n in SourceNodeList)
@@ -218,6 +238,7 @@ namespace WlToolsLib.TreeStructure
                 if (n.ID.Equals(childNode.PID))
                 {
                     temp = n;
+                    break;
                 }
                 else
                 {
@@ -231,13 +252,13 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         /// <param name="child"></param>
         /// <param name="fathers"></param>
-        private void GetFather(TLeaf child, List<TNode> fathers)
+        private void GetFather(BaseLeaf<TKey> child, List<TNode> fathers)
         {
             TNode temp = Father(child);
             if (temp != null)
             {
                 fathers.Add(temp);
-                GetFather(temp as TLeaf, fathers);
+                GetFather(temp as BaseLeaf<TKey>, fathers);
             }
         }
         #endregion
@@ -262,7 +283,7 @@ namespace WlToolsLib.TreeStructure
         private TNode FindNode(TNode node, TNode fatherNode)
         {
             TNode temp = null;
-            foreach (TLeaf l in fatherNode.ChildrenNode)
+            foreach (TLeaf l in fatherNode.ChildrenNodes)
             {
                 if (l is TNode)
                 {
@@ -299,7 +320,7 @@ namespace WlToolsLib.TreeStructure
         /// <param name="nodeList"></param>
         private void GetChildrenNode(TNode father, List<TNode> nodeList)
         {
-            foreach (TLeaf l in father.ChildrenNode)
+            foreach (TLeaf l in father.ChildrenNodes)
             {
                 if (l is TNode)
                 {
@@ -329,7 +350,7 @@ namespace WlToolsLib.TreeStructure
         /// <param name="leafList">保存叶子的列表</param>
         private void GetChildrenLeaf(TNode father, List<TLeaf> leafList)
         {
-            foreach(TLeaf l in father.ChildrenNode)
+            foreach(TLeaf l in father.ChildrenNodes)
             {
                 if (l is TNode)
                 {
@@ -386,9 +407,9 @@ namespace WlToolsLib.TreeStructure
             if (currNode is TNode)
             {
                 var n = currNode as TNode;
-                if (n.ChildrenNode.HasItem())
+                if (n.ChildrenNodes.HasItem())
                 {
-                    foreach (var item in n.ChildrenNode)
+                    foreach (var item in n.ChildrenNodes)
                     {
                         if (item.Name.Equals(name))
                         {
@@ -429,20 +450,20 @@ namespace WlToolsLib.TreeStructure
 
         #region --指定查找谓词查找节点--
         /// <summary>
-        /// 寻找下一层，递归层级
+        /// 查找指定层级（此层级必须在Tree结构中）的子级，递归层级
         /// </summary>
-        /// <param name="currNode"></param>
-        /// <param name="findAction"></param>
+        /// <param name="currNode">要查找的节点入口，需在树结构中</param>
+        /// <param name="predicate">查找对比规则断言</param>
         /// <returns></returns>
-        public BaseLeaf<TKey> FindNode(TNode currNode, Func<BaseLeaf<TKey>, bool> predicate)
+        public BaseLeaf<TKey> FindNode(BaseNode<TKey> currNode, Func<BaseLeaf<TKey>, bool> predicate)
         {
             if (predicate.IsNull())
             {
                 return default(TLeaf);
             }
-            if (currNode.ChildrenNode.HasItem())
+            if (currNode.ChildrenNodes.HasItem())
             {
-                foreach (var item in currNode.ChildrenNode)
+                foreach (var item in currNode.ChildrenNodes)
                 {
                     if (item is TLeaf)
                     {
@@ -483,9 +504,9 @@ namespace WlToolsLib.TreeStructure
             {
                 return default(TLeaf);
             }
-            if (currNode.ChildrenNode.HasItem())
+            if (currNode.ChildrenNodes.HasItem())
             {
-                foreach (var item in currNode.ChildrenNode)
+                foreach (var item in currNode.ChildrenNodes)
                 {
                     if (item is TLeaf)
                     {
@@ -507,6 +528,236 @@ namespace WlToolsLib.TreeStructure
                 }
             }
             return default(TLeaf);
+        }
+        #endregion
+
+        #region --只查找叶子--
+        /// <summary>
+        /// 查找符合要求的叶子
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public BaseLeaf<TKey> FindLeaf(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> newPredicate = (pt, tg) => pt is BaseLeaf<TKey> && predicate(pt, tg);
+            return FindChildren(TreeRoot, target, newPredicate);
+        }
+
+        /// <summary>
+        /// 递归的查找子节点。此方法深度优先
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        protected BaseLeaf<TKey> FindChildren(BaseNode<TKey> parent, BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            // 传入节点检查（主要处理根节点）
+            if (predicate(parent, target))
+            {
+                return parent;
+            }
+            foreach (var leaf in parent.ChildrenNodes.Foreach())
+            {
+                // 如果有符合的子节点返回
+                if (predicate(leaf, target))
+                {
+                    return leaf;
+                }
+                // 没有则去下层检查
+                // 去下层前检查一下是 node 再去
+                if (leaf is BaseNode<TKey>)
+                {
+                    var find_res = FindChildren(leaf as BaseNode<TKey>, target, predicate);
+                    if (find_res.NotNull())
+                    {
+                        return find_res;
+                    }
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region --查找某个节点--
+
+
+
+        /// <summary>
+        /// 查找相关节点信息，可能是节点，也可能是叶子
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public BaseLeaf<TKey> FindNode(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            return FindChildren(TreeRoot, target, predicate);
+        }
+        #endregion
+
+        #region --获取给定节点的所有父级节点--
+        /// <summary>
+        /// 查找目标节点，
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseNode<TKey>> FindParents(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            var node = FindNode(target, predicate);
+            List<BaseNode<TKey>> parents = new List<BaseNode<TKey>>();
+            ParentNode(node, parents);
+            return parents;
+        }
+
+        private void ParentNode(BaseLeaf<TKey> currNode, List<BaseNode<TKey>> parents)
+        {
+            if (currNode.NotNull())
+            {
+                if (currNode.Parent.NotNull())
+                {
+                    ParentNode(currNode.Parent, parents);
+                }
+                // 检查一下找到的是节点还是叶子，叶子不应该被加入父级层级组内
+                if (currNode is BaseNode<TKey>)
+                {
+                    parents.Add(currNode as BaseNode<TKey>);
+                }
+            }
+
+        }
+        #endregion
+
+        #region --查找全部符合谓词要求的节点和叶子--
+
+        /// <summary>
+        /// 查找全部符合谓词条件的 单元（含节点和叶子）
+        /// 提供对比目标，和带目标的对比谓词
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseLeaf<TKey>> FindAll(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseLeaf<TKey>> findList = new List<BaseLeaf<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => predicate(n, target);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findList.Add(n);
+            traversingTree(TreeRoot, p, findAfter);
+            return findList;
+        }
+
+        /// <summary>
+        /// 查找符合谓词条件的 单元（含节点和叶子）
+        /// 直接由谓词决定
+        /// </summary>
+        /// <param name="predicate">谓词条件</param>
+        /// <returns></returns>
+        public List<BaseLeaf<TKey>> FindAll(Func<BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseLeaf<TKey>> findList = new List<BaseLeaf<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => predicate(n);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findList.Add(n);
+            traversingTree(TreeRoot, p, findAfter);
+            return findList;
+        }
+
+
+        /// <summary>
+        /// 查找全部符合谓词条件的 节点
+        /// 需要对比对象，和对比谓词
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseNode<TKey>> FindAllNode(BaseNode<TKey> target, Func<BaseNode<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseNode<TKey>> findNodeList = new List<BaseNode<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => n is BaseNode<TKey> && predicate(n as BaseNode<TKey>, target);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findNodeList.Add(n as BaseNode<TKey>);
+            traversingTree(TreeRoot, p, findAfter);
+            return findNodeList;
+        }
+
+        /// <summary>
+        /// 查找全部符合谓词条件的 节点
+        /// 只要提供对比谓词
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseNode<TKey>> FindAllNode(Func<BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseNode<TKey>> findNodeList = new List<BaseNode<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => n is BaseNode<TKey> && predicate(n as BaseNode<TKey>);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findNodeList.Add(n as BaseNode<TKey>);
+            traversingTree(TreeRoot, p, findAfter);
+            return findNodeList;
+        }
+
+        /// <summary>
+        /// 查找全部符合谓词条件的 叶子
+        /// 需提供对比对象 和 对比谓词
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseLeaf<TKey>> FindAllLeaf(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseLeaf<TKey>> findLeafList = new List<BaseLeaf<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => n is BaseLeaf<TKey> && predicate(n, target);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findLeafList.Add(n);
+            traversingTree(TreeRoot, p, findAfter);
+            return findLeafList;
+        }
+
+        /// <summary>
+        /// 查找全部符合谓词条件的 叶子
+        /// 只需对比谓词
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseLeaf<TKey>> FindAllLeaf(Func<BaseLeaf<TKey>, bool> predicate)
+        {
+            List<BaseLeaf<TKey>> findLeafList = new List<BaseLeaf<TKey>>();
+            Func<BaseLeaf<TKey>, bool> p = (n) => n is BaseLeaf<TKey> && predicate(n);
+            Action<BaseLeaf<TKey>> findAfter = (n) => findLeafList.Add(n);
+            traversingTree(TreeRoot, p, findAfter);
+            return findLeafList;
+        }
+
+
+        #endregion
+
+        #region --基础算法，遍历--
+        /// <summary>
+        /// 深度优先遍历
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="predicate"></param>
+        /// <param name="findAfter"></param>
+        private void traversingTree(BaseNode<TKey> parent, Func<BaseLeaf<TKey>, bool> predicate, Action<BaseLeaf<TKey>> findAfter)
+        {
+            if (parent is BaseNode<TKey> && parent.ChildrenNodes.HasItem())
+            {
+                foreach (var node in parent.ChildrenNodes)
+                {
+                    if (node is BaseNode<TKey>)
+                    {
+                        if (predicate(node))
+                        {
+                            findAfter(node);
+                        }
+                        traversingTree(node as BaseNode<TKey>, predicate, findAfter);
+                    }
+                    else // 如果是叶子
+                    {
+                        if (predicate(node))
+                        {
+                            findAfter(node);
+                        }
+                    }
+                }
+
+            }
         }
         #endregion
     }

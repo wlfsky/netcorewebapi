@@ -7,11 +7,12 @@ namespace WlToolsLib.TreeStructure
     /// 树组装器接口
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public interface ITreeBuilder<TKey, TLeaf, TNode> : IBaseTreeWorker<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+
+    public interface ITreeBuilder<TKey, TNode, TLeaf> : IBaseTreeWorker<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         //List<TLeaf> SourceLeafList { get; set; }
         //List<TNode> SourceNodeList { get; set; }

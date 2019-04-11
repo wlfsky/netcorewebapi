@@ -9,14 +9,14 @@ namespace WlToolsLib.TreeStructure
     /// </summary>
     public abstract class BaseNode<TKey> : BaseLeaf<TKey>, IDisplay, IEdit<TKey>
     {
-        List<BaseLeaf<TKey>> childrenNode = new List<BaseLeaf<TKey>>();
+        List<BaseLeaf<TKey>> childrenNodes = new List<BaseLeaf<TKey>>();
         /// <summary>
         /// 子节点
         /// </summary>
         public List<BaseLeaf<TKey>> ChildrenNodes
         {
-            get { return childrenNode; }
-            set { childrenNode = value; }
+            get { return childrenNodes; }
+            set { childrenNodes = value; }
         }
         /// <summary>
         /// 空初始化
@@ -31,7 +31,7 @@ namespace WlToolsLib.TreeStructure
         /// <param name="item"></param>
         public void Add(BaseLeaf<TKey> item)
         {
-            childrenNode.Add(item);
+            childrenNodes.Add(item);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WlToolsLib.TreeStructure
         /// <param name="item"></param>
         public void Remove(BaseLeaf<TKey> item)
         {
-            childrenNode.Remove(item);
+            childrenNodes.Remove(item);
         }
 
         /// <summary>

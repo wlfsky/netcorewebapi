@@ -11,9 +11,9 @@ namespace WlToolsLib.TreeStructure
     /// <typeparam name="TKey">键值泛型</typeparam>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TLeaf"></typeparam>
-    public class DefaultElementFilter<TKey, TLeaf, TNode> : IElementFilter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public class DefaultElementFilter<TKey, TNode, TLeaf> : IElementFilter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         /// <summary>
         /// 元素过滤器，叶子过滤器，返回false时表示进行过滤操作（不进行该节点和节点以下子节点的动作（显示或者构建））
@@ -35,15 +35,15 @@ namespace WlToolsLib.TreeStructure
         }
     }
 
-    public class DefaultBuildFilter<TKey, TLeaf, TNode> : DefaultElementFilter<TKey, TLeaf, TNode>, IBuildFilter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public class DefaultBuildFilter<TKey, TNode, TLeaf> : DefaultElementFilter<TKey, TNode, TLeaf>, IBuildFilter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
     }
 
-    public class DefaultShowFilter<TKey, TLeaf, TNode> : DefaultElementFilter<TKey, TLeaf, TNode>, IShowFilter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public class DefaultShowFilter<TKey, TNode, TLeaf> : DefaultElementFilter<TKey, TNode, TLeaf>, IShowFilter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
     }
 }

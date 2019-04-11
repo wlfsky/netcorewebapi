@@ -8,10 +8,12 @@ namespace WlToolsLib.TreeStructure
     /// <summary>
     /// 元素过滤器接口，是 构建过滤器 和 显示过滤器 的基础
     /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TLeaf"></typeparam>
-    public interface IElementFilter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public interface IElementFilter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         /// <summary>
         /// 元素过滤器，叶子过滤器，返回false时表示进行过滤操作（不进行该节点和节点以下子节点的动作（显示或者构建））

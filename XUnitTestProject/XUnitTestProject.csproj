@@ -31,6 +31,7 @@
     <ProjectReference Include="..\WL.Core.Common\WL.Core.Common.csproj" />
     <ProjectReference Include="..\WL.Core.DataService\WL.Core.DataService.csproj" />
     <ProjectReference Include="..\WL.Core.Model\WL.Core.Model.csproj" />
+    <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace WlToolsLib.TreeStructure
 {
-    public interface IBaseTreeWorker<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public interface IBaseTreeWorker<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         /// <summary>
         /// 叶子源列表

@@ -41,9 +41,9 @@ namespace WlToolsLib.TreeStructure
     /// <summary>
     /// 父亲接口
     /// </summary>
-    /// <typeparam name="TLeaf">叶子泛型，必须继承自 BaseLeaf</typeparam>
     /// <typeparam name="TNode">节点泛型，必须继承自 BaseNode</typeparam>
-    public interface IFathers<TKey, TLeaf, TNode>
+    /// <typeparam name="TLeaf">叶子泛型，必须继承自 BaseLeaf</typeparam>
+    public interface IFathers<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
         where TLeaf : BaseLeaf<TKey>
     {
@@ -58,9 +58,9 @@ namespace WlToolsLib.TreeStructure
     /// <summary>
     /// 孩子接口
     /// </summary>
-    /// <typeparam name="TLeaf">叶子泛型，必须继承自 BaseLeaf</typeparam>
     /// <typeparam name="TNode">节点泛型，必须继承自 BaseNode</typeparam>
-    public interface IChildren<TKey, TLeaf, TNode>
+    /// <typeparam name="TLeaf">叶子泛型，必须继承自 BaseLeaf</typeparam>
+    public interface IChildren<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
         where TLeaf : BaseLeaf<TKey>
     {

@@ -9,11 +9,11 @@ namespace WlToolsLib.TreeStructure
     /// 树组装器 实现
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public class TreeBuilder<TKey, TLeaf, TNode> : ITreeBuilder<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public class TreeBuilder<TKey, TNode, TLeaf> : ITreeBuilder<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         /// <summary>
         /// 叶子源
@@ -30,14 +30,14 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 建造过滤器
         /// </summary>
-        public IBuildFilter<TKey, TLeaf, TNode> BuildFilter { get; set; }
+        public IBuildFilter<TKey, TNode, TLeaf> BuildFilter { get; set; }
 
 
         public TreeBuilder()
         {
             if (BuildFilter == null)
             {
-                BuildFilter = new DefaultBuildFilter<TKey, TLeaf, TNode>();
+                BuildFilter = new DefaultBuildFilter<TKey, TNode, TLeaf>();
             }
         }
 
@@ -126,9 +126,9 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public BaseLeaf<TKey> FindNode(Func<BaseLeaf<TKey>, bool> predicate)
+        public BaseLeaf<TKey> FindNode(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
         {
-            return FindChildrenNode(TreeRoot, predicate);
+            return FindChildrenNode(TreeRoot, target, predicate);
         }
 
         /// <summary>
@@ -137,31 +137,64 @@ namespace WlToolsLib.TreeStructure
         /// <param name="parent"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        protected BaseLeaf<TKey> FindChildrenNode(BaseNode<TKey> parent, Func<BaseLeaf<TKey>, bool> predicate)
+        protected BaseLeaf<TKey> FindChildrenNode(BaseNode<TKey> parent, BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate)
         {
             // 传入节点检查（主要处理根节点）
-            if (predicate(parent))
+            if (predicate(parent, target))
             {
                 return parent;
             }
             foreach (var leaf in parent.ChildrenNodes.Foreach())
             {
                 // 如果有符合的子节点返回
-                if (predicate(leaf))
+                if (predicate(leaf, target))
                 {
                     return leaf;
                 }
                 // 没有则去下层检查
-                return FindChildrenNode(leaf as BaseNode<TKey>, predicate);
-
+                // 去下层前检查一下是 node 再去
+                if (leaf is BaseNode<TKey>)
+                {
+                    var find_res = FindChildrenNode(leaf as BaseNode<TKey>, target, predicate);
+                    if (find_res.NotNull())
+                    {
+                        return find_res;
+                    }
+                }
             }
             return null;
         }
         #endregion
 
         #region --获取给定节点的所有父级节点--
-        private void FindParents(List<BaseNode<TKey>> result, BaseNode<TKey> parent, BaseNode<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> func = null)
+        /// <summary>
+        /// 查找目标节点，
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public List<BaseNode<TKey>> FindParents(BaseLeaf<TKey> target, Func<BaseLeaf<TKey>, BaseLeaf<TKey>, bool> predicate = null)
         {
+            var node = FindNode(target, predicate);
+            List<BaseNode<TKey>> parents = new List<BaseNode<TKey>>();
+            ParentNode(node, parents);
+            return parents;
+        }
+
+        private void ParentNode(BaseLeaf<TKey> currNode, List<BaseNode<TKey>> parents)
+        {
+            if(currNode.NotNull())
+            {
+                if (currNode.Parent.NotNull())
+                {
+                    ParentNode(currNode.Parent, parents);
+                }
+                // 检查一下找到的是节点还是叶子，叶子不应该被加入父级层级组内
+                if (currNode is BaseNode<TKey>)
+                {
+                    parents.Add(currNode as BaseNode<TKey>);
+                }
+            }
             
         }
         #endregion

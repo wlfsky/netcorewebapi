@@ -8,11 +8,11 @@ namespace WlToolsLib.TreeStructure
     /// 树打印器。用json时，可以不要这个
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public class TreePrinter<TKey, TLeaf, TNode> : ITreePrinter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public class TreePrinter<TKey, TNode, TLeaf> : ITreePrinter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
         /// <summary>
         /// 叶子列表源
@@ -37,14 +37,14 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 显示过滤器
         /// </summary>
-        public IShowFilter<TKey, TLeaf, TNode> ShowFilter { get; set; }
+        public IShowFilter<TKey, TNode, TLeaf> ShowFilter { get; set; }
 
 
         public TreePrinter()
         {
             if (ShowFilter == null)
             {
-                ShowFilter = new DefaultShowFilter<TKey, TLeaf, TNode>();
+                ShowFilter = new DefaultShowFilter<TKey, TNode, TLeaf>();
             }
         }
 
@@ -64,7 +64,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns>迭代的结果</returns>
         private IEnumerable<TNode> ChildNode(TNode parentNode)
         {
-            foreach (var n in parentNode.ChildrenNode)
+            foreach (var n in parentNode.ChildrenNodes)
             {
                 if (n is TNode)
                 {
@@ -79,7 +79,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns>迭代的结果</returns>
         private IEnumerable<TLeaf> ChildLeaf(TNode parentNode)
         {
-            foreach (var l in parentNode.ChildrenNode)
+            foreach (var l in parentNode.ChildrenNodes)
             {
                 if (l is TLeaf)
                 {

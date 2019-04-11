@@ -12,9 +12,11 @@ namespace WL.Core.Common
     /// 基础树
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public class BaseTree<TKey, TLeaf, TNode> : TreeWorker<TKey, TLeaf, TNode> where TLeaf : BaseLeaf<TKey> where TNode : BaseNode<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public class BaseTree<TKey, TNode, TLeaf> : TreeWorker<TKey, TNode, TLeaf>
+        where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey> 
     {
         public BaseTree()
         {
@@ -55,9 +57,9 @@ namespace WL.Core.Common
             if (currNode is TNode)
             {
                 var n = currNode as TNode;
-                if (n.ChildrenNode.HasItem())
+                if (n.ChildrenNodes.HasItem())
                 {
-                    foreach (var item in n.ChildrenNode)
+                    foreach (var item in n.ChildrenNodes)
                     {
                         if (item.Name.Equals(name))
                         {
@@ -108,9 +110,9 @@ namespace WL.Core.Common
             {
                 return default(TLeaf);
             }
-            if (currNode.ChildrenNode.HasItem())
+            if (currNode.ChildrenNodes.HasItem())
             {
-                foreach (var item in currNode.ChildrenNode)
+                foreach (var item in currNode.ChildrenNodes)
                 {
                     if (item is TLeaf)
                     {
@@ -151,9 +153,9 @@ namespace WL.Core.Common
             {
                 return default(TLeaf);
             }
-            if (currNode.ChildrenNode.HasItem())
+            if (currNode.ChildrenNodes.HasItem())
             {
-                foreach (var item in currNode.ChildrenNode)
+                foreach (var item in currNode.ChildrenNodes)
                 {
                     if (item is TLeaf)
                     {

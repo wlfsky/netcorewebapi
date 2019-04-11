@@ -9,11 +9,11 @@ namespace WlToolsLib.TreeStructure
     /// 构建过滤器，继承自 元素过滤器
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public interface IBuildFilter<TKey, TLeaf, TNode> : IElementFilter<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    /// <typeparam name="TLeaf"></typeparam>
+    public interface IBuildFilter<TKey, TNode, TLeaf> : IElementFilter<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
     {
     }
 }

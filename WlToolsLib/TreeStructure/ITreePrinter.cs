@@ -9,9 +9,10 @@ namespace WlToolsLib.TreeStructure
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TLeaf"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public interface ITreePrinter<TKey, TLeaf, TNode> : IBaseTreeWorker<TKey, TLeaf, TNode>
-        where TLeaf : BaseLeaf<TKey>
+    public interface ITreePrinter<TKey, TNode, TLeaf> : IBaseTreeWorker<TKey, TNode, TLeaf>
         where TNode : BaseNode<TKey>
+        where TLeaf : BaseLeaf<TKey>
+
     {
         /// <summary>
         /// 深度字符委托

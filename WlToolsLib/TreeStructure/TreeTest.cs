@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WlToolsLib.TreeStructure;
 
 namespace WlToolsLib.TreeStructure
 {
@@ -12,7 +13,11 @@ namespace WlToolsLib.TreeStructure
     /// </summary>
     public class TreeTest
     {
-        // 使用方法和测试移动到 Business 项目中 在 Department更好中
+        /// <summary>
+        /// ceshi 
+        /// 使用方法和测试移动到 Business 项目中 在 Department更好中
+        /// </summary>
+        /// <returns></returns>
         public string test()
         {
             // 构成节点树 的 列表形态
@@ -23,12 +28,14 @@ namespace WlToolsLib.TreeStructure
             N r11 = new N { ID = "4", PID = "2", Name = "r11-N" };
             N r12 = new N { ID = "5", PID = "2", Name = "r12-N" };
             N r21 = new N { ID = "6", PID = "3", Name = "r21-N" };
+            N r61 = new N { ID = "7", PID = "6", Name = "r61-N" };
             NL.Add(root);
             NL.Add(r1);
             NL.Add(r2);
             NL.Add(r11);
             NL.Add(r12);
             NL.Add(r21);
+            NL.Add(r61);
 
             // 构建叶子数据，列表形态
             List<L> LL = new List<L>();
@@ -45,14 +52,45 @@ namespace WlToolsLib.TreeStructure
 
             //LL.Clear();
 
+            #region --TreeWorker 测试段--
+            Console.WriteLine("== TreeWorker 测试段 ==");
+
+            TreeWorker<string, N, L> w = TreeWorker<string, N, L>.CreateBuilder(root, NL, LL);
+            var f1 = w.FindNode(r2, (n) => n.ID == "6");
+            f1.Display();
+
+            var fs = w.Fathers(rl);
+
+            var fa01 = w.FindAll(new L() { Name = "r21-N" }, (x, y) => x.Name == y.Name);
+            var fa02 = w.FindAllNode(new N() { Name = "r21-N" }, (x, y) => x.Name == y.Name);
+            var fa03 = w.FindAllLeaf(new L() { Name = "R11L2-L" }, (x, y) => x.Name == y.Name);
+
+            var fa011 = w.FindAll((x) => x.Name.Contains("11"));
+            var fa021 = w.FindAllNode((x) => x.Name.StartsWith("r"));
+            var fa031 = w.FindAllLeaf((x) => x.Name.StartsWith("R"));
+            #endregion
+
+            #region --TreeBuilder 和 TreePrinter 测试--
+            Console.WriteLine("== TreeBuilder 和 TreePrinter 测试 ==");
+
             // 用列表 且指定 根节点，创建 树构成器
-            TreeBuilder<string, L, N> b = new TreeBuilder<string, L, N> { SourceLeafList = LL, SourceNodeList = NL, TreeRoot = root };
+            TreeBuilder<string, N, L> b = new TreeBuilder<string, N, L> { SourceLeafList = LL, SourceNodeList = NL, TreeRoot = root };
             // 指定构成过滤器
             b.BuildFilter = new testbFilter();
             // 构成
             b.Build();
+            // 测试查找
+            var findnode = b.FindNode(new N() { Name = "r61-N" }, (x, y) => x.Name == y.Name);
+            findnode.Display();
+            // 
+            var parents = b.FindParents(new L() { Name = "R21L1-L" }, (x, y) => x.Name == y.Name);
+            foreach (var parent in parents)
+            {
+                parent.Display();
+            }
             // 打印器，
-            TreePrinter<string, L, N> p = new TreePrinter<string, L, N> { TreeRoot = root, PreString = DeepString };
+            TreePrinter<string, N, L> p = new TreePrinter<string, N, L> { TreeRoot = root, PreString = DeepString };
+            #endregion
             // 返回打印
             return p.Print();
         }
@@ -79,7 +117,7 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 构建过滤器
         /// </summary>
-        public class testbFilter : IBuildFilter<string, L, N>
+        public class testbFilter : IBuildFilter<string, N, L>
         {
             /// <summary>
             /// 全构建
@@ -108,7 +146,7 @@ namespace WlToolsLib.TreeStructure
         /// <summary>
         /// 构建过滤器
         /// </summary>
-        public class testpFilter : IBuildFilter<string, L, N>
+        public class testpFilter : IBuildFilter<string, N, L>
         {
             /// <summary>
             /// 叶子过滤器，id==10不构建
