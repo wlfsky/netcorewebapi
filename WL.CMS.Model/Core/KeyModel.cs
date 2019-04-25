@@ -7,7 +7,7 @@ namespace WL.CMS.Model
     /// <summary>
     /// 关键字
     /// </summary>
-    public class KeyModel
+    public class KeyModel : BaseModel
     {
         /// <summary>
         /// 关键字id

@@ -65,7 +65,13 @@ namespace WL.CMS.Model
         /// 创作时间
         /// </summary>
         public DateTime CreativeTime { get; set; }
+        /// <summary>
+        /// 最后编辑时间
+        /// </summary>
         public DateTime LastEditTime { get; set; }
+        /// <summary>
+        /// 主图地址
+        /// </summary>
         public string MainPic { get; set; }
 
         #region --控制段--
@@ -82,14 +88,39 @@ namespace WL.CMS.Model
         /// 操作日志
         /// </summary>
         public List<OperationLog> OperaLogs { get; set; }
+        /// <summary>
+        /// 日志附件
+        /// </summary>
+        public List<LogModel> Logs { get; set; }
         #endregion
 
+
+        #region --附件信息--
+        /// <summary>
+        /// 文件附件
+        /// </summary>
         public List<FileModel> Files { get; set; }
+        /// <summary>
+        /// 图片附件
+        /// </summary>
         public List<PicModel> Pics { get; set; }
+        /// <summary>
+        /// 视频附件
+        /// </summary>
         public List<VideoModel> Videos { get; set; }
-        public List<LogModel> Logs { get; set; }
+        
+        #endregion
+        /// <summary>
+        /// 前一个邻居内容
+        /// </summary>
         public NeighbourModel Previous { get; set; }
+        /// <summary>
+        /// 后一个邻居内容
+        /// </summary>
         public NeighbourModel Next { get; set; }
+        /// <summary>
+        /// 系统信息
+        /// </summary>
         public SysInfoModel SysInfo { get; set; }
     }
 }

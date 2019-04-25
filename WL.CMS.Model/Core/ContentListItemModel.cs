@@ -7,7 +7,7 @@ namespace WL.CMS.Model
     /// <summary>
     /// 内容列表类
     /// </summary>
-    public class ContentListItemModel
+    public class ContentListItemModel : BaseModel
     {
         /// <summary>
         /// 内容id
@@ -44,7 +44,7 @@ namespace WL.CMS.Model
         /// <summary>
         /// 创作时间
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime CreativeTime { get; set; }
         /// <summary>
         /// 最后编辑时间
         /// </summary>
