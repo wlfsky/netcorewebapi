@@ -12,11 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="1.60.1" />
+    <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="Dapper.Contrib" Version="1.60.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WL.Core.DBModel\WL.Core.DBModel.csproj" />
     <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>
 

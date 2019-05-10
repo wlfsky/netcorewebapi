@@ -11,9 +11,16 @@ namespace XUnitTestProject
         [Fact]
         public void TestTree1()
         {
-            TreeTest t = new TreeTest();
+            try
+            {
+                TreeTest t = new TreeTest();
 
-            t.test();
+                t.test();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             
         }
     }

@@ -1,6 +1,5 @@
 using System;
-using WL.Core.BusinessService;
-//using WL.Core.DataService.UserSystem;
+using WL.Account.BusinessService;
 using Xunit;
 
 namespace XUnitTestProject
@@ -11,7 +10,7 @@ namespace XUnitTestProject
         public void Test_GetList()
         {
             UserSystemBLL test_dal = new UserSystemBLL();
-            var r = test_dal.GetList(new WL.Core.Model.UserAccount());
+            var r = test_dal.GetList(new WL.Account.Model.Business.UserAccount());
             Console.WriteLine(r);
         }
 
@@ -19,7 +18,7 @@ namespace XUnitTestProject
         public void Test_GetByID()
         {
             UserSystemBLL test_dal = new UserSystemBLL();
-            var r = test_dal.Get(new WL.Core.Model.UserAccount() { UserID = 7 });
+            var r = test_dal.Get(new WL.Account.Model.Business.UserAccount() { AccountID = "7" });
             Console.WriteLine(r);
         }
     }

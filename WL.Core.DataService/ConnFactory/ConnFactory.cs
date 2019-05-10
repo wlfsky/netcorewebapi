@@ -57,7 +57,7 @@ namespace WL.Core.DataService
         public static IDbConnection GetIOSConn()
         {
             string connStr = GetConnStr("MMSDBConnStr");
-            return new SqliteConnection();
+            return new SqliteConnection(connStr);
         }
 
         /// <summary>

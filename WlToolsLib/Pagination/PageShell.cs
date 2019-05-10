@@ -56,7 +56,7 @@ namespace WlToolsLib.Pagination
         /// <param name="pageSize">每页记录数</param>
         /// <param name="pageIndex">当前页索引数</param>
         /// <param name="totalRecordCount">总记录数</param>
-        protected PageShell(int pageSize, int pageIndex, int totalRecordCount)
+        protected PageShell(int pageSize, int pageIndex, long totalRecordCount)
         {
             this.PageSize = pageSize;
             this.RecordCount = totalRecordCount;
@@ -71,7 +71,7 @@ namespace WlToolsLib.Pagination
         /// <param name="pageIndex"></param>
         /// <param name="totalRecordCount"></param>
         /// <returns></returns>
-        public static PageShell<T> CreatePageData(int pageSize, int pageIndex, int totalRecordCount)
+        public static PageShell<T> CreatePageData(int pageSize, int pageIndex, long totalRecordCount)
         {
             return new PageShell<T>(pageSize, pageIndex, totalRecordCount);
         }

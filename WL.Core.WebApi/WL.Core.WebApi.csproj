@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Account\WL.Account.BusinessService\WL.Account.BusinessService.csproj" />
+    <ProjectReference Include="..\Account\WL.Account.Model\WL.Account.Model.csproj" />
     <ProjectReference Include="..\WL.Core.BusinessService\WL.Core.BusinessService.csproj" />
     <ProjectReference Include="..\WL.Core.Common\WL.Core.Common.csproj" />
     <ProjectReference Include="..\WL.Core.DataService\WL.Core.DataService.csproj" />

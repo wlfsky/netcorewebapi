@@ -25,6 +25,17 @@ namespace WlToolsLib.DataShell
             return DataShellCreator.CreateSuccess<TResult>(self);
         }
 
+        /// <summary>
+        /// 用返回类型直接构建一个 成功返回结果(短小版)
+        /// </summary>
+        /// <typeparam name="TResult">结果实体类型</typeparam>
+        /// <param name="self">扩展字符串类型</param>
+        /// <returns></returns>
+        public static DataShell<TResult> Succ<TResult>(this TResult self)
+        {
+            return DataShellCreator.CreateSuccess<TResult>(self);
+        }
+
         #endregion --用返回类型直接构建一个 成功返回结果--
 
         #region --利用指定类型直接创建一个成功结果并附带一个信息--
@@ -36,6 +47,18 @@ namespace WlToolsLib.DataShell
         /// <param name="info"></param>
         /// <returns></returns>
         public static DataShell<TResult> Success<TResult>(this TResult self, string info)
+        {
+            return DataShellCreator.CreateSuccess<TResult>(self).Succeed(self, info);
+        }
+
+        /// <summary>
+        /// 利用指定类型直接创建一个成功结果并附带一个信息(短小版)
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static DataShell<TResult> Succ<TResult>(this TResult self, string info)
         {
             return DataShellCreator.CreateSuccess<TResult>(self).Succeed(self, info);
         }

@@ -177,6 +177,17 @@ namespace WlToolsLib.TreeStructure
         public class N : BaseNode<string>
         {
             //
+            public List<BaseLeaf<string>> ChildrenNodes { get; set; }
+            public string PID { get; set; }
+            public string ID { get; set; }
+            public string Name { get; set; }
+            public int Deep { get; set; }
+            public NodeType NodeType { get; set; }
+            public BaseNode<string> Root { get; set; }
+            public BaseNode<string> Parent { get; set; }
+            public string IDPath { get; set; }
+            public string Alias { get; set; }
+            public string AliasPath { get; set; }
         }
 
         /// <summary>
@@ -185,6 +196,16 @@ namespace WlToolsLib.TreeStructure
         public class L : BaseLeaf<string>
         {
             //
+            public string PID { get; set; }
+            public string ID { get; set; }
+            public string Name { get; set; }
+            public int Deep { get; set; }
+            public NodeType NodeType { get; set; }
+            public BaseNode<string> Root { get; set; }
+            public BaseNode<string> Parent { get; set; }
+            public string IDPath { get; set; }
+            public string Alias { get; set; }
+            public string AliasPath { get; set; }
         }
     }
 }

@@ -69,7 +69,7 @@ namespace WlToolsLib.TreeStructure
 
         public static TreeWorker<TKey, TNode, TLeaf> CreateBuilder(BaseNode<TKey> root, List<TNode> nodeList, List<TLeaf> leafList = null)
         {
-            TreeWorker<TKey, TNode, TLeaf> worker = new TreeWorker<TKey, TNode, TLeaf>(root as TNode, nodeList, leafList);
+            TreeWorker<TKey, TNode, TLeaf> worker = new TreeWorker<TKey, TNode, TLeaf>((TNode)root, nodeList, leafList);
             worker.Build();
             return worker;
         }
@@ -166,7 +166,7 @@ namespace WlToolsLib.TreeStructure
             {
                 if (n is TNode)
                 {
-                    yield return n as TNode;
+                    yield return (TNode)n;
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace WlToolsLib.TreeStructure
             {
                 if (l is TLeaf)
                 {
-                    yield return l as TLeaf;
+                    yield return (TLeaf)l;
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace WlToolsLib.TreeStructure
         /// <returns></returns>
         private TNode Father(BaseLeaf<TKey> childNode)
         {
-            TNode temp = null;
+            TNode temp = default(TNode);
             foreach (TNode n in SourceNodeList)
             {
                 if (n.ID.Equals(childNode.PID))
@@ -242,7 +242,7 @@ namespace WlToolsLib.TreeStructure
                 }
                 else
                 {
-                    temp = null;
+                    temp = default(TNode);
                 }
             }
             return temp;
@@ -282,18 +282,18 @@ namespace WlToolsLib.TreeStructure
         /// <returns></returns>
         private TNode FindNode(TNode node, TNode fatherNode)
         {
-            TNode temp = null;
-            foreach (TLeaf l in fatherNode.ChildrenNodes)
+            TNode temp = default(TNode);
+            foreach (BaseLeaf<TKey> l in fatherNode.ChildrenNodes)
             {
                 if (l is TNode)
                 {
                     if (l.Equals(node))
                     {
-                        temp = l as TNode;
+                        temp = (TNode)l;
                     }
                     else
                     {
-                        temp = FindNode(node, l as TNode);
+                        temp = FindNode(node, (TNode)l);
                     }
                 }
             }
@@ -320,12 +320,12 @@ namespace WlToolsLib.TreeStructure
         /// <param name="nodeList"></param>
         private void GetChildrenNode(TNode father, List<TNode> nodeList)
         {
-            foreach (TLeaf l in father.ChildrenNodes)
+            foreach (BaseLeaf<TKey> l in father.ChildrenNodes)
             {
                 if (l is TNode)
                 {
-                    nodeList.Add(l as TNode);
-                    GetChildrenNode(l as TNode, nodeList);
+                    nodeList.Add((TNode)l);
+                    GetChildrenNode((TNode)l, nodeList);
                 }
             }
         }
@@ -350,16 +350,16 @@ namespace WlToolsLib.TreeStructure
         /// <param name="leafList">保存叶子的列表</param>
         private void GetChildrenLeaf(TNode father, List<TLeaf> leafList)
         {
-            foreach(TLeaf l in father.ChildrenNodes)
+            foreach(BaseLeaf<TKey> l in father.ChildrenNodes)
             {
                 if (l is TNode)
                 {
 
-                    GetChildrenLeaf(l as TNode, leafList);
+                    GetChildrenLeaf((TNode)l, leafList);
                 }
                 else
                 {
-                    leafList.Add(l);
+                    leafList.Add((TLeaf)l);
                 }
             }
         }
@@ -406,7 +406,7 @@ namespace WlToolsLib.TreeStructure
             if (currNode.Name.Equals(name)) { return currNode; }
             if (currNode is TNode)
             {
-                var n = currNode as TNode;
+                var n = (TNode)currNode;
                 if (n.ChildrenNodes.HasItem())
                 {
                     foreach (var item in n.ChildrenNodes)
@@ -467,7 +467,7 @@ namespace WlToolsLib.TreeStructure
                 {
                     if (item is TLeaf)
                     {
-                        var l = item as TLeaf;
+                        var l = item;
                         if (predicate(l))
                         {
                             return l;
@@ -475,7 +475,7 @@ namespace WlToolsLib.TreeStructure
                     }
                     if (item is TNode)
                     {
-                        var n = item as TNode;
+                        var n = item as BaseNode<TKey>;
                         var l = n as BaseLeaf<TKey>;
                         if (predicate(l))
                         {
@@ -498,7 +498,7 @@ namespace WlToolsLib.TreeStructure
         /// <param name="currNode"></param>
         /// <param name="findAction"></param>
         /// <returns></returns>
-        public TLeaf FindCurrLevel(TNode currNode, Func<TLeaf, bool> predicate)
+        public BaseLeaf<TKey> FindCurrLevel(TNode currNode, Func<BaseLeaf<TKey>, bool> predicate)
         {
             if (predicate.IsNull())
             {
@@ -510,7 +510,7 @@ namespace WlToolsLib.TreeStructure
                 {
                     if (item is TLeaf)
                     {
-                        var l = item as TLeaf;
+                        var l = item;
                         if (predicate(l))
                         {
                             return l;
@@ -518,10 +518,10 @@ namespace WlToolsLib.TreeStructure
                     }
                     if (item is TNode)
                     {
-                        var n = item as TNode;
-                        if (predicate(n as TLeaf))
+                        var n = item as BaseNode<TKey>;
+                        if (predicate((BaseLeaf<TKey>)n))
                         {
-                            return n as TLeaf;
+                            return (BaseLeaf<TKey>)n;
                         }
                     }
 

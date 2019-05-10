@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using WL.Account.BusinessService;
 using WL.Core.BusinessService;
 using WL.Core.WebApp.Common.Middleware;
 using WlToolsLib.Extension;

@@ -19,10 +19,10 @@
 
   <ItemGroup>
     <PackageReference Include="HashLib" Version="2.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="pinyin4net" Version="1.0.0" />
     <PackageReference Include="QrCode.Net" Version="0.4.0" />
-    <PackageReference Include="ServiceStack.Text" Version="5.4.0" />
+    <PackageReference Include="ServiceStack.Text" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>

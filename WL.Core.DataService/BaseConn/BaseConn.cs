@@ -8,6 +8,9 @@ using Dapper;
 using WlToolsLib.Extension;
 using Microsoft.Data.Sqlite;
 using WL.Core.Model;
+using WL.Core.DBModel;
+using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Core.DataService
 {
@@ -49,6 +52,7 @@ namespace WL.Core.DataService
         public string KeyName { get; set; }
         public Type KeyType { get; set; }
 
+        public static readonly string CreateTimeField = "CreateTime";
 
         /// <summary>
         /// 打开数据库连接
@@ -151,9 +155,9 @@ namespace WL.Core.DataService
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public TKey Insert<TKey, T>(T obj) where T : BaseModel
+        public TKey Insert<TKey, T>(T obj) where T : BaseDBModel
         {
-            if (obj.CoreID == 0)
+            if (obj.CoreID.NullEmpty())
             {
                 throw new Exception("无核心编号");
             }
@@ -260,10 +264,11 @@ namespace WL.Core.DataService
         /// <param name="orderStr"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public IEnumerable<T> GetListPaged<T>(int pageIndex, int pageSize, string conditionStr, string orderStr, object param = null)
+        public PageShell<T> GetListPaged<T>(int pageIndex, int pageSize, string conditionStr, string orderStr, object param = null)
         {
             var rg = this.Con.GetListPaged<T>(pageIndex, pageSize, conditionStr, orderStr, param, this.Tran);
-            return rg;
+            var res = rg.Data.PageForList(pageIndex, pageSize, rg.TotalCount);
+            return res;
         }
         #endregion
 
@@ -275,7 +280,7 @@ namespace WL.Core.DataService
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int Update<T>(T obj, IList<string> updateIgnoreField = null) where T : BaseModel
+        public int Update<T>(T obj, IList<string> updateIgnoreField = null) where T : BaseDBModel
         {
             var defIgnoreList = new List<string> { "IsDel", "AddUser", "AddTime", "ProjectID" };
             if (updateIgnoreField.IsNull())
@@ -423,6 +428,33 @@ namespace WL.Core.DataService
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 创建一个数字字符串ID
+        /// </summary>
+        /// <returns></returns>
+        public string NewNumStrID()
+        {
+            return DateTime.Now.DateTimeID().ToString();
+        }
+
+        /// <summary>
+        /// 创建一个Long ID
+        /// </summary>
+        /// <returns></returns>
+        public long NewLongID()
+        {
+            return DateTime.Now.DateTimeID();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string NewGUID()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "");
         }
         #endregion
         #endregion

@@ -360,7 +360,7 @@ namespace Dapper
         /// <param name="transaction"></param>
         /// <param name="commandTimeout"></param>
         /// <returns>Gets a paged list of entities with optional exact match where conditions</returns>
-        public static IEnumerable<T> GetListPaged<T>(this IDbConnection connection, int pageNumber, int rowsPerPage, string conditions, string orderby, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        public static (IEnumerable<T> Data, long TotalCount) GetListPaged<T>(this IDbConnection connection, int pageNumber, int rowsPerPage, string conditions, string orderby, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             if (string.IsNullOrEmpty(_getPagedListSql))
                 throw new Exception("分页功能不支持当前方言（SQL库） GetListPage is not supported with the current SQL Dialect");
@@ -383,7 +383,7 @@ namespace Dapper
 
             //create a new empty instance of the type to get the base properties
             BuildSelect(sb, GetScaffoldableProperties<T>().ToArray());
-            query = query.Replace("{SelectColumns}", sb.ToString());
+            //
             query = query.Replace("{TableName}", name);
             query = query.Replace("{PageNumber}", pageNumber.ToString());
             query = query.Replace("{RowsPerPage}", rowsPerPage.ToString());
@@ -395,10 +395,16 @@ namespace Dapper
             query = query.Replace("{WhereClause}", conditions + " AND IsDel = 0");
             query = query.Replace("{Offset}", ((pageNumber - 1) * rowsPerPage).ToString());
 
+            string queryCountSql = query.Replace("{SelectColumns}", "COUNT(1)");
+
+            query = query.Replace("{SelectColumns}", sb.ToString());
+
             if (Debugger.IsAttached)
                 Trace.WriteLine(String.Format("GetListPaged<{0}>: {1}", currenttype, query));
 
-            return connection.Query<T>(query, parameters, transaction, true, commandTimeout);
+            long totalCount = connection.ExecuteScalar<long>(queryCountSql, parameters, transaction, commandTimeout);
+
+            return (connection.Query<T>(query, parameters, transaction, true, commandTimeout), totalCount);
         }
 
         /// <summary>
@@ -705,7 +711,9 @@ namespace Dapper
             }
 
             if (Debugger.IsAttached)
-                Trace.WriteLine(String.Format("DeleteList<{0}> {1}", currenttype, sb));
+            {
+                Trace.WriteLine(string.Format("DeleteList<{0}> {1}", currenttype, sb));
+            }
 
             return connection.Execute(sb.ToString(), whereConditions, transaction, commandTimeout);
         }

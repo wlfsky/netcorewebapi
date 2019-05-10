@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WL.Core.Model
 {
+    [Obsolete("废弃: 新 WL.Core.DBModel.BaseDBModel", true)]
     [Serializable]
     public class BaseModel
     {

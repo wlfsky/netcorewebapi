@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="1.60.1" />
+    <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="Dapper.Contrib" Version="1.60.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="SQLitePCLRaw.core" Version="1.1.13" />
@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WL.Core.DataCommon\WL.Core.DataCommon.csproj" />
+    <ProjectReference Include="..\WL.Core.DBModel\WL.Core.DBModel.csproj" />
     <ProjectReference Include="..\WL.Core.Model\WL.Core.Model.csproj" />
     <ProjectReference Include="..\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>

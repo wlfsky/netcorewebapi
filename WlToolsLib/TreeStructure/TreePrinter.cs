@@ -62,13 +62,16 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         /// <param name="parentNode">指定的父节点</param>
         /// <returns>迭代的结果</returns>
-        private IEnumerable<TNode> ChildNode(TNode parentNode)
+        private IEnumerable<BaseNode<TKey>> ChildNode(TNode parentNode)
         {
-            foreach (var n in parentNode.ChildrenNodes)
+            if (parentNode != null && parentNode.ChildrenNotNull())
             {
-                if (n is TNode)
+                foreach (var n in parentNode.ChildrenNodes)
                 {
-                    yield return n as TNode;
+                    if (n is TNode)
+                    {
+                        yield return n as BaseNode<TKey>;
+                    }
                 }
             }
         }
@@ -77,13 +80,16 @@ namespace WlToolsLib.TreeStructure
         /// </summary>
         /// <param name="parentNode">指定的父节点</param>
         /// <returns>迭代的结果</returns>
-        private IEnumerable<TLeaf> ChildLeaf(TNode parentNode)
+        private IEnumerable<BaseLeaf<TKey>> ChildLeaf(TNode parentNode)
         {
-            foreach (var l in parentNode.ChildrenNodes)
+            if (parentNode != null && parentNode.ChildrenNotNull())
             {
-                if (l is TLeaf)
+                foreach (var l in parentNode.ChildrenNodes)
                 {
-                    yield return l as TLeaf;
+                    if (l is TLeaf)
+                    {
+                        yield return l as BaseLeaf<TKey>;
+                    }
                 }
             }
         }

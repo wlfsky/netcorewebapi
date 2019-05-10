@@ -99,7 +99,7 @@ namespace WlToolsLib.TreeStructure
                 node.Deep = parent.Deep + 1;
                 node.NodeType = NodeType.Node;
                 node.Parent = parent;
-                parent.Add(node);
+                parent.ChildrenNodes.Add(node);
                 //sourceNode.Remove(node);
                 //递归
                 BindNodeLeaf(node, sourceNode, sourceLeaf);
@@ -114,7 +114,7 @@ namespace WlToolsLib.TreeStructure
                 leaf.Deep = parent.Deep + 1;
                 leaf.NodeType = NodeType.Leaf;
                 leaf.Parent = parent;
-                parent.Add(leaf);
+                parent.ChildrenNodes.Add(leaf);
                 //sourceLeaf.Remove(leaf);
             }
         }
