@@ -18,6 +18,20 @@ namespace WL.Core.ConsoleApp
         {
             WriteLine("Hello World!");
             WriteLine("开始测试！");
+
+            #region --多播委托测试--
+            WriteLine("多播委托测试");
+            Func<int> f = null;
+            Func<int> f1 = () => { WriteLine("100"); return 100; };
+            Func<int> f2 = () => { WriteLine("200"); return 200; };
+            var x = f.MBFunc(f1).MBFunc(f2)();
+            WriteLine(x);
+            WriteLine("");
+            WriteLine("打印f:");
+            WriteLine(f);
+            WriteLine("多播委托测试  == END");
+            #endregion
+
             ref_func();
 
             JoinUs();
@@ -81,7 +95,7 @@ namespace WL.Core.ConsoleApp
 
             #region --yield 简化 连续的 是真时能转换 委托====测试--
             var x1 = new List<int>() { 1, 2, 3, 4 };
-            foreach (var item in new Program().TrueCanTrans(x1, z=>z>1, z=>z+1))
+            foreach (var item in new Program().TrueCanTrans(x1, z => z > 1, z => z + 1))
             {
                 WriteLine(item.ToString());
             }
@@ -129,7 +143,8 @@ namespace WL.Core.ConsoleApp
         public void Check()
         {
             var b = new Book();
-            var c = new Dictionary<string, Func<bool>>() {
+            var c = new Dictionary<string, Func<bool>>()
+            {
                 ["无数据"] = () => b.IsNull(),
                 ["无id"] = () => b.BookID <= 0,
                 ["无价格"] = () => b.BookPrice <= 0m
@@ -145,7 +160,7 @@ namespace WL.Core.ConsoleApp
             {
                 // return info;
             }
-            
+
             var d = b.GetType().GetProperties().First().PropertyType.Name;
         }
 
@@ -252,7 +267,7 @@ namespace WL.Core.ConsoleApp
         }
         #endregion
 
-        
+
     }
 
     #region --临时扩展--

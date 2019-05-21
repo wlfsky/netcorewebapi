@@ -10,4 +10,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\WL.Core.DataCommon\WL.Core.DataCommon.csproj" />
+    <ProjectReference Include="..\..\WL.Core.DataService\WL.Core.DataService.csproj" />
+    <ProjectReference Include="..\..\WL.Core.DBModel\WL.Core.DBModel.csproj" />
+    <ProjectReference Include="..\..\WlToolsLib\WlToolsLib.csproj" />
+    <ProjectReference Include="..\WL.Account.DataService\WL.Account.DataService.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -19,6 +19,8 @@ namespace WlToolsLib.i18n
         /// <returns></returns>
         public static LanguageDic AllLang()
         {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
             string base_path = "F:\\github\\netcorewebapi\\WL.Core.ConsoleApp\\i18n\\";
             if (CurrLangDic == null)
             {

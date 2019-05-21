@@ -783,5 +783,13 @@ namespace WL.Core.ConsoleApp
         }
 
         #endregion
+
+        #region --多播委托扩展--
+        public static Func<T> MBFunc<T>(this Func<T> self, Func<T> f1)
+        {
+            self += f1;
+            return self;
+        }
+        #endregion
     }
 }

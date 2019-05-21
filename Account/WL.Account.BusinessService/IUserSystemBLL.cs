@@ -15,17 +15,18 @@ namespace WL.Account.BusinessService
     /// </summary>
     public interface IUserSystemBLL
     {
-        DataShell<PageShell<UserAccount>> GetPage(PageCondition<UserAccount> userp);
-
-        DataShell<UserAccount> Insert(UserAccount user);
-
         DataShell<UserAccount> Get(UserAccount user);
+        //DataShell<PageShell<UserAccount>> GetPage(PageCondition<UserAccount> userp);
 
-        DataShell<IEnumerable<UserAccount>> GetList(UserAccount user);
+        //DataShell<UserAccount> Insert(UserAccount user);
 
-        DataShell<UserAccount> Update(UserAccount user);
+        
 
-        DataShell<int> Del(UserAccount user);
+        //DataShell<IEnumerable<UserAccount>> GetList(UserAccount user);
+
+        //DataShell<UserAccount> Update(UserAccount user);
+
+        //DataShell<int> Del(UserAccount user);
 
     }
 }

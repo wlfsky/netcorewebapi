@@ -291,7 +291,7 @@ namespace WlToolsLib.Extension
         }
         #endregion
 
-        #region --编辑字符串--
+        #region --编辑字符串(首字母大小写转换)--
         /// <summary>
         /// 首字母大写
         /// </summary>
@@ -304,6 +304,20 @@ namespace WlToolsLib.Extension
                 return self;
             }
             return self[0].ToString().ToUpper() + self.Substring(1);
+        }
+
+        /// <summary>
+        /// 首字母小写
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static string HeadLower(this string self)
+        {
+            if (self.NullEmpty())
+            {
+                return self;
+            }
+            return self[0].ToString().ToLower() + self.Substring(1);
         }
         #endregion
 
@@ -402,6 +416,7 @@ namespace WlToolsLib.Extension
             return t;
         }
         #endregion
+
         #region --字符串转换utf-8的 ReadOnlyMemory<byte>--
         /// <summary>
         /// 字符串转编码
@@ -421,6 +436,50 @@ namespace WlToolsLib.Extension
             }
             var t = new ReadOnlyMemory<byte>(code.GetBytes(self));
             return t;
+        }
+        #endregion
+
+        #region --编码转换类方法--
+        /// <summary>
+        /// 字符串转换Url编码
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static string ToUrlEncode(this string self)
+        {
+            if (self.NullEmpty())
+            {
+                return string.Empty;
+            }
+            StringBuilder sb = new StringBuilder();
+            byte[] byStr = System.Text.Encoding.UTF8.GetBytes(self); //默认是System.Text.Encoding.Default.GetBytes(str)
+            for (int i = 0; i < byStr.Length; i++)
+            {
+                sb.Append(@"%" + Convert.ToString(byStr[i], 16));
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 转换base64编码字符串
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static string ToBase64Str(this string self, Encoding encoding = null)
+        {
+            if (self.NullEmpty())
+            {
+                return string.Empty;
+            }
+            if (encoding.IsNull())
+            {
+                encoding = Encoding.UTF8;
+            }
+            byte[] byteStr = encoding.GetBytes(self);
+            var res = Convert.ToBase64String(byteStr);
+            return res;
         }
         #endregion
     }
