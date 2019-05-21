@@ -42,17 +42,19 @@ namespace WL.Account.BusinessService
             return res;
         }
 
+        //public DataShell<IEnumerable<UserAccount>> GetList(UserAccount user)
+        //{
+        //    var res = ReqResTransShell<UserAccount, UserAccountDBModel, IEnumerable<UserAccountDBModel>, IEnumerable<UserAccount>>(user, (rq) => _userDAL.GetList(rq));
+        //    return res;
+        //}
+
         //public DataShell<UserAccount> Insert(UserAccount user)
         //{
         //    var res = ReqResTransShell<UserAccount, UserAccountDBModel, UserAccountDBModel, UserAccount>(user, (d) => _userDAL.Insert(d));
         //    return res;
         //}
 
-        //public DataShell<IEnumerable<UserAccount>> GetList(UserAccount user)
-        //{
-        //    var res = ReqResTransShell<UserAccount, UserAccountDBModel, IEnumerable<UserAccountDBModel>, IEnumerable<UserAccount>>(user, (rq) => _userDAL.GetList(rq));
-        //    return res;
-        //}
+
 
         //public DataShell<PageShell<UserAccount>> GetPage(PageCondition<UserAccount> userp)
         //{

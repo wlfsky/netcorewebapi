@@ -30,8 +30,9 @@ namespace WL.Core.WebApp.Controllers
 
         public IActionResult User()
         {
-            var r = _userSystemBLL.GetList(new UserAccount());
-            return Json(r);
+            //var r = _userSystemBLL.GetList(new UserAccount());
+            //return Json(r);
+            return View();
         }
     }
 }

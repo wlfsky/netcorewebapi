@@ -10,8 +10,8 @@ namespace XUnitTestProject
         public void Test_GetList()
         {
             UserSystemBLL test_dal = new UserSystemBLL();
-            var r = test_dal.GetList(new WL.Account.Model.Business.UserAccount());
-            Console.WriteLine(r);
+            //var r = test_dal.GetList(new WL.Account.Model.Business.UserAccount());
+            //Console.WriteLine(r);
         }
 
         [Fact]

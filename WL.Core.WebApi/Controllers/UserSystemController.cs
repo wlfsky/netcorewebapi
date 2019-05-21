@@ -36,7 +36,7 @@ namespace WL.Core.WebApi.Controllers
             LogInfo("use /user/get 超级日志 info");
             //_logger.LogWarning("use /user/get 超级日志 warning");
             //_logger.LogError("use /user/get 超级日志 error");
-            var r = _userSystemBLL.GetList(new UserAccount());
+            var r = new DataShell<IEnumerable<UserAccount>>();// _userSystemBLL.GetList(new UserAccount());
             return r;
         }
 
