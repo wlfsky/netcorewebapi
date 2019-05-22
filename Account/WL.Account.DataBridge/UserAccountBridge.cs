@@ -13,11 +13,13 @@ namespace WL.Account.DataBridge
         public UserAccountBridge()
         {
             bridge = new WebApiServiceBridge();
+            bridge.Version = 1;
         }
 
         public DataShell<UserAccountDBModel> Get(UserAccountDBModel user)
         {
-            var res = bridge.CallApi<UserAccountDBModel, DataShell<UserAccountDBModel>>(user);
+            string funcUrl = "/UserAccount/get";
+            var res = bridge.CallApi<UserAccountDBModel, DataShell<UserAccountDBModel>>(funcUrl, user);
             return res;
         }
     }

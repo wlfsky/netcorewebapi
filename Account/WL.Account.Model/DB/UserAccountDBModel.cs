@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using WL.Account.Model.Enum;
 using WL.Core.DBModel;
 
@@ -7,11 +8,13 @@ namespace WL.Account.Model.DB
     /// <summary>
     /// 帐号数据模型
     /// </summary>
+    [Table("WL_USERACCOUNT")]
     public class UserAccountDBModel : BaseDBModel
     {
         /// <summary>
         /// 帐号编号
         /// </summary>
+        [Key]
         public string AccountID { get; set; }
         /// <summary>
         /// 帐号
@@ -22,9 +25,9 @@ namespace WL.Account.Model.DB
         /// </summary>
         public string Password { get; set; }
         /// <summary>
-        /// 二级密码
+        /// 高级密码
         /// </summary>
-        public string Password2 { get; set; }
+        public string HighPsaaword { get; set; }
         /// <summary>
         /// 帐号关联电子邮件
         /// </summary>
@@ -50,13 +53,13 @@ namespace WL.Account.Model.DB
         /// </summary>
         public AccountStatus Status { get; set; }
         /// <summary>
-        /// 验证码（短信，邮件）
+        /// 临时密码，验证码（短信，邮件）
         /// </summary>
-        public string TempVerifyCode { get; set; }
+        public string TempPassword { get; set; }
         /// <summary>
-        /// 验证码过期时间
+        /// 临时密码，验证码过期时间
         /// </summary>
-        public DateTime TempVerifyCodeOverTime { get; set; }
+        public string TempPassOverTime { get; set; }
         /// <summary>
         /// 总登录次数
         /// </summary>
@@ -65,9 +68,14 @@ namespace WL.Account.Model.DB
         /// 最后登录时间
         /// </summary>
         public DateTime LastLoginTime { get; set; }
-
-
-
+        /// <summary>
+        /// 扩展信息
+        /// </summary>
+        public string ExtensionInfo { get; set; }
+        /// <summary>
+        /// 备注信息
+        /// </summary>
+        public string Remark { get; set; }
         /// <summary>
         /// 用户id
         /// </summary>

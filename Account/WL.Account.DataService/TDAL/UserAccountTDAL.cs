@@ -16,14 +16,14 @@ namespace WL.Account.DataService
     /// 用户帐号dal
     /// 以表为单位
     /// </summary>
-    public class AccountTDAL : BaseConn
+    public class UserAccountTDAL : BaseConn
     {
-        public AccountTDAL(IDbConnection conn) : this(conn, null)
+        public UserAccountTDAL(IDbConnection conn) : this(conn, null)
         {
 
         }
 
-        public AccountTDAL(IDbConnection conn, IDbTransaction tran) : base(conn, tran)
+        public UserAccountTDAL(IDbConnection conn, IDbTransaction tran) : base(conn, tran)
         {
             // 这4个参数设置只是为了提高底层效率
             this.TableName = "WL_USERACCOUNT";

@@ -29,7 +29,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var result = dal.GetPage(accountp);
                     return result;
@@ -46,7 +46,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var result = dal.GetSingle(account);
                     return result;
@@ -64,7 +64,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
 #if DEBUG
                     try
@@ -97,7 +97,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var uid = dal.NewUserID();
                     account.AccountID = Convert.ToString(uid.Data);
@@ -121,7 +121,7 @@ namespace WL.Account.DataService
             {
                 using (var uk = new UniteWork(conn))//启动事务
                 {
-                    var dal = new AccountTDAL(conn, uk.Tran);
+                    var dal = new UserAccountTDAL(conn, uk.Tran);
                     var uid = dal.NewUserID();
                     account.AccountID = Convert.ToString(uid.Data);
                     var result = dal.Insert(account);
@@ -145,7 +145,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var result = dal.Update(account);
                     return result;
@@ -162,7 +162,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var result = dal.Del(account);
                     return result;
@@ -179,7 +179,7 @@ namespace WL.Account.DataService
         {
             using (var conn = ConnFactory.GetUserConn())
             {
-                using (var dal = new AccountTDAL(conn))
+                using (var dal = new UserAccountTDAL(conn))
                 {
                     var result = dal.DelList(accountids);//要测试是否可行
                     return result;

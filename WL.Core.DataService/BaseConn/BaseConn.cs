@@ -52,7 +52,11 @@ namespace WL.Core.DataService
         public string KeyName { get; set; }
         public Type KeyType { get; set; }
 
+        public static readonly string CreatorField = "Creator";
         public static readonly string CreateTimeField = "CreateTime";
+        public static readonly string EditorField = "Editor";
+        public static readonly string EditTimeField = "EditTime";
+        public static readonly string IsDelField = "IsDel";
 
         /// <summary>
         /// 打开数据库连接
@@ -282,7 +286,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int Update<T>(T obj, IList<string> updateIgnoreField = null) where T : BaseDBModel
         {
-            var defIgnoreList = new List<string> { "IsDel", "AddUser", "AddTime", "ProjectID" };
+            var defIgnoreList = new List<string> { IsDelField, CreatorField, CreateTimeField };
             if (updateIgnoreField.IsNull())
             {
                 updateIgnoreField = defIgnoreList;
@@ -327,7 +331,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int Update<T>(T obj, string updateStr, string conditionStr, object param = null)
         {
-            string sqlStr = $"UPDATE {TableName} SET {updateStr}, ModifyTime=systimestamp WHERE {conditionStr}";
+            string sqlStr = $"UPDATE {TableName} SET {updateStr}, {EditTimeField}=systimestamp WHERE {conditionStr}";
             var r = this.Con.Execute(sqlStr, param, this.Tran);
             return r;
         }
@@ -356,7 +360,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int DelList(string conditionStr, object param = null)
         {
-            string sqlStr = $"UPDATE {this.TableName} SET IsDel=1 WHERE {conditionStr} AND IsDel = 0";
+            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1 WHERE {conditionStr} AND {IsDelField} = 0";
             var result = this.Con.Execute(sqlStr, param, this.Tran);
             return result;
         }
@@ -398,7 +402,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int DelList<TKey>(IEnumerable<TKey> ids)
         {
-            string sqlStr = $"UPDATE {this.TableName} SET IsDel=1 WHERE {this.KeyName} IN :IDs AND IsDel = 0";
+            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1 WHERE {this.KeyName} IN :IDs AND {IsDelField} = 0";
             var result = this.Con.Execute(sqlStr, new { @IDs = ids }, this.Tran);
             return result;
         }

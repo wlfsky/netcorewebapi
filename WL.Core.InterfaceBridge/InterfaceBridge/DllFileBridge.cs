@@ -6,7 +6,15 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
 {
     public class DllFileBridge : IServiceBridge
     {
+        public IUrlMaker ServiceUrlMaker { get; set; }
+        public int Version { get; set; }
+
         public TRes CallApi<TReq, TRes>(TReq req)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TRes CallApi<TReq, TRes>(string url, TReq req)
         {
             throw new NotImplementedException();
         }

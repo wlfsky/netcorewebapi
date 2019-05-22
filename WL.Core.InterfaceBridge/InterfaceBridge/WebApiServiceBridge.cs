@@ -8,11 +8,31 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
 {
     public class WebApiServiceBridge : IServiceBridge
     {
-        public TRes CallApi<TReq, TRes>(TReq req)
+        /// <summary>
+        /// 服务地址生成器
+        /// </summary>
+        public IUrlMaker ServiceUrlMaker { get; set; }
+
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public int Version { get; set; }
+        
+        /// <summary>
+        /// 呼叫api
+        /// </summary>
+        /// <typeparam name="TReq"></typeparam>
+        /// <typeparam name="TRes"></typeparam>
+        /// <param name="funcUrl"></param>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public TRes CallApi<TReq, TRes>(string funcUrl, TReq req)
         {
-            string resStr = "";
+            string resStr = string.Empty;
+
+            var fullUrl = ServiceUrlMaker.MakerUrl(this, funcUrl);
             var t = Task.Run(async () => {
-                resStr = await CallApi(ReqTrans(req));
+                resStr = await CallApi(funcUrl, ReqTrans(req));
             });
             Task.WaitAll(t);
             return ResTrans<TRes>(resStr);
@@ -28,7 +48,7 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
             throw new NotImplementedException();
         }
 
-        protected async Task<string> CallApi(string reqStr)
+        protected async Task<string> CallApi(string funcUrl, string reqStr)
         {
             using (var client = new HttpClient())
             {
@@ -36,7 +56,7 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
                 {
                     HttpContent content = new StringContent(reqStr);
                     content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage response = await client.PostAsync("http://255.255.255.254:5000/api/auth", content);
+                    HttpResponseMessage response = await client.PostAsync(funcUrl, content);
                     //改成自己的 
                     response.EnsureSuccessStatusCode();
                     //用来抛异常的 

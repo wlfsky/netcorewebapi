@@ -18,7 +18,7 @@ namespace WL.Account.DataService.WebApi.Controllers
 
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet]
         public DataShell<UserAccountDBModel> Get(UserAccountDBModel user)
         {
             var res = _userDAL.Get(user);
