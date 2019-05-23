@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WlToolsLib.JsonHelper;
 
 namespace WL.Core.InterfaceBridge.InterfaceBridge
 {
@@ -17,6 +18,11 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
         /// 版本
         /// </summary>
         public int Version { get; set; }
+
+        public WebApiServiceBridge()
+        {
+            ServiceUrlMaker = new DefaultUrlMaker();
+        }
         
         /// <summary>
         /// 呼叫api
@@ -32,7 +38,7 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
 
             var fullUrl = ServiceUrlMaker.MakerUrl(this, funcUrl);
             var t = Task.Run(async () => {
-                resStr = await CallApi(funcUrl, ReqTrans(req));
+                resStr = await CallApi("http://localhost:5000/api/useraccount/", ReqTrans(req));
             });
             Task.WaitAll(t);
             return ResTrans<TRes>(resStr);
@@ -40,12 +46,12 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
 
         public string ReqTrans<TReq>(TReq req)
         {
-            throw new NotImplementedException();
+            return req.ToJson();
         }
 
         public TRes ResTrans<TRes>(string reqStr)
         {
-            throw new NotImplementedException();
+            return reqStr.ToObj<TRes>();
         }
 
         protected async Task<string> CallApi(string funcUrl, string reqStr)

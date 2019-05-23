@@ -42,7 +42,13 @@ namespace WL.Account.DataService.WebApi
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            //app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{controller=UserAccount}/{action=Get}/{id?}");
+            });
         }
     }
 }

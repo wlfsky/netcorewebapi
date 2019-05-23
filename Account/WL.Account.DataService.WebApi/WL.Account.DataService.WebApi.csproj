@@ -19,4 +19,13 @@
     <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Configs\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy $(SolutionDir)WL.Core.WebApp\Data\SqliteDBFile.db3 $(ProjectDir)Data /Y&#xD;&#xA;xcopy $(SolutionDir)WL.Core.WebApp\Configs\*.* $(ProjectDir)Configs /Y&#xD;&#xA;xcopy $(SolutionDir)WL.Core.WebApp\Data\SqliteDBFile.db3 $(OutDir)Data /Y&#xD;&#xA;xcopy $(SolutionDir)WL.Core.WebApp\Configs\*.* $(OutDir)Configs /Y&#xD;&#xA;rem &quot;pwsh -wd $(OutDir) -c \&quot;&amp; dotnet WL.Account.DataService.WebApi.dll\&quot;&quot;&#xD;&#xA;" />
+  </Target>
+
 </Project>

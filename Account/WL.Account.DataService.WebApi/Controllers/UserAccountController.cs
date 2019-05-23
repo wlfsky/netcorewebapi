@@ -17,8 +17,20 @@ namespace WL.Account.DataService.WebApi.Controllers
         private IUserAccountDAL _userDAL;
 
 
-        // GET api/values/5
+        public UserAccountController()
+        {
+            _userDAL = new UserAccountDAL();
+        }
+
         [HttpGet]
+        public string Ping(string xi)
+        {
+            return "{\"GBC\":\"X!a..." + xi + "\"}";
+        }
+
+
+        // GET api/values/5
+        [HttpPost]
         public DataShell<UserAccountDBModel> Get(UserAccountDBModel user)
         {
             var res = _userDAL.Get(user);
