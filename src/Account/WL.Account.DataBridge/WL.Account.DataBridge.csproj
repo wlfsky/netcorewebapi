@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\WL.Core.InterfaceBridge\WL.Core.InterfaceBridge.csproj" />
+    <ProjectReference Include="..\WL.Account.DataService\WL.Account.DataService.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+  </ItemGroup>
+
+</Project>

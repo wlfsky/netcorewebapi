@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\WL.Core.Common\WL.Core.Common.csproj" />
+    <ProjectReference Include="..\..\Core\WL.Core.DataCommon\WL.Core.DataCommon.csproj" />
+    <ProjectReference Include="..\..\Core\WL.Core.DataService\WL.Core.DataService.csproj" />
+    <ProjectReference Include="..\..\Core\WL.Core.DBModel\WL.Core.DBModel.csproj" />
+    <ProjectReference Include="..\..\Core\WlToolsLib\WlToolsLib.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+  </ItemGroup>
+
+</Project>
