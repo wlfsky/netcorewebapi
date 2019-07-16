@@ -21,7 +21,7 @@ namespace WL.Account.BusinessBridge
 
         public DataShell<AccountModel> Get(AccountModel user)
         {
-            string funcUrl = "/UserAccount/get";
+            string funcUrl = "/api/UserAccount/get";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
             return res;
         }

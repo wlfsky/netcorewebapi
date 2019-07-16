@@ -11,10 +11,12 @@ namespace WL.Account.BusinessBridge
     /// </summary>
     public class AccountBusinessUrlMaker : IUrlMaker
     {
+        public string BaseUrl { get; set; } = "http://localhost:9021";
+
         // 要素：地址，版本 
         public string MakerUrl(IServiceBridge bridge, string funcUrl)
         {
-            return $"http://localhost:9021/api{funcUrl}";
+            return $"{this.BaseUrl}{funcUrl}";
         }
     }
 }

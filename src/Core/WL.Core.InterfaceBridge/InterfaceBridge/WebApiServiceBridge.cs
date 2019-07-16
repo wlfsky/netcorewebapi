@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WlToolsLib.DataShell;
+using WlToolsLib.EasyHttpClient;
+using WlToolsLib.Extension;
 using WlToolsLib.JsonHelper;
 
 namespace WL.Core.InterfaceBridge.InterfaceBridge
@@ -38,9 +41,11 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
 
             var fullUrl = ServiceUrlMaker.MakerUrl(this, funcUrl);
             var t = Task.Run(async () => {
-                resStr = await CallApi(fullUrl, ReqTrans(req));
+                IEasyHttpClient hc = new DefaultEasyHttpClient();
+                resStr = await hc.SetBaseUrl(this.ServiceUrlMaker.BaseUrl).Post<TReq>(funcUrl, req);
             });
             Task.WaitAll(t);
+            Console.WriteLine($"接口桥返回数据:{resStr}");
             return ResTrans<TRes>(resStr);
         }
 
@@ -49,23 +54,32 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
             return req.ToJson();
         }
 
-        public TRes ResTrans<TRes>(string reqStr)
+        public TRes ResTrans<TRes>(string resStr)
         {
-            return reqStr.ToObj<TRes>();
+            if (resStr.NullEmpty())
+            {
+                resStr = DataShellCreator.CreateFail<object>("响应结果为空").ToJson();
+            }
+            return resStr.ToObj<TRes>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="funcUrl"></param>
+        /// <param name="reqStr"></param>
+        /// <returns></returns>
+        [Obsolete("不再使用，具体功能交给了 wl lib的easyhttpclient")]
         protected async Task<string> CallApi(string funcUrl, string reqStr)
         {
             using (var client = new HttpClient())
             {
                 try
                 {
-                    HttpContent content = new StringContent(reqStr);
-                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    HttpContent content = new StringContent(reqStr, Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync(funcUrl, content);
                     //改成自己的 
-                    response.EnsureSuccessStatusCode();
-                    //用来抛异常的 
+                    response.EnsureSuccessStatusCode();//用来抛异常的 
                     string responseBody = await response.Content.ReadAsStringAsync();
                     return responseBody;
                 }
@@ -74,6 +88,12 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
                     return e.Message;
                 }
             }
+
+            #region --和--
+            // zhushi \
+            var dd = 100;
+            #endregion
+
 
             //using (HttpClient client = new HttpClient())
             //{

@@ -76,6 +76,21 @@ namespace WlToolsLib.DataShell
             return t;
         }
 
+        /// <summary>
+        /// 默认初始化一个失败的数据壳，写入exception
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="exception"></param>
+        /// <returns></returns>
+        public static DataShell<T> CreateFail<T>(Exception exception)
+        {
+            var t = new DataShell<T>();
+            t.Failed(exception.Message);
+            t.AddInfoDetail(exception.StackTrace);
+            //t.ExceptionList.Add(exception);
+            return t;
+        }
+
         #endregion --静态初始化--
     }
 

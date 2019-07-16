@@ -139,7 +139,7 @@ namespace WlToolsLib.DataShell
         /// 代码，当前后端约定代码信息后可使用
         /// 默认 0 表示：无意义
         /// </summary>
-        public int Code { get; set; }
+        public int Code { get; set; } = 0;
 
         /// <summary>
         /// 获取或设置一个值，该值指示-信息，如果出错返回错误信息
@@ -147,9 +147,25 @@ namespace WlToolsLib.DataShell
         public IList<string> Infos { get; set; }
 
         /// <summary>
+        /// 获取或设置一个值，该值指示-信息，如果出错返回错误详细信息
+        /// </summary>
+        public IList<string> InfoDetail { get; set; } = new List<string>();
+
+        /// <summary>
         /// 信息
         /// </summary>
-        public string Info { get { return string.Join(",", this.Infos); } set { if (!value.NullEmpty()) this.Infos.Add(value); } }
+        public string Info
+        {
+            get { return string.Join(",", this.Infos); }
+            set
+            {
+                // 不空切没有此错误信息就加入，重复的不加入
+                if (!value.NullEmpty() && !this.Infos.Any((i) => i == value))
+                {
+                    this.Infos.Add(value);
+                }
+            }
+        }
 
         /// <summary>
         /// 获取一个值，该值指示-结果时间
@@ -220,6 +236,7 @@ namespace WlToolsLib.DataShell
         {
             this.Success = false;
             this.Code = -1;
+            this.Data = default(TResult);
             return this;
         }
 
@@ -230,7 +247,7 @@ namespace WlToolsLib.DataShell
         public DataShell<TResult> Failed(string errorInfo)
         {
             this.Failed();
-            this.Infos.Add(errorInfo);
+            this.AddInfo(errorInfo);
             return this;
         }
 
@@ -256,6 +273,7 @@ namespace WlToolsLib.DataShell
         {
             this.Failed();
             this.Infos.Add(error.Message);
+            this.InfoDetail.Add(error.StackTrace);
             return this;
         }
 
@@ -285,6 +303,20 @@ namespace WlToolsLib.DataShell
         }
 
         /// <summary>
+        /// 添加明细
+        /// </summary>
+        /// <param name="detail"></param>
+        /// <returns></returns>
+        public DataShell<TResult> AddInfoDetail(string detail)
+        {
+            if (detail.NotNullEmpty())
+            {
+                this.InfoDetail.Add(detail);
+            }
+            return this;
+        }
+
+        /// <summary>
         /// 清空信息
         /// </summary>
         /// <returns></returns>
@@ -293,6 +325,19 @@ namespace WlToolsLib.DataShell
             if (this.Infos.HasItem())
             {
                 this.Infos.Clear();
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// 清空异常
+        /// </summary>
+        /// <returns></returns>
+        public DataShell<TResult> ClearExceptions()
+        {
+            if (this.ExceptionList.HasItem())
+            {
+                this.ExceptionList.Clear();
             }
             return this;
         }

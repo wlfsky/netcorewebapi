@@ -23,7 +23,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:9031;https://localhost:9032"
+      "applicationUrl": "http://localhost:9031"
     },
     "WL.Core.WebApi Run": {
       "commandName": "Project",

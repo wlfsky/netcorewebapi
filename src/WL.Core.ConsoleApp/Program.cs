@@ -114,8 +114,7 @@ namespace WL.Core.ConsoleApp
 
 
             #region --接口转换api--
-            var dll1 = "F:\\VSProject\\Projects\\netcorewebapi\\Account\\WL.Account.BusinessService\\bin\\Debug\\netcoreapp2.2\\WL.Account.Model.dll";
-            var dll2 = "F:\\VSProject\\Projects\\netcorewebapi\\WL.Core.ConsoleApp\\bin\\Debug\\netcoreapp2.2\\WL.Core.ConsoleApp.dll";
+            var dll2 = $"{AppDomain.CurrentDomain.BaseDirectory}WL.Core.ConsoleApp.dll";
             new InterfaceToApiController().LoadDll(dll2).Execute();
             #endregion
 
@@ -136,10 +135,24 @@ namespace WL.Core.ConsoleApp
             testObj.BookPrice = 120M;
             #endregion
 
-            #region ----
-            d();
+            #region --python_net--
+            python_net();
             #endregion
 
+            #region --测试重复过滤器--
+            var src_list = new string[] { "a", "b", "c", "d", "2", "b" };
+            foreach (var item in src_list)
+            {
+                (var r, string i) = RepeatFilter<string>.Instance().InsertFilter(item);
+                if (r)
+                {
+                    WriteLine($"发生了重复，重复数据是：{i}");
+                }
+            }
+            RepeatFilter<string>.Instance().Clear();
+            #endregion
+
+            WriteLine($"好像执行完了。读键...");
             ReadKey();
         }
 
@@ -161,7 +174,8 @@ namespace WL.Core.ConsoleApp
         }
         #endregion
 
-        public static void d()
+        #region --python_net--
+        public static void python_net()
         {
             /* 测试后发现pythonnet 现阶段无法 使用 编译可以过。但是运行无法通过，可能主要是编码问题 */
             WriteLine("ypypypypypypypypypypypyp");
@@ -185,7 +199,8 @@ namespace WL.Core.ConsoleApp
             //    WriteLine(a * b);
             //    ReadKey();
             //}
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// 引用局部变量

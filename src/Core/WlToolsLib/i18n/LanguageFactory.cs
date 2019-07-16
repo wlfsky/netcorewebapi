@@ -21,7 +21,7 @@ namespace WlToolsLib.i18n
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
-            string base_path = "F:\\VSProject\\Projects\\netcorewebapi\\WL.Core.ConsoleApp\\i18n\\";
+            string base_path = $"{basePath}..\\..\\..\\i18n\\";
             if (CurrLangDic == null)
             {
                 CurrLangDic = new LanguageDic();
