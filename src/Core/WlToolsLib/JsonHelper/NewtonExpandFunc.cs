@@ -32,14 +32,14 @@ namespace WlToolsLib.JsonHelper
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static string ToJson<T>(this T self, IList<string> showField)
+        public static string ToJson<T>(this T self, IList<string> showField = null, IList<string> ignoreFields = null)
         {
             if (showField.IsNull())
             {
                 showField = new List<string>();
             }
             IJsonHelper jh = new NewtonJsonHelper();
-            var jsonStr = jh.Serialize<T>(self, showField);
+            var jsonStr = jh.Serialize<T>(self, showFields: showField, ignoreFields: ignoreFields);
             return jsonStr;
         }
 

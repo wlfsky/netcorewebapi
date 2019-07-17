@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Compiler\" />
     <Folder Include="JsonHelper\c\" />
-    <Folder Include="LogHelper\" />
   </ItemGroup>
 
 </Project>

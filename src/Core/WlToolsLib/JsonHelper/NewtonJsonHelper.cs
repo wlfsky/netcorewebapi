@@ -114,13 +114,21 @@ namespace WlToolsLib.JsonHelper
         /// <param name="jsonData">需要转换的对象</param>
         /// <param name="showFields">需要显示的字段队列</param>
         /// <returns></returns>
-        public string Serialize<T>(T objData, IList<string> showFields)
+        public string Serialize<T>(T objData, IList<string> showFields = null, IList<string> ignoreFields = null)
         {
             // 加入默认的需要显示的字段，没有这些字段可能导致外部结构不完整，尤其是Data，关系着外部结构和内部结构的关联点
             JsonSerializerSettings jsetting = new JsonSerializerSettings();
-            jsetting.ContractResolver = new LimitPropsContractResolver(showFields.ToArray());
+            if (showFields != null && showFields.Any())
+            {
+                jsetting.ContractResolver = new LimitPropsContractResolver(showFields.ToArray());
+            }
+            else
+            {
+                jsetting.ContractResolver = new LimitPropsContractResolver(showFields.ToArray(), false);
+            }
             return JsonConvert.SerializeObject(objData, jsetting);
         }
+
         public string Serialize(object obj, string[] transArray)
         {
             return "";

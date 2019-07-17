@@ -17,10 +17,18 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
         /// </summary>
         public IUrlMaker ServiceUrlMaker { get; set; }
 
+        public Action<string> Log { get; set; } = (s) => Console.WriteLine(s);
+
         /// <summary>
         /// 版本
         /// </summary>
         public int Version { get; set; }
+
+        private Func<Exception, string> MakeExceptionResult { get; set; } = (ex) =>
+         {
+             var err_res = DataShellCreator.CreateFail<object>(ex);
+             return err_res.ToJson();
+         };
 
         public WebApiServiceBridge()
         {
@@ -40,12 +48,20 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
             string resStr = string.Empty;
 
             var fullUrl = ServiceUrlMaker.MakerUrl(this, funcUrl);
+            var resjson = req.ToJson();
+            Log(fullUrl);
+            Log(resjson);
             var t = Task.Run(async () => {
                 IEasyHttpClient hc = new DefaultEasyHttpClient();
-                resStr = await hc.SetBaseUrl(this.ServiceUrlMaker.BaseUrl).Post<TReq>(funcUrl, req);
+                hc.MakeExceptionResult = (ex) =>
+                {
+                    var err_res = DataShellCreator.CreateFail<TRes>(ex);
+                    return err_res.ToJson();
+                };
+                resStr = await hc.SetBaseUrl(this.ServiceUrlMaker.BaseUrl).Post(funcUrl, resjson);
             });
             Task.WaitAll(t);
-            Console.WriteLine($"接口桥返回数据:{resStr}");
+            Log($"接口桥返回数据:{resStr}");
             return ResTrans<TRes>(resStr);
         }
 
@@ -63,51 +79,5 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
             return resStr.ToObj<TRes>();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="funcUrl"></param>
-        /// <param name="reqStr"></param>
-        /// <returns></returns>
-        [Obsolete("不再使用，具体功能交给了 wl lib的easyhttpclient")]
-        protected async Task<string> CallApi(string funcUrl, string reqStr)
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    HttpContent content = new StringContent(reqStr, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(funcUrl, content);
-                    //改成自己的 
-                    response.EnsureSuccessStatusCode();//用来抛异常的 
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    return responseBody;
-                }
-                catch (HttpRequestException e)
-                {
-                    return e.Message;
-                }
-            }
-
-            #region --和--
-            // zhushi \
-            var dd = 100;
-            #endregion
-
-
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    try
-            //    {
-            //        HttpResponseMessage response = await client.GetAsync("http://255.255.255.254:5000/api/auth");
-            //        response.EnsureSuccessStatusCode();//用来抛异常的 
-            //        string responseBody = await response.Content.ReadAsStringAsync();
-            //    }
-            //    catch (HttpRequestException e)
-            //    {
-            //        //errorlog
-            //    }
-            //}
-        }
     }
 }

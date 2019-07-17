@@ -11,6 +11,8 @@ using System.Text;
 using WlToolsLib.JsonHelper;
 using System.Net.Http.Headers;
 using WlToolsLib.DataShell;
+using System.IO;
+using WlToolsLib.LogHelper;
 
 namespace WlToolsLib.EasyHttpClient
 {
@@ -45,6 +47,12 @@ namespace WlToolsLib.EasyHttpClient
         public static readonly string DefMideaType = "application/json";
 
         /// <summary>
+        /// 日志
+        /// </summary>
+        public Action<string> ErrorLog { get; set; } = s => $"ERROR ==> {s}".SendToErrorLog();
+
+        public void ErrLog(Exception ex) => ex.SendToErrorLog();
+        /// <summary>
         /// 给定http客户端，初始化
         /// </summary>
         /// <param name="client"></param>
@@ -66,17 +74,17 @@ namespace WlToolsLib.EasyHttpClient
             return new Uri($"{this.BaseUrl}{url}");
         }
 
-        protected string MakeError(Exception ex)
-        {
+        //protected string MakeExceptionResult(Exception ex)
+        //{
+        //    var err_res = DataShellCreator.CreateFail<object>(ex);
+        //    return err_res.ToJson(ignoreFields: new[] { "Data" });
+        //}
 
-            return $"Message:{ex.Message} StackTrace:{ex.StackTrace}";
-        }
-
-        protected string MakeError<TRes>(Exception ex)
-        {
-            var err_res = DataShellCreator.CreateFail<TRes>(ex);
-            return err_res.ToJson();
-        }
+        public Func<Exception, string> MakeExceptionResult { get; set; } = (ex) =>
+         {
+             var err_res = DataShellCreator.CreateFail<Object>(ex);
+             return err_res.ToJson();
+         };
 
         /// <summary>
         /// 设置基本路径
@@ -123,58 +131,118 @@ namespace WlToolsLib.EasyHttpClient
             {
                 // 这里要重写
                 var uri = MakeFullUri(url);
-                using (var content = new MultipartFormDataContent("----Upload-WlClient----" + DateTime.Now.ToString(CultureInfo.InvariantCulture)))
+                string tempstr = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                using (var content = new MultipartFormDataContent($"----Upload-WlClient-{tempstr}----"))
                 {
-                    if (header.HasItem())
+                    try
                     {
-                        foreach (var item in header)
+                        //if (header.HasItem())
+                        //{
+                        //    foreach (var item in header)
+                        //    {
+                        //        content.AddHeaderContent(item.Key, item.Value);
+                        //    }
+                        //}
+                        if (form.HasItem())
                         {
-                            content.AddHeaderContent(item.Key, item.Value);
+                            foreach (var item in form)
+                            {
+                                content.AddFormContent(item.Key, item.Value);
+                            }
                         }
+                        if (file.HasItem())
+                        {
+                            foreach (var item in file)
+                            {
+                                content.AddFileContent(item.Key, item.Value);
+                            }
+                        }
+                        return client.PostAsync(uri, content).Result.Content.ReadAsStringAsync();
                     }
-                    if (form.HasItem())
+                    catch (Exception ex)
                     {
-                        foreach (var item in form)
-                        {
-                            content.AddFormContent(item.Key, item.Value);
-                        }
+                        return Task.Run<string>(() => { return MakeExceptionResult(ex); });
                     }
-                    if (file.HasItem())
-                    {
-                        foreach (var item in file)
-                        {
-                            content.AddFileContent(item.Key, item.Value);
-                        }
-                    }
-                    return client.PostAsync(uri, content).Result.Content.ReadAsStringAsync();
                 }
             }
         }
 
         /// <summary>
-        /// Post发送json数据
+        /// post字符串数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="uriStr"></param>
-        /// <param name="obj"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public Task<string> Post<T>(string uriStr, T obj)
+        public Task<string> Post(string uriStr, string data)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
                     var uri = MakeFullUri(uriStr);
-                    var reqJsonStr = obj.ToJson();
-                    HttpContent hc = new StringContent(reqJsonStr, DefEncoding, DefMideaType);
+                    HttpContent hc = new StringContent(data, DefEncoding, DefMideaType);
                     return client.PostAsync(uri, hc).Result.Content.ReadAsStringAsync();
-                   
+
+                }
+                catch (Exception ex)
+                {
+                    ErrLog(ex);
+                    // 这里要用task.run来返回错误信息。
+                    // 只用new Task只返回任务没有实际执行，会一直等待
+                    return Task.Run<string>(() => { return MakeExceptionResult(ex); });
+                }
+            }
+        }
+
+        /// <summary>
+        /// post数据流
+        /// </summary>
+        /// <param name="uriStr"></param>
+        /// <param name="stream"></param>
+        /// <param name="buffSize"></param>
+        /// <returns></returns>
+        public Task<string> Post(string uriStr, Stream stream, int buffSize = 2048)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var uri = MakeFullUri(uriStr);
+                    HttpContent hc = new StreamContent(stream, buffSize);
+                    return client.PostAsync(uri, hc).Result.Content.ReadAsStringAsync();
+
                 }
                 catch (Exception ex)
                 {
                     // 这里要用task.run来返回错误信息。
                     // 只用new Task只返回任务没有实际执行，会一直等待
-                    return Task.Run<string>(() => { return MakeError<T>(ex); });
+                    return Task.Run<string>(() => { return MakeExceptionResult(ex); });
+                }
+            }
+        }
+
+        /// <summary>
+        /// 数据流
+        /// </summary>
+        /// <param name="uriStr"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Task<string> Post(string uriStr, byte[] data)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var uri = MakeFullUri(uriStr);
+                    HttpContent hc = new ByteArrayContent(data);
+                    return client.PostAsync(uri, hc).Result.Content.ReadAsStringAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    // 这里要用task.run来返回错误信息。
+                    // 只用new Task只返回任务没有实际执行，会一直等待
+                    return Task.Run<string>(() => { return MakeExceptionResult(ex); });
                 }
             }
         }
@@ -184,18 +252,21 @@ namespace WlToolsLib.EasyHttpClient
         /// </summary>
         /// <param name="uriStr"></param>
         /// <returns></returns>
-        public Task<string> Get(string url)
+        public Task<string> Get(string url, string data = null)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
                     var uri = MakeFullUri(url);
-                    return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
+                    HttpRequestMessage req = new HttpRequestMessage(new HttpMethod("GET"), uri);
+                    req.Content = new StringContent(data);
+                    return client.SendAsync(req).Result.Content.ReadAsStringAsync();
+                    //return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
                 }
                 catch (Exception ex)
                 {
-                    return Task.Run<string>(() => { return MakeError(ex); });
+                    return Task.Run<string>(() => { return MakeExceptionResult(ex); });
                 }
             }
         }
@@ -207,20 +278,13 @@ namespace WlToolsLib.EasyHttpClient
         /// <param name="uriStr"></param>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public Task<string> Put<TIn>(string uriStr, TIn obj)
+        public Task<string> Put(string uriStr, string data)
         {
             using (HttpClient client = new HttpClient())
             {
                 var uri = new Uri(uriStr);
                 client.BaseAddress = uri;
-                if (HeaderDic.HasItem())
-                {
-                    foreach (var item in HeaderDic)
-                    {
-                        client.DefaultRequestHeaders.Add(item.Key, item.Value);
-                    }
-                }
-                var reqJsonStr = obj.ToJson();
+                var reqJsonStr = data;
                 HttpContent hc = new StringContent(reqJsonStr, DefEncoding, DefMideaType);
                 using (var msg = client.PutAsync(uri, hc).ContinueWith((postTask) => postTask.Result.EnsureSuccessStatusCode()))
                 {
@@ -235,7 +299,7 @@ namespace WlToolsLib.EasyHttpClient
         /// </summary>
         /// <param name="uriStr"></param>
         /// <returns></returns>
-        public Task<string> Delete(string uriStr)
+        public Task<string> Delete(string uriStr, string data = null)
         {
             using (HttpClient client = new HttpClient())
             {

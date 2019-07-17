@@ -42,9 +42,35 @@ namespace WlToolsLib.JsonHelper
             return JsonSerializer.SerializeToString(obj, obj.GetType());
         }
 
-        public string Serialize<TType>(TType j_data, IList<string> ignoreFields)
+        /// <summary>
+        /// 序列化json，带有显示名单和 忽略名单。
+        /// 注意此方法显示名单无效，忽略名单功能有效
+        /// </summary>
+        /// <typeparam name="TType"></typeparam>
+        /// <param name="j_data"></param>
+        /// <param name="showFields"></param>
+        /// <param name="ignoreFields"></param>
+        /// <returns></returns>
+        public string Serialize<TType>(TType obj, IList<string> showFields = null, IList<string> ignoreFields = null)
         {
-            return "";
+            if (ignoreFields != null && ignoreFields.Any())
+            {
+                JsConfig<TType>.ExcludePropertyNames = ignoreFields.ToArray();
+            }
+            #region --还有一写法--
+            // 1.数据成员特性法
+            // 2.数据成员忽略特性法
+            // 3.临时忽略名单法（上面就用的此方法）
+            // 4.类型内定义 特定方法 法
+            // --------------------------
+            /* 1.[DataMember]
+             * 2.[IgnoreDataMember]
+             * 3.JsConfig<TType>.ExcludePropertyNames = new [] { "IsIgnored" };
+             * 4.public bool? ShouldSerialize(string fieldName) { return fieldName == "IsIgnored"; }
+             */
+            #endregion
+            JsConfig<DateTime>.SerializeFn = time => time.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            return JsonSerializer.SerializeToString(obj, obj.GetType());
         }
 
         public T Deserialize<T>(string jsonStr)

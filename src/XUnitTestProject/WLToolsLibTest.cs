@@ -7,6 +7,7 @@ using Xunit;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using WlToolsLib.JsonHelper;
 
 namespace XUnitTestProject
 {
@@ -38,7 +39,7 @@ namespace XUnitTestProject
             {
                 try
                 {
-                    var res = hc.SetBaseUrl("http://localhost:8090").Post("/api/categorys", new { id = "1" });
+                    var res = hc.SetBaseUrl("http://localhost:8090").Post("/api/categorys", new { id = "1" }.ToJson());
                     Debug.WriteLine(res.Result);
 
 
