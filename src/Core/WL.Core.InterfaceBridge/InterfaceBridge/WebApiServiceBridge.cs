@@ -34,6 +34,12 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
         {
             ServiceUrlMaker = new DefaultUrlMaker();
         }
+
+        public IServiceBridge SetUrlMaker(IUrlMaker urlMaker)
+        {
+            this.ServiceUrlMaker = urlMaker;
+            return this;
+        }
         
         /// <summary>
         /// 呼叫api
@@ -48,9 +54,9 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
             string resStr = string.Empty;
 
             var fullUrl = ServiceUrlMaker.MakerUrl(this, funcUrl);
-            var resjson = req.ToJson();
-            Log(fullUrl);
-            Log(resjson);
+            var reqjson = req.ToJson();
+            var logstr = $"URL: {fullUrl}, REQUEST: {reqjson}";
+            Log(logstr);
             var t = Task.Run(async () => {
                 IEasyHttpClient hc = new DefaultEasyHttpClient();
                 hc.MakeExceptionResult = (ex) =>
@@ -58,7 +64,7 @@ namespace WL.Core.InterfaceBridge.InterfaceBridge
                     var err_res = DataShellCreator.CreateFail<TRes>(ex);
                     return err_res.ToJson();
                 };
-                resStr = await hc.SetBaseUrl(this.ServiceUrlMaker.BaseUrl).Post(funcUrl, resjson);
+                resStr = await hc.SetBaseUrl(this.ServiceUrlMaker.BaseUrl).Post(funcUrl, reqjson);
             });
             Task.WaitAll(t);
             Log($"接口桥返回数据:{resStr}");

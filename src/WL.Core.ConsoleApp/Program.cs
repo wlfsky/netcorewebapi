@@ -10,6 +10,8 @@ using WlToolsLib.i18n;
 using WlToolsLib.Extension;
 using System.Threading;
 using System.Diagnostics;
+using WlToolsLib.EasyHttpClient;
+using System.IO;
 
 namespace WL.Core.ConsoleApp
 {
@@ -150,6 +152,15 @@ namespace WL.Core.ConsoleApp
                 }
             }
             RepeatFilter<string>.Instance().Clear();
+            #endregion
+
+            #region --http get 文件流--
+            Task.Run(() =>
+            {
+                int size = 4096;
+                IEasyHttpClient hc = new DefaultEasyHttpClient();
+                hc.SetBaseUrl("http://192.168.21.197:8096").GetToFile("/download/ftg");
+            });
             #endregion
 
             WriteLine($"好像执行完了。读键...");

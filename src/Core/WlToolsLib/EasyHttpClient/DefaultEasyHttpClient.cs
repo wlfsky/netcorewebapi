@@ -173,7 +173,7 @@ namespace WlToolsLib.EasyHttpClient
         /// <param name="uriStr"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Task<string> Post(string uriStr, string data)
+        public Task<string> Post(string uriStr, string data = "")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -252,7 +252,7 @@ namespace WlToolsLib.EasyHttpClient
         /// </summary>
         /// <param name="uriStr"></param>
         /// <returns></returns>
-        public Task<string> Get(string url, string data = null)
+        public Task<string> Get(string url, string data = "")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -272,13 +272,124 @@ namespace WlToolsLib.EasyHttpClient
         }
 
         /// <summary>
+        /// get byte数组
+        /// </summary>
+        /// <param name="uriStr"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Task<byte[]> GetByte(string url, string data = "")
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var uri = MakeFullUri(url);
+                    HttpRequestMessage req = new HttpRequestMessage(new HttpMethod("GET"), uri);
+                    req.Content = new StringContent(data);
+                    return client.SendAsync(req).Result.Content.ReadAsByteArrayAsync();
+                    //return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex)
+                {
+                    return Task.Run<byte[]>(() => { MakeExceptionResult(ex); return new byte[1] { 0 }; });
+                }
+            }
+        }
+
+        /// <summary>
+        /// get stream
+        /// </summary>
+        /// <param name="uriStr"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Task<Stream> GetStream(string url, string data = "")
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var uri = MakeFullUri(url);
+                    HttpRequestMessage req = new HttpRequestMessage(new HttpMethod("GET"), uri);
+                    req.Content = new StringContent(data);
+                    return client.SendAsync(req).Result.Content.ReadAsStreamAsync();
+                    //return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex)
+                {
+                    return Task.Run<Stream>(() => { MakeExceptionResult(ex); return new MemoryStream(); });
+                }
+            }
+        }
+
+        public async void GetToFile(string url, string data = "", string filePath = "temp.file", int buffsize = 51200, Action<int, int> downloading = null)
+        {
+            int currReport = 0, reportSize = 1000;
+            if (downloading == null)
+            {
+                downloading = (trt, ts) => {
+                    currReport++;
+                    if(currReport == reportSize)
+                    {
+                        WriteLine($"TOTAL_SIZE:{ts} TOTAL_TIMES:{trt}");
+                        currReport = 0;
+                    }
+                };
+            }
+            else
+            {
+                downloading += (trt, ts) =>
+                {
+                    currReport++;
+                    if (currReport == reportSize)
+                    {
+                        WriteLine($"TOTAL_SIZE:{ts} TOTAL_TIMES:{trt}");
+                        currReport = 0;
+                    }
+                };
+            }
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var uri = MakeFullUri(url);
+                    HttpRequestMessage req = new HttpRequestMessage(new HttpMethod("GET"), uri);
+                    req.Content = new StringContent(data);
+                    using (var res = client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead).Result)
+                    using (Stream contentStream = await res.Content.ReadAsStreamAsync())
+                    using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
+                    {
+                        byte[] buff = new byte[buffsize];
+                        int readsize = 1;
+                        int totalSize = 0;
+                        int totalReadTimes = 0;
+                        while (readsize > 0)
+                        {
+                            readsize = contentStream.Read(buff, 0, buffsize);
+                            totalSize += readsize;
+                            //contentStream.Flush();
+                            fs.Write(buff, 0, readsize);
+                            fs.Flush();
+                            totalReadTimes++;
+                            downloading(totalReadTimes, totalSize);
+                        }
+                    }
+                    //return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        /// <summary>
         /// put动作提交
         /// </summary>
         /// <typeparam name="TIn"></typeparam>
         /// <param name="uriStr"></param>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public Task<string> Put(string uriStr, string data)
+        public Task<string> Put(string uriStr, string data = "")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -299,7 +410,7 @@ namespace WlToolsLib.EasyHttpClient
         /// </summary>
         /// <param name="uriStr"></param>
         /// <returns></returns>
-        public Task<string> Delete(string uriStr, string data = null)
+        public Task<string> Delete(string uriStr, string data = "")
         {
             using (HttpClient client = new HttpClient())
             {
