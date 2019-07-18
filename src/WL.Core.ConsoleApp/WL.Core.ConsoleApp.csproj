@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\WL.Core.Common\WL.Core.Common.csproj" />
     <ProjectReference Include="..\Core\WL.Core.Model\WL.Core.Model.csproj" />
     <ProjectReference Include="..\Core\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>

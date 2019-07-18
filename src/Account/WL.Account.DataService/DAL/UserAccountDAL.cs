@@ -110,33 +110,6 @@ namespace WL.Account.DataService
         }
 
         /// <summary>
-        /// 事务方式插入新纪录
-        /// 事务范例
-        /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
-        public DataShell<AccountDBModel> TranWork(AccountDBModel account)
-        {
-            using (var conn = ConnFactory.GetUserConn())//打开链接
-            {
-                using (var uk = new UniteWork(conn))//启动事务
-                {
-                    var dal = new UserAccountTDAL(conn, uk.Tran);
-                    var uid = dal.NewUserID();
-                    account.AccountID = Convert.ToString(uid.Data);
-                    var result = dal.Insert(account);
-                    account.Account = "XXEW";
-                    result = dal.Update(account);
-                    account.Email = "XXEW11";
-                    result = dal.Update(account);
-                    uk.Commit();//成功就提交事务
-                    return result;
-                }
-            }
-
-        }
-
-        /// <summary>
         /// 更新
         /// </summary>
         /// <param name="account"></param>
@@ -185,6 +158,35 @@ namespace WL.Account.DataService
                     return result;
                 }
             }
+        }
+        #endregion
+
+        #region --事务类更新--
+        /// <summary>
+        /// 事务方式插入新纪录
+        /// 事务范例
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> TranWork(AccountDBModel account)
+        {
+            using (var conn = ConnFactory.GetUserConn())//打开链接
+            {
+                using (var uk = new UniteWork(conn))//启动事务
+                {
+                    var dal = new UserAccountTDAL(conn, uk.Tran);
+                    var uid = dal.NewUserID();
+                    account.AccountID = Convert.ToString(uid.Data);
+                    var result = dal.Insert(account);
+                    account.Account = "XXEW";
+                    result = dal.Update(account);
+                    account.Email = "XXEW11";
+                    result = dal.Update(account);
+                    uk.Commit();//成功就提交事务
+                    return result;
+                }
+            }
+
         }
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,7 +84,25 @@ namespace WlToolsLib.EasyHttpClient
         /// <returns></returns>
         Task<Stream> GetStream(string uriStr, string data = "");
 
-        void GetToFile(string url, string data = "", string filePath = "temp.file", int buffsize = 51200, Action<int, int> downloading = null);
+        /// <summary>
+        /// Get文件
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data"></param>
+        /// <param name="buffsize"></param>
+        /// <param name="downloading"></param>
+        /// <param name="beforGet"></param>
+        /// <param name="beforReadStream"></param>
+        /// <param name="setFilePath"></param>
+        /// <param name="afterGet"></param>
+        /// <param name="onException"></param>
+        void GetToFile(string url, string data = "", int buffsize = 51200,
+            Action<DateTime, int, int> downloading = null, 
+            Action<HttpRequestMessage> beforGet = null,
+            Action<HttpResponseMessage> beforReadStream = null,
+            Func<HttpResponseMessage, string> setFilePath = null,
+            Action<HttpResponseMessage> afterGet = null,
+            Func<Exception, bool> onException = null);
         /// <summary>
         /// put字符串
         /// </summary>

@@ -12,6 +12,7 @@ using System.Threading;
 using System.Diagnostics;
 using WlToolsLib.EasyHttpClient;
 using System.IO;
+using WL.Core.Common.InterfaceMaker;
 
 namespace WL.Core.ConsoleApp
 {
@@ -117,7 +118,8 @@ namespace WL.Core.ConsoleApp
 
             #region --接口转换api--
             var dll2 = $"{AppDomain.CurrentDomain.BaseDirectory}WL.Core.ConsoleApp.dll";
-            new InterfaceToApiController().LoadDll(dll2).Execute();
+            var code = new InterfaceMakeApiControll().LoadDll(dll2).Execute();
+            WriteLine(code);
             #endregion
 
             #region --任意类型async-await--
@@ -159,11 +161,15 @@ namespace WL.Core.ConsoleApp
             {
                 int size = 4096;
                 IEasyHttpClient hc = new DefaultEasyHttpClient();
-                hc.SetBaseUrl("http://192.168.21.197:8096").GetToFile("/download/ftg");
+                hc.SetBaseUrl("http://192.168.21.197:8096").GetToFile("/download/ftg", data: "abcdefghijklmn");
             });
             #endregion
 
             WriteLine($"好像执行完了。读键...");
+            for (var i = 0; i < 31; i++)
+            {
+                WriteLine($"证明我是异步[{i}]...");
+            }
             ReadKey();
         }
 

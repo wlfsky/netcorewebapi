@@ -17,9 +17,30 @@ namespace WL.Account.DataBridge
             bridge.ServiceUrlMaker = new AccountDataUrlMaker();
         }
 
+        public DataShell<int> Del(AccountDBModel user)
+        {
+            string funcUrl = "/api/UserAccount/Del";
+            var res = bridge.CallApi<AccountDBModel, DataShell<int>>(funcUrl, user);
+            return res;
+        }
+
         public DataShell<AccountDBModel> Get(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/get";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<AccountDBModel> Insert(AccountDBModel user)
+        {
+            string funcUrl = "/api/UserAccount/Insert";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<AccountDBModel> Update(AccountDBModel user)
+        {
+            string funcUrl = "/api/UserAccount/Update";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
             return res;
         }

@@ -15,14 +15,14 @@ namespace WL.Account.DataService
 
         DataShell<AccountDBModel> Get(AccountDBModel user);
 
-        //DataShell<IEnumerable<UserAccountDBModel>> GetList(UserAccountDBModel user);
+        //DataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel user);
 
-        //DataShell<PageShell<UserAccountDBModel>> GetPage(PageCondition<UserAccountDBModel> userp);
+        //DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<AccountDBModel> userp);
 
-        //DataShell<UserAccountDBModel> Insert(UserAccountDBModel user);
+        DataShell<AccountDBModel> Insert(AccountDBModel user);
 
-        //DataShell<UserAccountDBModel> Update(UserAccountDBModel user);
+        DataShell<AccountDBModel> Update(AccountDBModel user);
 
-        //DataShell<int> Del(UserAccountDBModel user);
+        DataShell<int> Del(AccountDBModel user);
     }
 }

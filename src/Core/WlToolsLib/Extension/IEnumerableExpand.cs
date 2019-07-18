@@ -171,10 +171,29 @@ namespace WlToolsLib.Extension
         /// <typeparam name="T"></typeparam>
         /// <param name="self">值</param>
         /// <param name="tList">队列</param>
+        /// <param name="predicate">自定义对比断言，可转换大小写或过滤等</param>
         /// <returns></returns>
-        public static bool In<T>(this T self, IEnumerable<T> tList)
+        public static bool In<T>(this T self, IEnumerable<T> tList, Func<T, T, bool> predicate = null)
         {
-            return tList.Contains(self);
+            if (tList.NoItem())
+            {
+                return false;
+            }
+            if (predicate == null)
+            {
+                return tList.Contains(self);
+            }
+            else
+            {
+                foreach (var item in tList)
+                {
+                    if(predicate(item, self))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
 
         /// <summary>
@@ -183,10 +202,29 @@ namespace WlToolsLib.Extension
         /// <typeparam name="T"></typeparam>
         /// <param name="self">值</param>
         /// <param name="tList">队列</param>
+        /// <param name="predicate">自定义对比断言，可转换大小写或过滤等</param>
         /// <returns></returns>
-        public static bool NotIn<T>(this T self, IEnumerable<T> tList)
+        public static bool NotIn<T>(this T self, IEnumerable<T> tList, Func<T, T, bool> predicate = null)
         {
-            return !tList.Contains(self);
+            if (tList.NoItem())
+            {
+                return true;
+            }
+            if (predicate == null)
+            {
+                return !tList.Contains(self);
+            }
+            else
+            {
+                foreach (var item in tList)
+                {
+                    if (predicate(item, self))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
 
         #region --是否重复--

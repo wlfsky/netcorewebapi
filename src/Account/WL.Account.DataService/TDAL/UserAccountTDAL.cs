@@ -123,17 +123,6 @@ namespace WL.Account.DataService
         }
 
         /// <summary>
-        /// 自定义条件，更新自定义字段
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateMoble(AccountDBModel account)
-        {
-            var result = base.Update<AccountDBModel>(new { @Mobile = account.Mobile }, new { @AccountID = account.AccountID });
-            return account.Success();
-        }
-
-        /// <summary>
         /// 删除用户信息
         /// </summary>
         /// <param name="user"></param>
@@ -154,6 +143,30 @@ namespace WL.Account.DataService
             var result = base.DelList<string>(accountids);
             return result.Success();
 
+        }
+        #endregion
+
+        #region --非通用功能--
+        /// <summary>
+        /// 自定义条件，更新自定义字段
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateMoble(AccountDBModel account)
+        {
+            var result = base.Update<AccountDBModel>(new { @Mobile = account.Mobile, @OldMobile = account.OldMobile }, new { @AccountID = account.AccountID });
+            return account.Success();
+        }
+
+        /// <summary>
+        /// 更新帐号状态
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel account)
+        {
+            var result = base.Update<AccountDBModel>(new { @Status = account.Status }, new { @AccountID = account.AccountID });
+            return account.Success();
         }
         #endregion
 

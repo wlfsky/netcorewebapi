@@ -321,32 +321,98 @@ namespace WlToolsLib.EasyHttpClient
             }
         }
 
-        public async void GetToFile(string url, string data = "", string filePath = "temp.file", int buffsize = 51200, Action<int, int> downloading = null)
+        /// <summary>
+        /// Get方式获取文件，支持超大文件
+        /// </summary>
+        /// <param name="url">GET路径</param>
+        /// <param name="data">get时带入body的数据</param>
+        /// <param name="buffsize">缓存尺寸，默认51200</param>
+        /// <param name="downloading">下载中事件</param>
+        /// <param name="beforGet">Get前</param>
+        /// <param name="beforReadStream">读取流前</param>
+        /// <param name="setFilePath">设置文件名</param>
+        /// <param name="afterGet">Get后，销毁response前</param>
+        /// <param name="onException">异常处理，返回true抛出异常，返回false不抛异常</param>
+        public async void GetToFile(string url, string data = "", int buffsize = 51200, 
+            Action<DateTime, int, int> downloading = null, 
+            Action<HttpRequestMessage> beforGet = null, 
+            Action<HttpResponseMessage> beforReadStream = null, 
+            Func<HttpResponseMessage, string> setFilePath = null, 
+            Action<HttpResponseMessage> afterGet = null, 
+            Func<Exception, bool> onException = null)
         {
-            int currReport = 0, reportSize = 1000;
-            if (downloading == null)
-            {
-                downloading = (trt, ts) => {
-                    currReport++;
-                    if(currReport == reportSize)
-                    {
-                        WriteLine($"TOTAL_SIZE:{ts} TOTAL_TIMES:{trt}");
-                        currReport = 0;
-                    }
-                };
-            }
-            else
-            {
-                downloading += (trt, ts) =>
+            int intervals = 200; // downloading执行间隔
+            int readsize = 1; // 每次读取到的尺寸
+            int totalSize = 0; // 总读取尺寸
+            int totalReadTimes = 0; // 总读取次数
+            DateTime downloadStart = DateTime.Now;
+
+            #region --默认的downloading委托--
+            int currReport = 0, reportSize = 5;//这里reportSize实际上以每200次标准读取循环为基数，5就等于 5*200（见intervals）
+            Action<DateTime, int, int> defaultDownloading = (stm, trt, ts) =>
                 {
                     currReport++;
                     if (currReport == reportSize)
                     {
-                        WriteLine($"TOTAL_SIZE:{ts} TOTAL_TIMES:{trt}");
+                        var tms = (DateTime.Now - stm).TotalSeconds;
+                        var averageVelocity = (ts / Math.Ceiling(tms)) / 1000000;
+                        WriteLine($"TOTAL_SECONDS:{tms} TOTAL_SIZE:{ts} TOTAL_TIMES:{trt} AVERAGE_VELOCITY:{averageVelocity:f2}Mb/S");
                         currReport = 0;
                     }
                 };
+            if (downloading == null)
+            {
+                downloading = defaultDownloading;
             }
+            else // 如果不是空就在委托尾部加上此委托（多播委托）
+            {
+                downloading += defaultDownloading;
+            }
+            #endregion
+
+            #region --默认的设置文件路径方法--
+            if (setFilePath == null)
+            {
+                setFilePath = (resp) =>
+                {
+                    // 服务端带文件名 就用文件名，不带就用自定义
+                    if (resp.Content.Headers.ContentDisposition.FileName.NullEmpty())
+                    {
+                        return $"datafile.{DateTime.Now.DateTimeID()}.tmp";
+                    }
+                    else
+                    {
+                        return resp.Content.Headers.ContentDisposition.FileName;
+                    }
+                };
+            }
+            #endregion
+
+            #region --其他默认--
+            if(beforReadStream == null)
+            {
+                beforReadStream = (resp) => {
+                    WriteLine($"ContentType:{resp.Content.Headers.ContentType},ContentLength:{resp.Content.Headers.ContentLength},FileName:{resp.Content.Headers.ContentDisposition.FileName}");
+                };
+            }
+            if (beforGet == null)
+            {
+                beforGet = (q) => { };
+            }
+            if(afterGet == null)
+            {
+                afterGet = (s) =>
+                {
+                    var total_seconds = (DateTime.Now - downloadStart).TotalSeconds;
+                    var averageVelocity = (totalSize / Math.Ceiling(total_seconds)) / 1000000;
+                    WriteLine($"TOTAL_SECONDS:{total_seconds} TOTAL_SIZE:{totalSize} TOTAL_TIMES:{totalReadTimes} AVERAGE_VELOCITY:{averageVelocity:f2}Mb/S DOWNLOAD END");
+                };
+            }
+            if(onException == null)
+            {
+                onException = (ex) => true;
+            }
+            #endregion
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -354,30 +420,42 @@ namespace WlToolsLib.EasyHttpClient
                     var uri = MakeFullUri(url);
                     HttpRequestMessage req = new HttpRequestMessage(new HttpMethod("GET"), uri);
                     req.Content = new StringContent(data);
+                    beforGet(req);
                     using (var res = client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead).Result)
-                    using (Stream contentStream = await res.Content.ReadAsStreamAsync())
-                    using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
                     {
-                        byte[] buff = new byte[buffsize];
-                        int readsize = 1;
-                        int totalSize = 0;
-                        int totalReadTimes = 0;
-                        while (readsize > 0)
+                        beforReadStream(res);
+                        string filePath = setFilePath(res);
+                        downloadStart = DateTime.Now;
+                        using (Stream contentStream = await res.Content.ReadAsStreamAsync())
+                        using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
                         {
-                            readsize = contentStream.Read(buff, 0, buffsize);
-                            totalSize += readsize;
-                            //contentStream.Flush();
-                            fs.Write(buff, 0, readsize);
-                            fs.Flush();
-                            totalReadTimes++;
-                            downloading(totalReadTimes, totalSize);
+                            byte[] buff = new byte[buffsize];
+                            while (readsize > 0)
+                            {
+                                readsize = contentStream.Read(buff, 0, buffsize);
+                                totalSize += readsize;
+                                //contentStream.Flush();
+                                fs.Write(buff, 0, readsize);
+                                //fs.Flush();
+                                totalReadTimes++;
+                                // 符合间隔数才执行downloading方法
+                                if ((totalReadTimes % intervals) == 0)
+                                {
+                                    fs.Flush();
+                                    downloading(downloadStart, totalReadTimes, totalSize);
+                                }
+                            }
                         }
+                        afterGet(res);
                     }
                     //return client.GetAsync(uri).Result.Content.ReadAsStringAsync();
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    if (onException(ex))
+                    {
+                        throw ex;
+                    }
                 }
             }
         }

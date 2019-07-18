@@ -482,5 +482,19 @@ namespace WlToolsLib.Extension
             return res;
         }
         #endregion
+
+        #region --默认断言，专属字符串的默认断言方法--
+        /// <summary>
+        /// 大小写转相同断言
+        /// </summary>
+        /// <param name="self">方法承载</param>
+        /// <param name="oneStr">一个字符串</param>
+        /// <param name="otherStr">另一个字符串</param>
+        /// <returns></returns>
+        public static bool SameCasePredicate(this string self, string otherStr)
+        {
+            return self.ToLower() == otherStr.ToLower();
+        }
+        #endregion
     }
 }

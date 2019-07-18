@@ -28,8 +28,6 @@ namespace WL.Account.DataService.WebApi.Controllers
             return "{\"GBC\":\"X!a..." + xi + "118\"}";
         }
 
-
-        // GET api/values/5
         [HttpPost]
         public DataShell<AccountDBModel> Get(AccountDBModel user)
         {
@@ -38,31 +36,22 @@ namespace WL.Account.DataService.WebApi.Controllers
             return res;
         }
 
-        // GET api/values
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        [HttpPost]
+        public DataShell<AccountDBModel> Insert(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
 
+        [HttpPost]
+        public DataShell<AccountDBModel> Update(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
 
-
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpPost]
+        public DataShell<int> Del(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
