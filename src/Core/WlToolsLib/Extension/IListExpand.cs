@@ -282,5 +282,111 @@ namespace WlToolsLib.Extension
             }
         }
         #endregion
+
+        #region --分离新旧数据--
+        /// <summary>
+        /// 分离新旧数据队列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static DifferencesList<T> Separation<T>(this DifferencesList<T> data)
+        {
+            if (data == null)
+            {
+                throw new System.Exception("差异队列数据不可为空");
+                return null;
+            }
+            if (data.NewList.NoItem() && data.OldList.NoItem())
+            {
+                throw new System.Exception("新旧数据队列不可同时为空");
+                return null;
+            }
+            if (data.Comparer == null)
+            {
+                throw new System.Exception("关键的对比器不可为空");
+            }
+
+            if (data.OldList.NoItem())
+            {
+                data.InsertList = data.NewList;
+                return data;
+            }
+            if (data.NewList.NoItem())
+            {
+                data.DelList = data.OldList;
+            }
+            if (data.NewList.HasItem() && data.OldList.HasItem())
+            {
+                for (var i = data.NewList.Count - 1; i >= 0; i--)
+                {
+                    var nitem = data.NewList[i];
+                    for (var j = data.OldList.Count - 1; j >= 0; j--)
+                    {
+                        var oitem = data.OldList[j];
+                        if (data.Comparer(nitem, oitem))
+                        {
+                            //检测数据是否发生变化，未发生实际变化可跳过此修改步骤
+                            if (data.FullComparer == null || !data.FullComparer(nitem, oitem))
+                            {
+                                data.UpdateList.Add(nitem);
+                            }
+                            else
+                            {
+                                data.NoActionList.Add(nitem);
+                            }
+                            data.NewList.RemoveAt(i);
+                            data.OldList.RemoveAt(j);
+                            break;
+                        }
+                    }
+                }
+                data.InsertList = data.NewList;
+                data.DelList = data.OldList;
+            }
+
+            return data;
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// 差异队列
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class DifferencesList<T>
+    {
+        /// <summary>
+        /// 新数据队列
+        /// </summary>
+        public IList<T> NewList { get; set; } = new List<T>();
+        /// <summary>
+        /// 老数据队列
+        /// </summary>
+        public IList<T> OldList { get; set; } = new List<T>();
+        /// <summary>
+        /// 插入队列
+        /// </summary>
+        public IList<T> InsertList { get; set; } = new List<T>();
+        /// <summary>
+        /// 更新队列
+        /// </summary>
+        public IList<T> UpdateList { get; set; } = new List<T>();
+        /// <summary>
+        /// 删除队列
+        /// </summary>
+        public IList<T> DelList { get; set; } = new List<T>();
+        /// <summary>
+        /// 无动作队列
+        /// </summary>
+        public IList<T> NoActionList { get; set; } = new List<T>();
+        /// <summary>
+        /// 简单相同判断（只对比id）
+        /// </summary>
+        public Func<T, T, bool> Comparer { get; set; }
+        /// <summary>
+        /// 全相同判断（主要数据或者全部数据）
+        /// </summary>
+        public Func<T, T, bool> FullComparer { get; set; }
     }
 }

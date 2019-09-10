@@ -401,5 +401,80 @@ namespace WlToolsLib.Extension
         }
         #endregion
 
+        #region --max--
+        /// <summary>
+        /// 返回最大值(需改进)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="Tf"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static T MaxWith<T>(this IEnumerable<T> source, Func<T, int> func)
+        {
+            if (source == null)
+            {
+                throw new Exception("source data is null");
+            }
+
+            T value = default(T);
+            using (IEnumerator<T> e = source.GetEnumerator())
+            {
+                if (!e.MoveNext())
+                {
+                    throw new Exception("source data is empty");
+                }
+
+                value = e.Current;
+                while (e.MoveNext())
+                {
+                    T x = e.Current;
+                    if (func(x) > func(value))
+                    {
+                        value = x;
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static T MaxWith<T>(this IEnumerable<T> source, Func<T, T, int> comparer)
+        {
+            if (source == null)
+            {
+                throw new Exception("source data is null");
+            }
+
+            T value = default(T);
+            using (IEnumerator<T> e = source.GetEnumerator())
+            {
+                if (!e.MoveNext())
+                {
+                    throw new Exception("source data is empty");
+                }
+
+                value = e.Current;
+                while (e.MoveNext())
+                {
+                    T x = e.Current;
+                    if (comparer(x, value) > 0)
+                    {
+                        value = x;
+                    }
+                }
+            }
+
+            return value;
+        }
+        #endregion
+
     }
 }

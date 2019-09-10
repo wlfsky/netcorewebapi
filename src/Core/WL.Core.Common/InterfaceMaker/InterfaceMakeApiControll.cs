@@ -175,6 +175,7 @@ namespace WL.Core.Common.InterfaceMaker
                 {
                     CodeBuilder.WriteMethodAttributeCode(attribute);
                 }
+                // 每个方法获取接口方法上的路由特性值
                 var d = m.GetCustomAttribute<ControllerRouteAttribute>();
                 if (d.NotNull())
                 {
