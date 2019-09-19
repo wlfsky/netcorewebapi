@@ -9,6 +9,7 @@ using WlToolsLib.Extension;
 using WlToolsLib.Pagination;
 using WL.Core.DataService;
 using WL.Account.Model.DB;
+using WL.Account.Model.Business;
 
 namespace WL.Account.DataService
 {
@@ -40,11 +41,71 @@ namespace WL.Account.DataService
         /// 获取用户信息分页
         /// </summary>
         /// <returns></returns>
-        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<AccountDBModel> condition)
+        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
-            string conditionStr = "";
+            DataShell<PageShell<AccountDBModel>> _res(string msg = "未知错误[GetPage]")
+            {
+                return msg.Fail<PageShell<AccountDBModel>>();
+            }
+
+            StringBuilder whereStr = new StringBuilder();
+            if(condition.IsNull())
+            {
+                return _res("无必要参数");
+            }
+            if (condition.Condition.NotNull())
+            {
+                if (condition.Condition.AccountID.NullEmpty())
+                {
+                    whereStr.Append("AND AccountID = @AccountID");
+                }
+                if (condition.Condition.Account.NullEmpty())
+                {
+                    whereStr.Append("AND Account = @Account");
+                }
+                if (condition.Condition.NickName.NullEmpty())
+                {
+                    whereStr.Append("AND NickName = @NickName");
+                }
+                if (condition.Condition.Email.NullEmpty())
+                {
+                    whereStr.Append("AND Email = @Email");
+                }
+                if (condition.Condition.IDCard.NullEmpty())
+                {
+                    whereStr.Append("AND IDCard = @IDCard");
+                }
+                if (condition.Condition.Mobile.NullEmpty())
+                {
+                    whereStr.Append("AND Mobile = @Mobile");
+                }
+                if (condition.Condition.RealName.NullEmpty())
+                {
+                    whereStr.Append("AND RealName = @RealName");
+                }
+                if (condition.Condition.UserName.NullEmpty())
+                {
+                    whereStr.Append("AND UserName = @UserName");
+                }
+                if (condition.Condition.UserID.NullEmpty())
+                {
+                    whereStr.Append("AND UserID = @UserID");
+                }
+                if (condition.Condition.Status.HasValue)
+                {
+                    whereStr.Append("AND Status = @Status");
+                }
+                if (condition.Condition.RegistTimeBegin.HasValue)
+                {
+                    whereStr.Append("AND RegistTime >= @RegistTimeBegin");
+                }
+                if (condition.Condition.RegistTimeEnd.HasValue)
+                {
+                    whereStr.Append("AND RegistTime <= @RegistTimeEnd");
+                }
+            }
             string orderStr = $"{CreateTimeField} DESC";
-            var resultPageList = GetListPaged<AccountDBModel>(condition.PageIndex, condition.PageSize, conditionStr, orderStr, condition.Condition);
+            var resultPageList = GetListPaged<AccountDBModel>(condition.PageIndex, condition.PageSize, whereStr.ToString(), orderStr, condition.Condition);
             return resultPageList.Success();
         }
 

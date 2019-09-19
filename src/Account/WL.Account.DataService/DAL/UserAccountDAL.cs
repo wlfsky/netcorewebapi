@@ -10,6 +10,7 @@ using WlToolsLib.Pagination;
 using WL.Core.DataService;
 using WL.Account.Model.DB;
 using WL.Account.Model.Business;
+using WL.Account.Model.DB.Interface;
 
 namespace WL.Account.DataService
 {
@@ -23,15 +24,15 @@ namespace WL.Account.DataService
         /// <summary>
         /// 分页提取数据
         /// </summary>
-        /// <param name="accountp"></param>
+        /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<AccountDBModel> accountp)
+        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
                 using (var dal = new UserAccountTDAL(conn))
                 {
-                    var result = dal.GetPage(accountp);
+                    var result = dal.GetPage(condition);
                     return result;
                 }
             }

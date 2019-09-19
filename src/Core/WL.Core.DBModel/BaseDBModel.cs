@@ -12,11 +12,11 @@ namespace WL.Core.DBModel
         /// </summary>
         public string CoreID { get; set; } = string.Empty;
         /// <summary>
-        /// 是否可用，0不可用，1可用
+        /// 是否可用，0可用，1不可用
         /// </summary>
-        public int Disabled { get; set; } = 1;
+        public int Disabled { get; set; } = 0;
         /// <summary>
-        /// 是否回收，0回收，1不回收
+        /// 是否回收，0不回收，1回收
         /// </summary>
         public int IsRecycle { get; set; } = 0;
         /// <summary>

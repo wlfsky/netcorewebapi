@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Data;
 using Dapper;
 using WlToolsLib.Extension;
-using Microsoft.Data.Sqlite;
+//using Microsoft.Data.Sqlite;
+using MySql.Data.MySqlClient;
 using WL.Core.Model;
 using WL.Core.DBModel;
 using WlToolsLib.DataShell;
@@ -19,10 +20,12 @@ namespace WL.Core.DataService
     /// </summary>
     public abstract class BaseConn : IDisposable
     {
+        public static string ValueHeadChar = SimpleCRUD.ValueHeadChar;
+
         /// <summary>
         /// dapper基础链接
         /// </summary>
-        public BaseConn() : this(new SqliteConnection(), null)
+        public BaseConn() : this(new MySqlConnection(), null)
         {
             //ConnStr = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCL)));User ID=system;Password=Wkl123456";
             //Dapper.SimpleCRUD.SetDialect(SimpleCRUD.Dialect.Oracle);
@@ -57,6 +60,7 @@ namespace WL.Core.DataService
         public static readonly string EditorField = "Editor";
         public static readonly string EditTimeField = "EditTime";
         public static readonly string IsDelField = "IsDel";
+        public static readonly string DBSysDateFunc = "SYSDATE()";
 
         /// <summary>
         /// 打开数据库连接
@@ -331,7 +335,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int Update<T>(T obj, string updateStr, string conditionStr, object param = null)
         {
-            string sqlStr = $"UPDATE {TableName} SET {updateStr}, {EditTimeField}=systimestamp WHERE {conditionStr}";
+            string sqlStr = $"UPDATE {TableName} SET {updateStr}, {EditTimeField} = {DBSysDateFunc} WHERE {conditionStr}";
             var r = this.Con.Execute(sqlStr, param, this.Tran);
             return r;
         }
@@ -360,7 +364,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int DelList(string conditionStr, object param = null)
         {
-            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1 WHERE {conditionStr} AND {IsDelField} = 0";
+            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1, {EditTimeField} = {DBSysDateFunc} WHERE {conditionStr} AND {IsDelField} = 0";
             var result = this.Con.Execute(sqlStr, param, this.Tran);
             return result;
         }
@@ -402,7 +406,7 @@ namespace WL.Core.DataService
         /// <returns></returns>
         public int DelList<TKey>(IEnumerable<TKey> ids)
         {
-            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1 WHERE {this.KeyName} IN :IDs AND {IsDelField} = 0";
+            string sqlStr = $"UPDATE {this.TableName} SET {IsDelField}=1, {EditTimeField} = {DBSysDateFunc} WHERE {this.KeyName} IN {ValueHeadChar}IDs AND {IsDelField} = 0";
             var result = this.Con.Execute(sqlStr, new { @IDs = ids }, this.Tran);
             return result;
         }
@@ -435,12 +439,21 @@ namespace WL.Core.DataService
         }
 
         /// <summary>
-        /// 创建一个数字字符串ID
+        /// 创建一个以时间为准的数字字符串ID
         /// </summary>
         /// <returns></returns>
         public string NewNumStrID()
         {
             return DateTime.Now.DateTimeID().ToString();
+        }
+
+        /// <summary>
+        /// 结合给定头创建一个以时间为准的数字字符串ID
+        /// </summary>
+        /// <returns></returns>
+        public string NewNumStrIDWithHead(string head)
+        {
+            return $"{head}{DateTime.Now.DateTimeID().ToString()}";
         }
 
         /// <summary>
@@ -453,7 +466,17 @@ namespace WL.Core.DataService
         }
 
         /// <summary>
-        /// 
+        /// 创建给定头的时间id
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public long NewTimeIDWithHead(int head)
+        {
+            return DateTime.Now.DateTimeID();
+        }
+
+        /// <summary>
+        /// 返回一个GUID，没有-号
         /// </summary>
         /// <returns></returns>
         public string NewGUID()

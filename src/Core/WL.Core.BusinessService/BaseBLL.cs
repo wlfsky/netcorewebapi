@@ -9,6 +9,7 @@ using WL.Core.DataService;
 using WL.Core.Common;
 using AutoMapper;
 using WlToolsLib.DataShell;
+using WlToolsLib.Extension;
 
 namespace WL.Core.BusinessService
 {
@@ -55,22 +56,34 @@ namespace WL.Core.BusinessService
         }
 
 
+        /// <summary>
+        /// 相应数据转换
+        /// </summary>
+        /// <typeparam name="TIn"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public DataShell<TOut> MapResult<TIn, TOut>(DataShell<TIn> src)
         {
-            return Mapper.Map<DataShell<TIn>, DataShell<TOut>>(src);
-            var tempRes = Mapper.Map<TIn, TOut>(src.Data);
-            var res = new DataShell<TOut>();
-            res.Code = src.Code;
-            res.ExceptionList = src.ExceptionList;
-            res.Info = src.Info;
-            res.Infos = src.Infos;
-            res.Operator = src.Operator;
-            res.Status = src.Status;
-            res.Success = src.Success;
-            res.Time = src.Time;
-            res.Version = src.Version;
-            res.Data = tempRes;
-            return res;
+            if (src.Data.IsNull())
+            {
+                var res = new DataShell<TOut>();
+                res.Code = src.Code;
+                res.ExceptionList = src.ExceptionList;
+                res.Info = src.Info;
+                res.Infos = src.Infos;
+                res.Operator = src.Operator;
+                res.Status = src.Status;
+                res.Success = src.Success;
+                res.Time = src.Time;
+                res.Version = src.Version;
+                res.Data = default(TOut);
+                return res;
+            }
+            else
+            {
+                return Mapper.Map<DataShell<TIn>, DataShell<TOut>>(src);
+            }
         }
 
         public DataShell<TOut> ReqResTransShell<TIn, TInTo, TOutFrom, TOut>(TIn req, Func<TInTo, DataShell<TOutFrom>> process)

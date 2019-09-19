@@ -4,6 +4,7 @@ using WL.Account.BusinessService;
 using WL.Account.DataBridge;
 using WL.Account.DataService;
 using WL.Account.Model.Business.Interface;
+using WL.Account.Model.DB.Interface;
 using Xunit;
 
 namespace XUnitTestProject

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WL.Account.Model.Business;
 using WL.Account.Model.DB;
+using WL.Account.Model.DB.Interface;
 using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Account.DataService.WebApi.Controllers
 {
@@ -26,6 +29,14 @@ namespace WL.Account.DataService.WebApi.Controllers
         public string Ping(string xi)
         {
             return "{\"GBC\":\"X!a..." + xi + "118\"}";
+        }
+
+        [HttpPost]
+        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            Console.WriteLine("call data_service/useraccount/get");
+            var res = _userDAL.GetPage(condition);
+            return res;
         }
 
         [HttpPost]

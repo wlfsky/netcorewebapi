@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using WL.Account.Model.Business;
-using WL.Account.Model.DB;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 
-namespace WL.Account.DataService
+namespace WL.Account.Model.DB.Interface
 {
-    public interface IUserAccountDAL1
+    public interface IUserAccountDAL
     {
-
         DataShell<AccountDBModel> Get(AccountDBModel user);
 
         //DataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel user);

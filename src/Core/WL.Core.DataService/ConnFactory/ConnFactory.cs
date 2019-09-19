@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using System.Configuration;
 using WL.Core.DataService;
 using WlToolsLib.Extension;
+using MySql.Data.MySqlClient;
 
 namespace WL.Core.DataService
 {
@@ -23,7 +24,7 @@ namespace WL.Core.DataService
         public static IDbConnection GetProjectConn()
         {
             string connStr = GetConnStr("ProjectDBConnStr");
-            return new SqliteConnection(connStr);
+            return new MySqlConnection(connStr);
         }
 
         /// <summary>
@@ -39,15 +40,15 @@ namespace WL.Core.DataService
             }
             try
             {
-                var connObj = new SqliteConnection(connStr);
-                SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
+                var connObj = new MySqlConnection(connStr);
+                // SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3()); // 数据库已经切换至 mariadb
                 return connObj;
             }
             catch (Exception ex)
             {
                 var et01 = ex;
             }
-            return new SqliteConnection(connStr);
+            return new MySqlConnection(connStr);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace WL.Core.DataService
         public static IDbConnection GetIOSConn()
         {
             string connStr = GetConnStr("MMSDBConnStr");
-            return new SqliteConnection(connStr);
+            return new MySqlConnection(connStr);
         }
 
         /// <summary>

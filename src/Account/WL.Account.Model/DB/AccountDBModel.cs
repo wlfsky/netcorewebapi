@@ -59,7 +59,7 @@ namespace WL.Account.Model.DB
         /// <summary>
         /// 临时密码，验证码过期时间
         /// </summary>
-        public string TempPassOverTime { get; set; }
+        public DateTime TempPassOverTime { get; set; }
         /// <summary>
         /// 临时密码用途标记
         /// </summary>

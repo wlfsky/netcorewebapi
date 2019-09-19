@@ -29,7 +29,7 @@ namespace Dapper
             SetDialect(_dialect);
         }
 
-        private static Dialect _dialect = Dialect.SQLite;
+        private static Dialect _dialect = Dialect.MySQL;
         private static string _encapsulation;
         private static string _getIdentitySql;
         private static string _getPagedListSql;
@@ -42,6 +42,7 @@ namespace Dapper
         private static IColumnNameResolver _columnNameResolver = new ColumnNameResolver();
 
         public static string CurrSeq { get; set; } = "UserSeq";
+        public static string ValueHeadChar { get { return _valueHeadChar; } }
 
         /// <summary>
         /// Returns the current dialect name
@@ -86,7 +87,7 @@ namespace Dapper
                     _encapsulation = "{0}";
                     _valueHeadChar = ":";
                     _getIdentitySql = string.Format("SELECT {0}.CurrVal FROM DUAL", CurrSeq);// seq style : {tableName}_{KeyField}_SEQ
-                    _getPagedListSql = "SELECT {SelectColumns} FROM(SELECT A.*, ROWNUM RN FROM (SELECT {SelectColumns} FROM {TableName} WHERE 1=1 {WhereClause} Order By {OrderBy}) A WHERE ROWNUM <= {PageNumber} * {RowsPerPage})WHERE RN > ({PageNumber}-1) * {RowsPerPage}";
+                    _getPagedListSql = "SELECT {SelectColumns} FROM(SELECT A.*, ROWNUM RN FROM (SELECT {SelectColumns} FROM {TableName} {WhereClause} Order By {OrderBy}) A WHERE ROWNUM <= {PageNumber} * {RowsPerPage})WHERE RN > ({PageNumber}-1) * {RowsPerPage}";
                     break;
                 default:
                     _dialect = Dialect.SQLServer;
@@ -363,15 +364,21 @@ namespace Dapper
         public static (IEnumerable<T> Data, long TotalCount) GetListPaged<T>(this IDbConnection connection, int pageNumber, int rowsPerPage, string conditions, string orderby, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             if (string.IsNullOrEmpty(_getPagedListSql))
+            {
                 throw new Exception("分页功能不支持当前方言（SQL库） GetListPage is not supported with the current SQL Dialect");
+            }
 
             if (pageNumber < 1)
+            {
                 throw new Exception("页数必须大于0。 Page must be greater than 0");
+            }
 
             var currenttype = typeof(T);
             var idProps = GetIdProperties(currenttype).ToList();
             if (!idProps.Any())
+            {
                 throw new ArgumentException("实体必须支持[Key]特性。 Entity must have at least one [Key] property");
+            }
 
             var name = GetTableName(currenttype);
             var sb = new StringBuilder();
@@ -392,7 +399,7 @@ namespace Dapper
             {
                 conditions = "AND " + conditions;
             }
-            query = query.Replace("{WhereClause}", conditions + " AND IsDel = 0");
+            query = query.Replace("{WhereClause}", $"WHERE 1=1 {conditions} AND IsDel = 0");
             query = query.Replace("{Offset}", ((pageNumber - 1) * rowsPerPage).ToString());
 
             string queryCountSql = query.Replace("{SelectColumns}", "COUNT(1)");
@@ -400,7 +407,9 @@ namespace Dapper
             query = query.Replace("{SelectColumns}", sb.ToString());
 
             if (Debugger.IsAttached)
+            {
                 Trace.WriteLine(String.Format("GetListPaged<{0}>: {1}", currenttype, query));
+            }
 
             long totalCount = connection.ExecuteScalar<long>(queryCountSql, parameters, transaction, commandTimeout);
 
@@ -703,7 +712,7 @@ namespace Dapper
 
             var sb = new StringBuilder();
             var whereprops = GetAllProperties(whereConditions).ToArray();
-            sb.AppendFormat("UPDATE {0} SET IsDel=0 ", name);
+            sb.AppendFormat("UPDATE {0} SET IsDel=1 ", name);
             if (whereprops.Any())
             {
                 sb.Append(" where ");

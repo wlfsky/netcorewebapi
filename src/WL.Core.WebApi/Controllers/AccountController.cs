@@ -14,6 +14,7 @@ using WL.Core.Model;
 using WL.Core.WebApi.Common;
 using WL.Core.WebApi.Filter;
 using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Core.WebApi.Controllers
 {
@@ -38,6 +39,15 @@ namespace WL.Core.WebApi.Controllers
             //_logger.LogError("use /user/get 超级日志 error");
             //var r = new DataShell<IEnumerable<UserAccount>>();// _userSystemBLL.GetList(new UserAccount());
             return _userSystemBLL.Get(req);
+        }
+
+        [HttpPost]
+        [TypeFilter(typeof(WebApiErrorHandleAttribute))]
+        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            //string info = req;
+            LogInfo("use /user/getpage");
+            return _userSystemBLL.GetPage(condition);
         }
 
         [HttpGet]

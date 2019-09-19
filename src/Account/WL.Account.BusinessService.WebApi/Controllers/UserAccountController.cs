@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using WL.Account.Model.Business;
 using WL.Account.Model.Business.Interface;
 using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Account.BusinessService.WebApi.Controllers
 {
@@ -36,6 +37,14 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         {
             Console.WriteLine("call business_service/useraccount/get");
             var res = _userBll.Get(user);
+            return res;
+        }
+
+        [HttpPost]
+        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            Console.WriteLine("call business_service/useraccount/getpage");
+            var res = _userBll.GetPage(condition);
             return res;
         }
 

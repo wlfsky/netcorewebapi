@@ -3,6 +3,7 @@ using WL.Account.Model.Business;
 using WL.Account.Model.Business.Interface;
 using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Account.BusinessBridge
 {
@@ -23,6 +24,13 @@ namespace WL.Account.BusinessBridge
         {
             string funcUrl = "/api/UserAccount/get";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            string funcUrl = "/api/UserAccount/getpage";
+            var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountModel>>>(funcUrl, condition);
             return res;
         }
     }

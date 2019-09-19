@@ -2,8 +2,10 @@
 using WL.Account.DataService;
 using WL.Account.Model.Business;
 using WL.Account.Model.DB;
+using WL.Account.Model.DB.Interface;
 using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
+using WlToolsLib.Pagination;
 
 namespace WL.Account.DataBridge
 {
@@ -21,6 +23,14 @@ namespace WL.Account.DataBridge
         {
             string funcUrl = "/api/UserAccount/Del";
             var res = bridge.CallApi<AccountDBModel, DataShell<int>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            Console.WriteLine("call data_service/useraccount/getpage");
+            string funcUrl = "/api/UserAccount/GetPage";
+            var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountDBModel>>>(funcUrl, condition);
             return res;
         }
 

@@ -10,6 +10,7 @@ using WL.Account.DataService;
 using WL.Account.Model.Business;
 using WL.Account.Model.Business.Interface;
 using WL.Account.Model.DB;
+using WL.Account.Model.DB.Interface;
 using WL.Core.BusinessService;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
@@ -37,6 +38,8 @@ namespace WL.Account.BusinessService
                 cfg.CreateMap<AccountModel, AccountDBModel>();
                 cfg.CreateMap<AccountDBModel, AccountModel>();
                 cfg.CreateMap<DataShell<AccountDBModel>, DataShell<AccountModel>>();
+                cfg.CreateMap<PageShell<AccountDBModel>, PageShell<AccountModel>>();
+                cfg.CreateMap<DataShell<PageShell<AccountDBModel>>, DataShell<PageShell<AccountModel>>>();
             });
             // 下面一句只能在测试代码中调用，发布时要移除
             configuration.AssertConfigurationIsValid();
@@ -55,6 +58,12 @@ namespace WL.Account.BusinessService
         public DataShell<AccountModel> Get(AccountModel user)
         {
             var res = ReqResTransShell<AccountModel, AccountDBModel, AccountDBModel, AccountModel>(user, (rq) => _userDAL.Get(rq));
+            return res;
+        }
+
+        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        {
+            var res = ReqResTransShell<PageCondition<UserQueryPageCondition>, PageCondition<UserQueryPageCondition>, PageShell<AccountDBModel>, PageShell<AccountModel>>(condition, (rq) => _userDAL.GetPage(rq));
             return res;
         }
 
