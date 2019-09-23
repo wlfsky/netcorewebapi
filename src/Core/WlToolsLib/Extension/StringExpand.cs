@@ -95,6 +95,32 @@ namespace WlToolsLib.Extension
         }
 
         /// <summary>
+        /// 从左边搜索左字符串，右边搜索右字符串，返回两个字符串之间的内容
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="leftStr"></param>
+        /// <param name="rightStr"></param>
+        /// <returns></returns>
+        public static string BetweenSinceStr(this string self, string leftStr, string rightStr)
+        {
+            if (self.NullEmpty()) return string.Empty;
+            if (leftStr.NullStr() && rightStr.NullStr()) return self;
+            var len = self.Length;
+            var s = self.IndexOf(leftStr);
+            var e = self.LastIndexOf(rightStr);
+            if (e <= s) return string.Empty;
+            if (s < 0 && e < 0) return self;
+            if (s < 0) s = 0;
+            if (e < 0) e = len;
+            var leftLen = leftStr.Length;
+            var l = e - s - leftLen;
+            if (l <= 0) return string.Empty;
+            var sinceStr = self.Substring(s + leftLen, l);
+            if (sinceStr.NullEmpty()) return string.Empty;
+            return sinceStr.Trim();
+        }
+
+        /// <summary>
         /// 仿python切片,string版本
         /// </summary>
         /// <param name="self"></param>
@@ -488,12 +514,35 @@ namespace WlToolsLib.Extension
         /// 大小写转相同断言
         /// </summary>
         /// <param name="self">方法承载</param>
-        /// <param name="oneStr">一个字符串</param>
         /// <param name="otherStr">另一个字符串</param>
         /// <returns></returns>
         public static bool SameCasePredicate(this string self, string otherStr)
         {
             return self.ToLower() == otherStr.ToLower();
+        }
+        #endregion
+
+        #region --字符串替换--
+        /// <summary>
+        /// 用新字符串替换指定位置的内容
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="newstr"></param>
+        /// <returns></returns>
+        public static string Replace(this string self, int start, int end = 0, string newstr = "")
+        {
+            if (self.NullEmpty()) { return self; }
+            var len = self.Length;
+            if (end <= 0) { end = len - 1; }
+            if (end > len - 1) { end = len - 1; }
+            if (start < 0) { start = 0; }
+            if (start >= len - 1) { return self; }
+            if (start >= end) { return newstr; }
+            string head = self.Substring(0, start);
+            string btm = self.Substring(end, len - 1 - end);
+            return $"{head}{newstr}{btm}";
         }
         #endregion
     }

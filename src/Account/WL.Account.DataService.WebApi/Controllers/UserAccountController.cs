@@ -50,7 +50,8 @@ namespace WL.Account.DataService.WebApi.Controllers
         [HttpPost]
         public DataShell<AccountDBModel> Insert(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            var res = _userDAL.Insert(user);
+            return res;
         }
 
         [HttpPost]

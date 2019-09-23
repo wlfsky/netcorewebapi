@@ -20,6 +20,11 @@ namespace WL.Account.BusinessBridge
             bridge.ServiceUrlMaker = new AccountBusinessUrlMaker();
         }
 
+        /// <summary>
+        /// 获取单个用户帐号信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountModel> Get(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/get";
@@ -27,10 +32,27 @@ namespace WL.Account.BusinessBridge
             return res;
         }
 
+        /// <summary>
+        /// 分页获取获取用户帐号
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             string funcUrl = "/api/UserAccount/getpage";
             var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountModel>>>(funcUrl, condition);
+            return res;
+        }
+
+        /// <summary>
+        /// 插入一个新帐号记录
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountModel> Insert(AccountModel user)
+        {
+            string funcUrl = "/api/UserAccount/Insert";
+            var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
             return res;
         }
     }

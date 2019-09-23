@@ -50,6 +50,18 @@ namespace WL.Core.WebApi.Controllers
             return _userSystemBLL.GetPage(condition);
         }
 
+        [HttpPost]
+        public async Task<DataShell<AccountModel>> Insert(AccountModel user)
+        {
+            //throw new Exception("异常演示");
+            // 抛出错误后会被中间件引导到error控制器
+
+            var res = _userSystemBLL.Insert(user);
+
+            var r = await res.ToTask(() => res);//阻塞了～！为什么？
+            return r;
+        }
+
         [HttpGet]
         [Route("gets")]
         public async Task<ActionResult<DataShell<string>>> Get()

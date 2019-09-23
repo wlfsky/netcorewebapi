@@ -167,8 +167,10 @@ namespace WL.Account.DataService
         /// <returns></returns>
         public DataShell<AccountDBModel> Insert(AccountDBModel user)
         {
-            user.AccountID = Convert.ToString(this.NewUserID().Data);
-            this.Insert<int, AccountDBModel>(user);
+            user.CoreID = this.NewCoreID();
+            user.AccountID = this.NewAccountID();
+            user.UserID = user.AccountID;
+            this.Insert<string, AccountDBModel>(user);
             return user.Success();
         }
 

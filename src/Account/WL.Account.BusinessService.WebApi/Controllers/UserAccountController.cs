@@ -40,6 +40,11 @@ namespace WL.Account.BusinessService.WebApi.Controllers
             return res;
         }
 
+        /// <summary>
+        /// 分页查询用户帐号
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         [HttpPost]
         public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
@@ -48,12 +53,17 @@ namespace WL.Account.BusinessService.WebApi.Controllers
             return res;
         }
 
-        //// GET api/values
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        /// <summary>
+        /// 插入一个新用户帐号信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountModel> Insert(AccountModel user)
+        {
+            var res = _userBll.Insert(user);
+            return res;
+        }
 
         //// GET api/values/5
         //[HttpGet("{id}")]

@@ -172,6 +172,39 @@ namespace WL.Core.DataService
             var r = this.Con.Insert<TKey, T>(obj, this.Tran);
             return r;
         }
+
+        /// <summary>
+        /// 自定义插入语句，插入新数据记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public T Insert<T>(string insertSql, T obj)
+        {
+            var count = this.Con.Execute(insertSql, obj, transaction: this.Tran);
+            if (count < 1)
+            {
+                throw new Exception("Sql执行失败");
+            }
+            return obj;
+        }
+
+        /// <summary>
+        /// 自定义插入语句，插入多个新数据记录
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="insertSql"></param>
+        /// <param name="objs"></param>
+        /// <returns></returns>
+        public int Insert<T>(string insertSql, IList<T> objs)
+        {
+            var count = this.Con.Execute(insertSql, objs, transaction: this.Tran);
+            if (count < 1)
+            {
+                throw new Exception("Sql执行失败");
+            }
+            return count;
+        }
         #endregion
 
         #region --获取数据--
@@ -437,6 +470,22 @@ namespace WL.Core.DataService
                 }
             }
         }
+
+        #region --实际业务相关生成id--
+        /// <summary>
+        /// 创建一个核心id
+        /// </summary>
+        /// <returns></returns>
+        public string NewCoreID()
+        {
+            return $"8989{DateTime.Now.DateTimeID().ToString()}";
+        }
+
+        public string NewAccountID()
+        {
+            return NewNumStrIDWithHead("1010");
+        }
+        #endregion
 
         /// <summary>
         /// 创建一个以时间为准的数字字符串ID
