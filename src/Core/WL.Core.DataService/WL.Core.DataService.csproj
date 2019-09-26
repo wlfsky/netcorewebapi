@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <Version>1.0.5</Version>
     <AssemblyVersion>1.0.5.3</AssemblyVersion>
     <FileVersion>1.0.5.2</FileVersion>
@@ -15,11 +15,11 @@
     <PackageReference Include="Dapper" Version="2.0.4" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.4" />
     <PackageReference Include="MySql.Data" Version="8.0.17" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.0.1" />
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.v140" Version="1.1.14" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3.net45" Version="1.1.14" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.111" />
   </ItemGroup>

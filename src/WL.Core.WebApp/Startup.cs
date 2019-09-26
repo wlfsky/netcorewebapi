@@ -58,17 +58,20 @@ namespace WL.Core.WebApp
         /// <param name="app">应用构成器</param>
         /// <param name="env"></param>
         /// <remarks>This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</remarks>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();//开发模式显示错误页面
-                app.UseBrowserLink();// 浏览连接
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");//非开发模式显示标准错误信息页面
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();//开发模式显示错误页面
+            //    //app.UseBrowserLink();// 浏览连接
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error");//非开发模式显示标准错误信息页面
+            //}
+
+            app.UseDeveloperExceptionPage();//开发模式显示错误页面
+            app.UseExceptionHandler("/Home/Error");//非开发模式显示标准错误信息页面
 
             #region --自定义中间件 代码写在外部--
             app.UseMyMiddleware();//使用自定义的中间件
@@ -203,41 +206,53 @@ namespace WL.Core.WebApp
             app.UseAuthentication();// 用户验证
 
             #region --路由配置--
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "areas",
-                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                // {id:int}类型约束
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                /*
-                 * //下面这个模板配置和 template: "{controller=Home}/{action=Index}/{id?}"); 相同
-                 * routes.MapRoute(
-                 * name: "default_route",
-                 * template: "{controller}/{action}/{id?}",
-                 * defaults: new { controller = "Home", action = "Index" });
-                 */
-                /*
-                 * // *号，全方位匹配路径，默认是：ReadArticle
-                 * // 此模板将匹配类似 /Blog/All-About-Routing/Introduction 的 URL 路径并提取值 { controller = Blog, action = ReadArticle, article = All-About-Routing/Introduction }。 controller 和 action 的默认路由值由路由生成，即便模板中没有对应的路由参数。 可在路由模板中指定默认值。 根据路由参数名称前的星号 外观，article 路由参数被定义为全方位*。 全方位路由参数可捕获 URL 路径的其余部分，也能匹配空白字符串。
-                 * // 不全懂！
-                 * routes.MapRoute(
-                 * name: "blog",
-                 * template: "Blog/{*article}",
-                 * defaults: new { controller = "Blog", action = "ReadArticle" });
-                 */
-                /*
-                 * // 此模板与 /en-US/Products/5 等 URL 路径相匹配，并且提取值 { controller = Products, action = Details, id = 5 } 和数据令牌 { locale = en-US }。
-                 * routes.MapRoute(
-                 * name: "us_english_products",
-                 * template: "en-US/Products/{id}",
-                 * defaults: new { controller = "Products", action = "Details" },
-                 * constraints: new { id = new IntRouteConstraint() },
-                 * dataTokens: new { locale = "en-US" });
-                 */
+                endpoints.MapControllerRoute(
+                    name: "area", 
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
+            // 下面这个是老的core2.2的
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "areas",
+            //        template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            //    // {id:int}类型约束
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //    /*
+            //     * //下面这个模板配置和 template: "{controller=Home}/{action=Index}/{id?}"); 相同
+            //     * routes.MapRoute(
+            //     * name: "default_route",
+            //     * template: "{controller}/{action}/{id?}",
+            //     * defaults: new { controller = "Home", action = "Index" });
+            //     */
+            //    /*
+            //     * // *号，全方位匹配路径，默认是：ReadArticle
+            //     * // 此模板将匹配类似 /Blog/All-About-Routing/Introduction 的 URL 路径并提取值 { controller = Blog, action = ReadArticle, article = All-About-Routing/Introduction }。 controller 和 action 的默认路由值由路由生成，即便模板中没有对应的路由参数。 可在路由模板中指定默认值。 根据路由参数名称前的星号 外观，article 路由参数被定义为全方位*。 全方位路由参数可捕获 URL 路径的其余部分，也能匹配空白字符串。
+            //     * // 不全懂！
+            //     * routes.MapRoute(
+            //     * name: "blog",
+            //     * template: "Blog/{*article}",
+            //     * defaults: new { controller = "Blog", action = "ReadArticle" });
+            //     */
+            //    /*
+            //     * // 此模板与 /en-US/Products/5 等 URL 路径相匹配，并且提取值 { controller = Products, action = Details, id = 5 } 和数据令牌 { locale = en-US }。
+            //     * routes.MapRoute(
+            //     * name: "us_english_products",
+            //     * template: "en-US/Products/{id}",
+            //     * defaults: new { controller = "Products", action = "Details" },
+            //     * constraints: new { id = new IntRouteConstraint() },
+            //     * dataTokens: new { locale = "en-US" });
+            //     */
+            //});
             #endregion
         }
     }

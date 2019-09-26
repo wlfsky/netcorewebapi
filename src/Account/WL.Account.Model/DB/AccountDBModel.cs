@@ -15,6 +15,7 @@ namespace WL.Account.Model.DB
         /// 帐号编号
         /// </summary>
         [Key]
+        [System.ComponentModel.DataAnnotations.Required]//必要的，和simplecrud定义的一样，这里全量引用路径是为和key避免命名冲突
         public string AccountID { get; set; }
         /// <summary>
         /// 帐号

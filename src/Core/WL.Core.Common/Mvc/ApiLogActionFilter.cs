@@ -16,16 +16,18 @@ namespace WL.Core.Common.Mvc
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
+            var contentType = context.HttpContext.Response.ContentType;
             Task.Run(() =>
             {
                 var resJson = context.Result.ToJson();
-                Console.WriteLine($"{context.HttpContext.Response.ContentType} Response -->");
+                Console.WriteLine($"{contentType} Response -->");
                 Console.WriteLine(resJson);
             });
             endTime = DateTime.Now;
+            var routeValues = context.RouteData.Values;
             if (startTime.HasValue)
             {
-                Console.WriteLine($"{context.RouteData.Values.ToJson()} 耗时：{(endTime - startTime).Value.TotalMilliseconds} 毫秒");
+                Console.WriteLine($"{routeValues.ToJson()} 耗时：{(endTime - startTime).Value.TotalMilliseconds} 毫秒");
             }
         }
 

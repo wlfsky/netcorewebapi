@@ -31,29 +31,38 @@ namespace WL.Account.BusinessService.WebApi
             {
                 options.EnableEndpointRouting = true;
                 options.Filters.Add(typeof(ApiLogActionFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Latest);
+            // 默认用大写开头和实体一致
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            app.UseCors();
+
+            app.UseDeveloperExceptionPage();
+            app.UseHsts();
 
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "api",
-                    template: "api/{controller=UserAccount}/{action=Get}/{id?}");
+                    pattern: "api/{controller=UserAccount}/{action=Get}/{id?}");
+                endpoints.MapRazorPages();
             });
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "api",
+            //        template: "api/{controller=UserAccount}/{action=Get}/{id?}");
+            //});
         }
     }
 }

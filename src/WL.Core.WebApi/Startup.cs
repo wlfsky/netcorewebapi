@@ -56,12 +56,12 @@ namespace WL.Core.WebApi
                 options.Filters.Add(new GeneralActionFilter());// An instance 实例方式
                 options.Filters.Add(typeof(GeneralResultFilter));// By type 类型方式
                 
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Latest);
             // 默认可以跨域
             services.AddCors((option) => option.AddPolicy("AllowCors", builder => builder.AllowAnyOrigin().AllowAnyMethod()));
             // 默认用大写开头和实体一致
             services.AddMvc().AddJsonOptions(options=>{
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
             #region --注入业务层  业务服务--
@@ -71,35 +71,35 @@ namespace WL.Core.WebApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         // 配置 HTTP 请求管道
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             #region --老方式2.1的，2.2移动到了ConfigureServices方法中--
             ////下面两句会触发两个日志，根据配置会显示到控制台窗口
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug(); 
             #endregion
+            app.UseCors();
 
             app.UseDeveloperExceptionPage();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/api/Error");
-            }
+            app.UseExceptionHandler("/api/Error");
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseAuthentication();
-
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "api/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "api/{controller=Home}/{action=Index}/{id?}");
+            //});
             app.UseCors("AllowCors");
             //app.Run(async context =>
             //{
