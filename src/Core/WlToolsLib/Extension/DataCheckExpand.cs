@@ -37,12 +37,9 @@ namespace WlToolsLib.Extension
         /// <returns>返回空白字符串string.Empty表示成功通过检查</returns>
         public static string SimpleChecker(this Dictionary<string, Func<bool>> self)
         {
-            foreach (var key in self.Keys)
+            foreach (var key in DataCheckExpand.SimpleCheckerYield(self))
             {
-                if (self[key].NotNull() && self[key]())
-                {
-                    return key;
-                }
+                return key;
             }
             return string.Empty;
         }
@@ -71,12 +68,10 @@ namespace WlToolsLib.Extension
         /// <returns>返回元祖，是否有错，无错则返回 false 和 空白字符串</returns>
         public static (bool haveerror, string info) Checker(this Dictionary<string, Func<bool>> self)
         {
-            foreach (var eKey in self.Keys)
+            foreach (var item in DataCheckExpand.CheckerYield(self))
             {
-                if (self[eKey].NotNull() && self[eKey]())
-                {
-                    return (true, eKey);
-                }
+                return (item.haveerror, item.info);
+
             }
             return (false, string.Empty);
         }
@@ -105,14 +100,30 @@ namespace WlToolsLib.Extension
         /// <returns>返回元祖，是否有错，无错则返回 false 和 空白字符串</returns>
         public static (bool haveerror, string info) Checker<TData>(this Dictionary<string, Func<TData, bool>> self, TData data)
         {
+            foreach (var item in DataCheckExpand.CheckerYield(self, data))
+            {
+                return (item.haveerror, item.info);
+            }
+            return (false, string.Empty);
+        }
+
+        /// <summary>
+        /// 错误检查常规版，自带检查规则
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static IEnumerable<(bool haveerror, string info)> CheckerYield<TData>(this Dictionary<string, Func<TData, bool>> self, TData data)
+        {
             foreach (var eKey in self.Keys)
             {
                 if (self[eKey].NotNull() && self[eKey](data))
                 {
-                    return (true, eKey);
+                    yield return (true, eKey);
                 }
             }
-            return (false, string.Empty);
+            //yield return (false, string.Empty);
         }
 
         /// <summary>
@@ -126,6 +137,24 @@ namespace WlToolsLib.Extension
         /// <returns></returns>
         public static (bool haveerror, string info, TData data) CheckerList<TData>(this Dictionary<string, Func<TData, bool>> self, IEnumerable<TData> dataList)
         {
+            foreach (var item in DataCheckExpand.CheckerListYield(self, dataList))
+            {
+                return (true, item.info, item.data);
+            }
+            return (false, string.Empty, default(TData));
+        }
+
+        /// <summary>
+        /// 对列表的错误检查
+        /// 任何一个数据出现错误就返回
+        /// （注意是返回是否有错：true有错，false无错）
+        /// </summary>
+        /// <typeparam name="TData"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="dataList"></param>
+        /// <returns></returns>
+        public static IEnumerable<(bool haveerror, string info, TData data)> CheckerListYield<TData>(this Dictionary<string, Func<TData, bool>> self, IEnumerable<TData> dataList)
+        {
             if (dataList.HasItem())
             {
                 foreach (var item in dataList)
@@ -136,13 +165,13 @@ namespace WlToolsLib.Extension
                         {
                             if (self[eKey].NotNull() && self[eKey](item))
                             {
-                                return (true, eKey, item);
+                                yield return (true, eKey, item);
                             }
                         }
                     }
                 }
             }
-            return (false, string.Empty, default(TData));
+            //yield return (false, string.Empty, default(TData));
         }
 
 

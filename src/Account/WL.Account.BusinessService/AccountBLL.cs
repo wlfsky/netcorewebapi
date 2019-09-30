@@ -52,6 +52,9 @@ namespace WL.Account.BusinessService
 
         }
 
+        /// <summary>
+        /// 注册类型
+        /// </summary>
         protected override void RegistType()
         {
             Builder.RegisterType<UserAccountDAL>().As<IUserAccountDAL>();
@@ -193,7 +196,18 @@ namespace WL.Account.BusinessService
         public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             #region --早期验证--
-            
+            Dictionary<string, Func<bool>> check = new Dictionary<string, Func<bool>>()
+            {
+                ["旧密码为空"] = () => req.OldPassword.NullEmpty(),
+                ["新密码两次输入不一致"] = () => req.NewPassword != req.NewPassword2,
+            };
+            foreach (var c in check.CheckerYield())
+            {
+                if (c.haveerror)
+                {
+                    return c.info.Fail<AccountModel>();
+                }
+            }
             #endregion
 
             #region --提取用户信息--
