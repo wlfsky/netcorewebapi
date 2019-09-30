@@ -102,13 +102,25 @@ namespace WL.Account.Model.DB
         /// </summary>
         public string LastNickName { get; set; }
         /// <summary>
+        /// 昵称头像
+        /// </summary>
+        public string NickPic { get; set; }
+        /// <summary>
         /// 真名
         /// </summary>
         public string RealName { get; set; }
         /// <summary>
+        /// 真脸图
+        /// </summary>
+        public string RealFacePic { get; set; }
+        /// <summary>
         /// 身份证号码
         /// </summary>
         public string IDCard { get; set; }
+        /// <summary>
+        /// 身份证图片
+        /// </summary>
+        public string IDCardPic { get; set; }
         /// <summary>
         /// 地址信息
         /// </summary>

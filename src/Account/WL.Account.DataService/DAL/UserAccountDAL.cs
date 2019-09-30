@@ -56,6 +56,18 @@ namespace WL.Account.DataService
             //return "未能提取到数据".Fail<BimUser>();
         }
 
+        public DataShell<AccountDBModel> Login(AccountDBModel account)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            using (var dal = new UserAccountTDAL(conn))
+            {
+                var result = dal.GetSingle(account);
+                return result;
+            }
+                
+            
+        }
+
         /// <summary>
         /// 获取列表
         /// </summary>
@@ -111,21 +123,39 @@ namespace WL.Account.DataService
         }
 
         /// <summary>
-        /// 更新
+        /// 高级 管理 更新
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
         public DataShell<AccountDBModel> Update(AccountDBModel account)
         {
+            var ig_list = new List<string>() { "AccountID", "CoreID", "UserID", "Account" };
             using (var conn = ConnFactory.GetUserConn())
             {
                 using (var dal = new UserAccountTDAL(conn))
                 {
-                    var result = dal.Update(account);
-                    return result;
+                    var result = dal.Update(account, updateIgnoreField: ig_list);
+
+                    if (result != 1) { throw new Exception("高级更新失败影响数据为0"); }
+                    return account.Succ();
                 }
             }
         }
+
+        // 登录更新（查询验证，更新登录时间，次数）
+        // 改密码更新
+        // 改高级密码更新
+        // 更新状态
+        // 更新邮件
+        // 更新手机号
+        // 设置临时密码
+        // 验证临时密码
+        // 改昵称
+        // 设置真名，身份证
+        // 
+
+        // 管理系统 改状态 更新
+        // 
 
         /// <summary>
         /// 逻辑上删除
@@ -189,6 +219,72 @@ namespace WL.Account.DataService
             }
 
         }
+
+        #region --更新类功能--
+        /*更新有几类：更新到外部来的新值，依据旧值更新如累加，更新其他旧值*/
+        /// <summary>
+        /// 登录后更新
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user, "TotalLoginTimes=TotalLoginTimes+1, LastLoginTime=@LastLoginTime", "AccountID=@AccountID", new { @AccountID = user.AccountID, @LastLoginTime = user.LastLoginTime });
+                    if (result != 1) { return $"登录更新影响行数异常{result}".Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改密码更新
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user, "Password=@Password", "AccountID=@AccountID", new { @AccountID = user.AccountID, @Password = user.Password });
+                    if (result != 1) { return $"修改密码更新影响行数异常{result}".Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+        #endregion
+        #region --根据特定信息提取用户单个信息--
+
+        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
         #endregion
     }
 }

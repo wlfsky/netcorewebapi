@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace WlToolsLib.Extension
 {
+    /// <summary>
+    /// 数据检查扩展
+    /// </summary>
     public static class DataCheckExpand
     {
-        #region --错误检查扩展--
         /// <summary>
         /// 错误检查简化版，有错误返回错误信息，无错误返回空字符串
+        /// 缺点是空错误的检查和完结无法区分
         /// </summary>
         /// <param name="self"></param>
         /// <remarks>
@@ -29,6 +32,7 @@ namespace WlToolsLib.Extension
         ///     {
         ///         // return error
         ///     }
+        /// 缺点是空错误的检查和完结无法区分 如 "",func<bool> 这种检查项无法和结果区分，
         /// </remarks>
         /// <returns>返回空白字符串string.Empty表示成功通过检查</returns>
         public static string SimpleChecker(this Dictionary<string, Func<bool>> self)
@@ -41,6 +45,22 @@ namespace WlToolsLib.Extension
                 }
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// 错误检查简化版，有错误返回错误信息，无错误返回空字符串
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> SimpleCheckerYield(this Dictionary<string, Func<bool>> self)
+        {
+            foreach (var key in self.Keys)
+            {
+                if (self[key].NotNull() && self[key]())
+                {
+                    yield return key;
+                }
+            }
         }
 
         /// <summary>
@@ -59,6 +79,22 @@ namespace WlToolsLib.Extension
                 }
             }
             return (false, string.Empty);
+        }
+        /// <summary>
+        /// 错误检查：返回值加强版。
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerable<(bool haveerror, string info)> CheckerYield(this Dictionary<string, Func<bool>> self)
+        {
+            foreach (var eKey in self.Keys)
+            {
+                if (self[eKey].NotNull() && self[eKey]())
+                {
+                    yield return (true, eKey);
+                }
+            }
+            //yield return (false, string.Empty);
         }
 
         /// <summary>
@@ -108,7 +144,8 @@ namespace WlToolsLib.Extension
             }
             return (false, string.Empty, default(TData));
         }
-        #endregion
+
+
     }
 
     /// <summary>
@@ -116,8 +153,19 @@ namespace WlToolsLib.Extension
     /// </summary>
     public class CheckResult
     {
+        /// <summary>
+        /// 是否成功哦你
+        /// </summary>
         public bool Success { get; set; }
+        /// <summary>
+        /// 信息
+        /// </summary>
         public string Info { get; set; }
+        /// <summary>
+        /// 析构器
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="info"></param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void Deconstruct(out bool success, out string info) { success = Success; info = Info; }
     }
@@ -128,8 +176,18 @@ namespace WlToolsLib.Extension
     /// <typeparam name="TData"></typeparam>
     public class CheckResult<TData> : CheckResult
     {
+        /// <summary>
+        /// 相关数据
+        /// </summary>
         public TData Data { get; set; }
+        /// <summary>
+        /// 析构器
+        /// </summary>
+        /// <param name="success"></param>
+        /// <param name="info"></param>
+        /// <param name="data"></param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public void Deconstruct(out bool success, out string info, out TData data) { success = Success; info = Info; data = Data; }
     }
 }
+

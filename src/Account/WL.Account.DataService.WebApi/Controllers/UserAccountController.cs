@@ -57,7 +57,8 @@ namespace WL.Account.DataService.WebApi.Controllers
         [HttpPost]
         public DataShell<AccountDBModel> Update(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            var res = _userDAL.Update(user);
+            return res;
         }
 
         [HttpPost]

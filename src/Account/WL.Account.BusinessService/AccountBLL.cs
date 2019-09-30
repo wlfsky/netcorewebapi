@@ -16,6 +16,9 @@ using WlToolsLib.CryptoHelper;
 using WlToolsLib.DataShell;
 using WlToolsLib.Extension;
 using WlToolsLib.Pagination;
+using WL.Account.BusinessService.Common;
+using WL.Account.Model;
+using WL.Account.Model.Core;
 
 namespace WL.Account.BusinessService
 {
@@ -116,8 +119,6 @@ namespace WL.Account.BusinessService
             return res;
         }
 
-
-
         //public DataShell<PageShell<UserAccount>> GetPage(PageCondition<UserAccount> userp)
         //{
         //    var res = ReqResTransShell<PageCondition<UserAccount>, PageCondition<UserAccountDBModel>, PageShell<UserAccountDBModel>, PageShell<UserAccount>>(userp, (rq) => _userDAL.GetPage(rq));
@@ -135,6 +136,97 @@ namespace WL.Account.BusinessService
         //    var res = ReqResTransShell<UserAccount, UserAccountDBModel, int, int>(user, (rq) => _userDAL.Del(rq));
         //    return res;
         //}
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountModel> Login(AccountModel user)
+        {
+            #region --提取用户信息--
+            DataShell<AccountDBModel> tempres = _userDAL.GetByAccount(user);
+            tempres = _userDAL.GetByAccountID(user);
+            tempres = _userDAL.GetByMobile(user);
+            tempres = _userDAL.GetByEmail(user);
+            if (!tempres.Success)
+            {
+                return tempres.ToNewShell<AccountDBModel, AccountModel>();
+            }
+            #endregion
+
+            #region --密码核验--
+            var srcuser = tempres.Data;
+            user.Password = CommonLib.AccountPassword(user.Password);
+            if (srcuser.Password != user.Password)
+            {
+                return "用户名/手机/邮件或者密码不对".Fail<AccountModel>();
+            }
+            #endregion
+
+            #region --更新登录信息--
+            user.LastLoginTime = DateTime.Now;
+            user.TotalLoginTimes++;
+            var update_res = _userDAL.UpdateAfterLogin(user);
+            #endregion
+
+            #region --用户权限--
+            #endregion
+
+            var res = user.ToBllModel();
+
+            return res.Succ();
+        }
+
+        #region --修改密码功能--
+        // 发起修改密码申请，应用密码修改
+        public DataShell<AccountModel> ApplyForModifyPassword()
+        {
+            throw new Exception("no function body");
+        }
+
+        /// <summary>
+        /// 更新密码
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        {
+            #region --早期验证--
+            
+            #endregion
+
+            #region --提取用户信息--
+            AccountModel user = new AccountModel() { Account = req.Account, Email = req.Email, Mobile = req.Mobile, AccountID = req.AccountID };
+            DataShell<AccountDBModel> tempuser = _userDAL.GetByAccount(user);
+            tempuser = _userDAL.GetByAccountID(user);
+            tempuser = _userDAL.GetByMobile(user);
+            tempuser = _userDAL.GetByEmail(user);
+            if (!tempuser.Success)
+            {
+                return tempuser.ToNewShell<AccountDBModel, AccountModel>();
+            }
+            #endregion
+
+            #region --密码核验--
+            var srcuser = tempuser.Data;
+            var oldpassword = CommonLib.AccountPassword(req.OldPassword);//散列加密
+            if (srcuser.Password != oldpassword)
+            {
+                return "用户名/手机/邮件或者密码不对".Fail<AccountModel>();
+            }
+            #endregion
+
+            #region --更新密码--
+            user.Password = CommonLib.AccountPassword(req.NewPassword);//散列加密
+            var up_res = _userDAL.UpdateModifyPassword(user);//更新密码
+            up_res.Data.Password = "";//移除敏感数据
+            var res = up_res.ToNewShell<AccountDBModel, AccountModel>();
+            #endregion
+
+            return res;
+        }
+        #endregion
 
     }
 }

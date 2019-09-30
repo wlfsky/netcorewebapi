@@ -207,6 +207,43 @@ namespace Dapper
         }
 
         /// <summary>
+        /// 根据匿名对象提取 且只提取一个数据，匿名对象必须和表字段对应
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connection"></param>
+        /// <param name="obj"></param>
+        /// <param name="transaction"></param>
+        /// <param name="commandTimeout"></param>
+        /// <returns></returns>
+        public static T GetByAnonymousSingle<T>(this IDbConnection connection, object obj, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var currenttype = typeof(T);
+
+            var name = GetTableName(currenttype);
+            var sb = new StringBuilder();
+            sb.Append("Select ");
+            //create a new empty instance of the type to get the base properties
+            BuildSelect(sb, GetScaffoldableProperties<T>().ToArray());
+            sb.AppendFormat(" from {0} where 1=1 ", name);
+
+            var whereArray = obj.GetType().GetProperties();
+            var dynParms = new DynamicParameters();
+            foreach (var item in whereArray)
+            {
+                sb.AppendFormat("AND ");
+                sb.AppendFormat("{0} = {2}{1} ", GetColumnName(item), item.Name, _valueHeadChar);
+                dynParms.Add(_valueHeadChar + item.Name, item.GetValue(obj));
+            }
+            sb.AppendFormat("AND IsDel = 0");
+
+            if (Debugger.IsAttached)
+                Trace.WriteLine(String.Format("Get<{0}>: {1} with : {2}", currenttype, sb, name));
+
+            var result = connection.QueryFirst<T>(sb.ToString(), dynParms, transaction, commandTimeout);
+            return result;
+        }
+
+        /// <summary>
         /// <para>By default queries the table matching the class name</para>
         /// <para>-Table name can be overridden by adding an attribute on your class [Table("YourTableName")]</para>
         /// <para>whereConditions is an anonymous type to filter the results ex: new {Category = 1, SubCategory=2}</para>

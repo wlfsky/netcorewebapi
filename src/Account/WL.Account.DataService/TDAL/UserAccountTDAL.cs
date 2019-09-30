@@ -124,6 +124,50 @@ namespace WL.Account.DataService
             return "无此用户".Fail<AccountDBModel>();
         }
 
+        #region --根据特定标记获取单个数据--
+        /// <summary>
+        /// 帐号id提取帐号
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        {
+            var res = base.GetByAnonymousSingle<AccountDBModel>(new { @AccountID = user.AccountID });
+            return res.Succ<AccountDBModel>();
+        }
+
+        /// <summary>
+        /// 根据帐号提取账户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        {
+            var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Account = user.Account });
+            return res.Succ<AccountDBModel>();
+        }
+        /// <summary>
+        /// 根据手机号找用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        {
+            var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Mobile = user.Mobile });
+            return res.Succ<AccountDBModel>();
+        }
+        /// <summary>
+        /// 根据电子邮件
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        {
+            var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Email = user.Email });
+            return res.Succ<AccountDBModel>();
+        }
+        #endregion
+
         /// <summary>
         /// 获取用户信息列表
         /// </summary>

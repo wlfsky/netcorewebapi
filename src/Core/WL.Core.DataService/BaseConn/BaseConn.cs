@@ -237,10 +237,33 @@ namespace WL.Core.DataService
         }
 
 
-
+        /// <summary>
+        /// 用匿名类查询获取数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public IEnumerable<T> GetByAnonymous<T>(object obj)
         {
             var r = this.Con.GetByAnonymous<T>(obj, this.Tran);
+            return r;
+        }
+
+        /// <summary>
+        /// 用匿名类查询单个数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public T GetByAnonymousSingle<T>(object obj)
+        {
+            var r = this.Con.GetByAnonymousSingle<T>(obj, this.Tran);
+            return r;
+        }
+
+        public IEnumerable<T> GetByCoreID<T>(T obj) where T : BaseDBModel
+        {
+            var r = this.Con.GetByAnonymous<T>(new { @CoreID = obj.CoreID }, this.Tran);
             return r;
         }
 
@@ -315,8 +338,8 @@ namespace WL.Core.DataService
 
         #region --更新记录--
         /// <summary>
-        /// 更新单个实体,通用版本，忽略字段 "IsDel", "AddUser", "AddTime", "ProjectID"
-        ///  ModifyTime 字段单独处理外层无需幅值
+        /// 更新单个实体,通用版本，忽略字段 "IsDel"
+        ///  ModifyTime 字段单独处理外层无需赋值
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>

@@ -105,6 +105,31 @@ namespace WlToolsLib.DataShell
             return self.Message.Fail<T>().AddInfo(self.StackTrace).AddInfo(self.Source);
         }
         #endregion
+
+        #region --用新的数据类型，完全转换一个数据外壳--
+        /// <summary>
+        /// 用新的Data数据类型，完全转换一个新的类型的数据外壳
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static DataShell<TTag> ToNewShell<TSrc, TTag>(this DataShell<TSrc> self, TTag newdata = default(TTag))
+        {
+            DataShell<TTag> target = new DataShell<TTag>();
+            target.Code = self.Code;
+            target.Data = newdata;
+            target.ExceptionList = self.ExceptionList;
+            target.Info = self.Info;
+            target.InfoDetail = self.InfoDetail;
+            target.Infos = self.Infos;
+            target.Operator = self.Operator;
+            target.Status = self.Status;
+            target.Success = self.Success;
+            target.Time = self.Time;
+            target.Version = self.Version;
+            return target;
+        }
+        #endregion
     }
 
 #endregion --返回结果扩展方法--
