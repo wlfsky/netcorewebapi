@@ -54,6 +54,41 @@ namespace WL.Account.DataBridge
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
             return res;
         }
+
+        public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

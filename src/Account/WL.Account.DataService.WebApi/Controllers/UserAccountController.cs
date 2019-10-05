@@ -66,5 +66,40 @@ namespace WL.Account.DataService.WebApi.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace WlToolsLib.DataShell
             this.Version = "0.1";
             this.Infos = new List<string>();
             this.Code = 0;
+            this.Status = 0;
         }
 
         /// <summary>
@@ -128,19 +129,28 @@ namespace WlToolsLib.DataShell
         /// <summary>
         /// 获取或设置一个值，该值指示-执行是否成功(true, false)
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
+        /// <summary>
+        /// 失败，完全和Success相反,只是为了提供方便阅读的属性
+        /// </summary>
+        public bool Failure { get { return !this.Success; } set { this.Success = !value; } }
 
         /// <summary>
-        /// 获取或设置一个值，该值指示-执行是否成功(true, false)
+        /// 获取或设置一个值，该值指示-执行是否成功：0未知，大于0成功true，小于0失败false
+        /// (这是个兼容属性)
         /// </summary>
-        public int Status { get; set; }
+        public int Status { get; set; } = 0;
 
         /// <summary>
         /// 代码，当前后端约定代码信息后可使用
         /// 默认 0 表示：无意义
         /// </summary>
         public int Code { get; set; } = 0;
-
+        /// <summary>
+        /// 消息，提供一个覆盖型单消息
+        /// (这是个兼容属性)
+        /// </summary>
+        public string Msg { get; set; } = "";
         /// <summary>
         /// 获取或设置一个值，该值指示-信息，如果出错返回错误信息
         /// </summary>
@@ -152,7 +162,7 @@ namespace WlToolsLib.DataShell
         public IList<string> InfoDetail { get; set; } = new List<string>();
 
         /// <summary>
-        /// 信息
+        /// 信息,组合了所有Infos的信息
         /// </summary>
         public string Info
         {
@@ -203,6 +213,7 @@ namespace WlToolsLib.DataShell
         {
             this.Success = true;
             this.Code = 1;
+            this.Status = 1;
             return this;
         }
 
@@ -236,6 +247,7 @@ namespace WlToolsLib.DataShell
         {
             this.Success = false;
             this.Code = -1;
+            this.Status = -1;
             this.Data = default(TResult);
             return this;
         }

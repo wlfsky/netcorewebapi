@@ -160,10 +160,10 @@ namespace WL.Account.BusinessService
 
             #region --密码核验--
             var srcuser = tempres.Data;
-            user.Password = CommonLib.AccountPassword(user.Password);
-            if (srcuser.Password != user.Password)
+            var verifyRes = PasswordVerify(srcuser.Password, user.Password);
+            if (verifyRes.Failure)
             {
-                return "用户名/手机/邮件或者密码不对".Fail<AccountModel>();
+                return verifyRes.Info.Fail<AccountModel>();
             }
             #endregion
 
@@ -211,7 +211,11 @@ namespace WL.Account.BusinessService
             #endregion
 
             #region --提取用户信息--
-            AccountModel user = new AccountModel() { Account = req.Account, Email = req.Email, Mobile = req.Mobile, AccountID = req.AccountID };
+            AccountModel user = new AccountModel() { 
+                Account = req.Account, 
+                Email = req.Email, 
+                Mobile = req.Mobile, 
+                AccountID = req.AccountID };
             DataShell<AccountDBModel> tempuser = _userDAL.GetByAccount(user);
             tempuser = _userDAL.GetByAccountID(user);
             tempuser = _userDAL.GetByMobile(user);
@@ -224,10 +228,10 @@ namespace WL.Account.BusinessService
 
             #region --密码核验--
             var srcuser = tempuser.Data;
-            var oldpassword = CommonLib.AccountPassword(req.OldPassword);//散列加密
-            if (srcuser.Password != oldpassword)
+            var verifyRes = PasswordVerify(srcuser.Password, req.OldPassword);
+            if (verifyRes.Failure)
             {
-                return "用户名/手机/邮件或者密码不对".Fail<AccountModel>();
+                return verifyRes.Info.Fail<AccountModel>();
             }
             #endregion
 
@@ -242,5 +246,34 @@ namespace WL.Account.BusinessService
         }
         #endregion
 
+        #region --退出登录--
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <returns></returns>
+        public DataShell<string> Logout()
+        {
+            throw new Exception();
+        }
+        #endregion
+
+
+        #region --辅助功能--
+        /// <summary>
+        /// 密码核验
+        /// </summary>
+        /// <param name="srcPass">原始密码，及库内加密后的密码</param>
+        /// <param name="verifyPass">要验证的密码，及未加密的密码</param>
+        /// <returns></returns>
+        protected static DataShell<string> PasswordVerify(string srcPass, string verifyPass)
+        {
+            var cyPass = CommonLib.AccountPassword(verifyPass);
+            if(srcPass != cyPass)
+            {
+                return "用户名/手机/邮件或者密码不对".Fail<string>();
+            }
+            return "success".Succ();
+        }
+        #endregion
     }
 }
