@@ -67,39 +67,74 @@ namespace WL.Account.DataService.WebApi.Controllers
             throw new NotImplementedException();
         }
 
+        #region --更新--
+        /// <summary>
+        /// 登录后更新
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// 修改密码更新
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
         {
             throw new NotImplementedException();
         }
+        #endregion
 
-        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
-        {
-            throw new NotImplementedException();
-        }
+        #region --查询--
+        /// <summary>
+        /// 根据帐号获取用户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
 
         public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            return _userDAL.GetByAccount(user);
         }
-
+        /// <summary>
+        /// 根据邮件获取用户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            return _userDAL.GetByEmail(user);
         }
-
+        /// <summary>
+        /// 根据手机号获取用户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            return _userDAL.GetByMobile(user);
         }
-
+        /// <summary>
+        /// 根据用户帐号id获取用户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        {
+            return _userDAL.GetByAccountID(user);
+        }
+        /// <summary>
+        /// 根据核心id获取用户信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            return _userDAL.GetByCoreID(user);
         }
+        #endregion
     }
 }

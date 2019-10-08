@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
@@ -41,6 +42,7 @@ namespace WL.Core.WebApi
                 }); 
             #endregion
 
+            services.AddRazorPages();// 配置razor页面
             //services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
 
@@ -73,12 +75,20 @@ namespace WL.Core.WebApi
         // 配置 HTTP 请求管道
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            #region --老方式2.1的，2.2移动到了ConfigureServices方法中--
-            ////下面两句会触发两个日志，根据配置会显示到控制台窗口
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug(); 
-            #endregion
-            app.UseCors();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            //app.UseHttpsRedirection(); // https链接类型
+
+            //app.UseCors();
+            app.UseCors("AllowCors");
 
             app.UseDeveloperExceptionPage();
             app.UseExceptionHandler("/api/Error");
@@ -100,18 +110,11 @@ namespace WL.Core.WebApi
             //        name: "default",
             //        template: "api/{controller=Home}/{action=Index}/{id?}");
             //});
-            app.UseCors("AllowCors");
+            
             //app.Run(async context =>
             //{
             //    await context.Response.WriteAsync("hello api");
             //});
-
-            //
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
 
             //app.UseMvc();
 
