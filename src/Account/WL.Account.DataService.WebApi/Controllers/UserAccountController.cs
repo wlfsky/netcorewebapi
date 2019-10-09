@@ -64,7 +64,8 @@ namespace WL.Account.DataService.WebApi.Controllers
         [HttpPost]
         public DataShell<int> Del(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            var res = _userDAL.Del(user);
+            return res;
         }
 
         #region --更新--
@@ -73,18 +74,22 @@ namespace WL.Account.DataService.WebApi.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            var res = _userDAL.UpdateAfterLogin(user);
+            return res;
         }
         /// <summary>
         /// 修改密码更新
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            var res = _userDAL.UpdateModifyPassword(user);
+            return res;
         }
         #endregion
 
@@ -94,46 +99,56 @@ namespace WL.Account.DataService.WebApi.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
 
         public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
-            return _userDAL.GetByAccount(user);
+            var res = _userDAL.GetByAccount(user);
+            return res;
         }
         /// <summary>
         /// 根据邮件获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
-            return _userDAL.GetByEmail(user);
+            var res = _userDAL.GetByEmail(user);
+            return res;
         }
         /// <summary>
         /// 根据手机号获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
-            return _userDAL.GetByMobile(user);
+            var res = _userDAL.GetByMobile(user);
+            return res;
         }
         /// <summary>
         /// 根据用户帐号id获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
-            return _userDAL.GetByAccountID(user);
+            var res = _userDAL.GetByAccountID(user);
+            return res;
         }
         /// <summary>
         /// 根据核心id获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [HttpPost]
         public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
-            return _userDAL.GetByCoreID(user);
+            var res = _userDAL.GetByCoreID(user);
+            return res;
         }
         #endregion
     }

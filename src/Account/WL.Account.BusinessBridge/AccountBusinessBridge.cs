@@ -1,6 +1,7 @@
 ﻿using System;
 using WL.Account.Model.Business;
 using WL.Account.Model.Business.Interface;
+using WL.Account.Model.Core;
 using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
@@ -53,6 +54,20 @@ namespace WL.Account.BusinessBridge
         {
             string funcUrl = "/api/UserAccount/Insert";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<AccountModel> Login(AccountModel user)
+        {
+            string funcUrl = "/api/UserAccount/Login";
+            var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
+            return res;
+        }
+
+        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        {
+            string funcUrl = "/api/UserAccount/ModifyPassword";
+            var res = bridge.CallApi<ModifyPasswordReq, DataShell<AccountModel>>(funcUrl, req);
             return res;
         }
     }

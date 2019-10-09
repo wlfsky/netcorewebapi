@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WL.Account.Model.Core;
 using WL.Account.Model.DB;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
@@ -36,5 +37,17 @@ namespace WL.Account.Model.Business.Interface
         //DataShell<UserAccount> Update(UserAccount user);
 
         //DataShell<int> Del(UserAccount user);
+        /// <summary>
+        /// 登录功能
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountModel> Login(AccountModel user);
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req);
     }
 }

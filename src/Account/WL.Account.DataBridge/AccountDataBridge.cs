@@ -48,6 +48,7 @@ namespace WL.Account.DataBridge
             return res;
         }
 
+        #region --更新功能--
         public DataShell<AccountDBModel> Update(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/Update";
@@ -57,38 +58,55 @@ namespace WL.Account.DataBridge
 
         public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/UpdateAfterLogin";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
 
         public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/UpdateModifyPassword";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
+        #endregion
 
+        #region --获取功能--
         public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/GetByAccountID";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
 
         public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/GetByAccount";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
 
         public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/GetByEmail";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
 
         public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/GetByMobile";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
 
         public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            string funcUrl = "/api/UserAccount/GetByCoreID";
+            var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
         }
+        #endregion
     }
 
     

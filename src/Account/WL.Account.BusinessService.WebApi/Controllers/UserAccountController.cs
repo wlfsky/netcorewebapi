@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WL.Account.Model.Business;
 using WL.Account.Model.Business.Interface;
+using WL.Account.Model.Core;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 
 namespace WL.Account.BusinessService.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class UserAccountController : BaseApiController
+    public class UserAccountController : BaseApiController, IAccountBLL
     {
         private IAccountBLL _userBll;
 
@@ -62,6 +63,30 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         public DataShell<AccountModel> Insert(AccountModel user)
         {
             var res = _userBll.Insert(user);
+            return res;
+        }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountModel> Login(AccountModel user)
+        {
+            var res = _userBll.Login(user);
+            return res;
+        }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        {
+            var res = _userBll.ModifyPassword(req);
             return res;
         }
 
