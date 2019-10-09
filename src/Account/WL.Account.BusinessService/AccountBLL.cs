@@ -92,6 +92,7 @@ namespace WL.Account.BusinessService
         //}
 
 
+        #region --注册和创建--
         /// <summary>
         /// 插入新 用户帐号
         /// </summary>
@@ -100,14 +101,20 @@ namespace WL.Account.BusinessService
         public DataShell<AccountModel> Insert(AccountModel user)
         {
             user.CoreID = "";
-            if (user.Account.NullEmpty() && user.Mobile.NullEmpty() && user.Email.NullEmpty())
+
+            #region --数据验证--
+            Dictionary<string, Func<bool>> check = new Dictionary<string, Func<bool>>()
             {
-                return "帐号，手机号，电子邮件不可同时为空".Fail<AccountModel>();
-            }
-            if (user.Password.NullEmpty())
+                ["帐号，手机号，电子邮件不可同时为空"] = () => user.Account.NullEmpty() && user.Email.NullEmpty() && user.Mobile.NullEmpty(),
+                ["帐号格式不合法"] = () => user.Account.NotNullEmpty() && user.Account.LegalAccount().IsFalse(),
+                ["无密码"] = () => user.Password.NullEmpty(),
+            };
+            var verifyRes = check.Checker();
+            if (verifyRes.haveerror)
             {
-                return "无密码".Fail<AccountModel>();
+                return verifyRes.info.Fail<AccountModel>();
             }
+            #endregion
             user.Password = user.Password.ToKeccak224();
             user.RegistTime = DateTime.Now;
             user.CreateTime = DateTime.Now;
@@ -121,6 +128,18 @@ namespace WL.Account.BusinessService
             var res = ReqResTransShell<AccountModel, AccountDBModel, AccountDBModel, AccountModel>(user, (d) => _userDAL.Insert(d));
             return res;
         }
+
+        /// <summary>
+        /// 注册新用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountModel> Regist(AccountModel user)
+        {
+            var res = Insert(user);
+            return res;
+        }
+        #endregion
 
         //public DataShell<PageShell<UserAccount>> GetPage(PageCondition<UserAccount> userp)
         //{
@@ -196,6 +215,7 @@ namespace WL.Account.BusinessService
         public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             #region --早期验证--
+            // 这是一个数据验证扩展的样例
             Dictionary<string, Func<bool>> check = new Dictionary<string, Func<bool>>()
             {
                 ["旧密码为空"] = () => req.OldPassword.NullEmpty(),

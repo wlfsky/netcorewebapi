@@ -74,6 +74,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         [HttpPost]
         public DataShell<AccountModel> Login(AccountModel user)
         {
+
             var res = _userBll.Login(user);
             return res;
         }

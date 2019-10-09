@@ -39,7 +39,10 @@ namespace WlToolsLib.Extension
         {
             foreach (var key in DataCheckExpand.SimpleCheckerYield(self))
             {
-                return key;
+                if (key.NotNullEmpty())
+                {
+                    return key;
+                }
             }
             return string.Empty;
         }
@@ -70,8 +73,10 @@ namespace WlToolsLib.Extension
         {
             foreach (var item in DataCheckExpand.CheckerYield(self))
             {
-                return (item.haveerror, item.info);
-
+                if (item.haveerror)
+                {
+                    return (item.haveerror, item.info);
+                }
             }
             return (false, string.Empty);
         }
@@ -102,7 +107,10 @@ namespace WlToolsLib.Extension
         {
             foreach (var item in DataCheckExpand.CheckerYield(self, data))
             {
-                return (item.haveerror, item.info);
+                if (item.haveerror)
+                {
+                    return (item.haveerror, item.info);
+                }
             }
             return (false, string.Empty);
         }
@@ -139,7 +147,10 @@ namespace WlToolsLib.Extension
         {
             foreach (var item in DataCheckExpand.CheckerListYield(self, dataList))
             {
-                return (true, item.info, item.data);
+                if (item.haveerror)
+                {
+                    return (item.haveerror, item.info, item.data);
+                }
             }
             return (false, string.Empty, default(TData));
         }
