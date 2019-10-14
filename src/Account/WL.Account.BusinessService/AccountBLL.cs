@@ -167,11 +167,25 @@ namespace WL.Account.BusinessService
         public DataShell<AccountModel> Login(AccountModel user)
         {
             #region --提取用户信息--
-            DataShell<AccountDBModel> tempres = _userDAL.GetByAccount(user);
-            tempres = _userDAL.GetByAccountID(user);
-            tempres = _userDAL.GetByMobile(user);
-            tempres = _userDAL.GetByEmail(user);
-            if (!tempres.Success)
+            DataShell<AccountDBModel> tempres = new DataShell<AccountDBModel>();
+            switch (user)
+            {
+                case AccountModel u when user.Account.NotNullEmpty():
+                    tempres = _userDAL.GetByAccount(user);
+                    break;
+                case AccountModel u when user.Email.NotNullEmpty():
+                    tempres = _userDAL.GetByEmail(user);
+                    break;
+                case AccountModel u when user.Mobile.NotNullEmpty():
+                    tempres = _userDAL.GetByMobile(user);
+                    break;
+                case AccountModel u when user.AccountID.NotNullEmpty():
+                    tempres = _userDAL.GetByAccountID(user);
+                    break;
+                default:
+                    throw new Exception("没有找到匹配的用户");
+            }
+            if (tempres.Failure)
             {
                 return tempres.ToNewShell<AccountDBModel, AccountModel>();
             }
@@ -236,11 +250,26 @@ namespace WL.Account.BusinessService
                 Email = req.Email, 
                 Mobile = req.Mobile, 
                 AccountID = req.AccountID };
-            DataShell<AccountDBModel> tempuser = _userDAL.GetByAccount(user);
-            tempuser = _userDAL.GetByAccountID(user);
-            tempuser = _userDAL.GetByMobile(user);
+            DataShell<AccountDBModel> tempuser = new DataShell<AccountDBModel>();
+            switch (user)
+            {
+                case AccountModel u when user.Account.NotNullEmpty():
+                    tempuser = _userDAL.GetByAccount(user);
+                    break;
+                case AccountModel u when user.Email.NotNullEmpty():
+                    tempuser = _userDAL.GetByEmail(user);
+                    break;
+                case AccountModel u when user.Mobile.NotNullEmpty():
+                    tempuser = _userDAL.GetByMobile(user);
+                    break;
+                case AccountModel u when user.AccountID.NotNullEmpty():
+                    tempuser = _userDAL.GetByAccountID(user);
+                    break;
+                default:
+                    throw new Exception("没有找到匹配的用户");
+            }
             tempuser = _userDAL.GetByEmail(user);
-            if (!tempuser.Success)
+            if (tempuser.Failure)
             {
                 return tempuser.ToNewShell<AccountDBModel, AccountModel>();
             }

@@ -59,8 +59,19 @@ namespace WL.Core.WebApi
                 options.Filters.Add(typeof(GeneralResultFilter));// By type 类型方式
                 
             }).SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+            #region --跨域--
             // 默认可以跨域
-            services.AddCors((option) => option.AddPolicy("AllowCors", builder => builder.AllowAnyOrigin().AllowAnyMethod()));
+            services.AddCors((option) => option.AddPolicy("AllowCors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            //// AllowAll 设置
+            //services.AddCors(option => {
+            //    option.AddPolicy("AllowAll", p => {
+            //        p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            //    });
+            //});
+            #endregion
+
+
             // 默认用大写开头和实体一致
             services.AddMvc().AddJsonOptions(options=>{
                 //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
@@ -89,6 +100,7 @@ namespace WL.Core.WebApi
 
             //app.UseCors();
             app.UseCors("AllowCors");
+            
 
             app.UseDeveloperExceptionPage();
             app.UseExceptionHandler("/api/Error");
@@ -104,19 +116,11 @@ namespace WL.Core.WebApi
                     pattern: "api/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "api/{controller=Home}/{action=Index}/{id?}");
-            //});
             
             //app.Run(async context =>
             //{
             //    await context.Response.WriteAsync("hello api");
             //});
-
-            //app.UseMvc();
 
         }
     }
