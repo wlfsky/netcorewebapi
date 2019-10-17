@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.CMS.DataService", "src\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Account", "Account", "{72DF98DA-2867-4A45-90A3-F1B2511CFE89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Account.Model", "src\Account\WL.Account.Model\WL.Account.Model.csproj", "{F93CC5F6-7CCB-4981-8890-FC7DB0D1B140}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Account.Core", "src\Account\WL.Account.Model\WL.Account.Core.csproj", "{F93CC5F6-7CCB-4981-8890-FC7DB0D1B140}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WL.Account.DataService", "src\Account\WL.Account.DataService\WL.Account.DataService.csproj", "{E5F1B80B-A8C3-4675-A47A-5CB2A8FB4590}"
 EndProject
@@ -132,6 +132,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WL.H5App", "src\WL.H5App\",
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "53996"
+		SlnRelativePath = "src\WL.H5App\"
 	EndProjectSection
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "WL.Admin.WebApp", "src\WL.Admin.WebApp\WL.Admin.WebApp.njsproj", "{67034466-7C7C-4C76-815A-3D3137CC7782}"
@@ -154,6 +155,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WL.Admin.Web", "src\WL.Admi
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1956"
+		SlnRelativePath = "src\WL.Admin.Web\"
 	EndProjectSection
 EndProject
 Global

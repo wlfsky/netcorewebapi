@@ -1,7 +1,7 @@
 ﻿using System;
-using WL.Account.Model.Business;
-using WL.Account.Model.Business.Interface;
-using WL.Account.Model.Core;
+using WL.Account.Core.Business;
+using WL.Account.Core.Business.Interface;
+using WL.Account.Core.Core;
 using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;

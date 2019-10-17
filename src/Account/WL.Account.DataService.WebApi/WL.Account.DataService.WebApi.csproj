@@ -23,7 +23,7 @@
     <ProjectReference Include="..\..\Core\WL.Core.Common\WL.Core.Common.csproj" />
     <ProjectReference Include="..\..\Core\WlToolsLib\WlToolsLib.csproj" />
     <ProjectReference Include="..\WL.Account.DataService\WL.Account.DataService.csproj" />
-    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Core.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

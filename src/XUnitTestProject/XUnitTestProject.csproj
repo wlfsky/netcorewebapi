@@ -31,7 +31,7 @@
     <ProjectReference Include="..\Account\WL.Account.BusinessService\WL.Account.BusinessService.csproj" />
     <ProjectReference Include="..\Account\WL.Account.DataBridge\WL.Account.DataBridge.csproj" />
     <ProjectReference Include="..\Account\WL.Account.DataService\WL.Account.DataService.csproj" />
-    <ProjectReference Include="..\Account\WL.Account.Model\WL.Account.Model.csproj" />
+    <ProjectReference Include="..\Account\WL.Account.Model\WL.Account.Core.csproj" />
     <ProjectReference Include="..\Core\WlToolsLib\WlToolsLib.csproj" />
   </ItemGroup>
 

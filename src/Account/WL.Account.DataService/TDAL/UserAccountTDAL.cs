@@ -8,8 +8,8 @@ using WlToolsLib.DataShell;
 using WlToolsLib.Extension;
 using WlToolsLib.Pagination;
 using WL.Core.DataService;
-using WL.Account.Model.DB;
-using WL.Account.Model.Business;
+using WL.Account.Core.DB;
+using WL.Account.Core.Business;
 
 namespace WL.Account.DataService
 {

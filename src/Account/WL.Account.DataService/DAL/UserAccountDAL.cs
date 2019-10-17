@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 using WL.Core.DataService;
-using WL.Account.Model.DB;
-using WL.Account.Model.Business;
-using WL.Account.Model.DB.Interface;
+using WL.Account.Core.DB;
+using WL.Account.Core.Business;
+using WL.Account.Core.DB.Interface;
 
 namespace WL.Account.DataService
 {

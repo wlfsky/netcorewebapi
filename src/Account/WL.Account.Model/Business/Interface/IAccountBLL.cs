@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WL.Account.Model.Core;
-using WL.Account.Model.DB;
+using WL.Account.Core.Core;
+using WL.Account.Core.DB;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 
-namespace WL.Account.Model.Business.Interface
+namespace WL.Account.Core.Business.Interface
 {
     /// <summary>
     /// 帐号业务层

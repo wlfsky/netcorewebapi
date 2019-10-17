@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WL.Account.Model.Enum
+namespace WL.Account.Core.Enum
 {
     /// <summary>
     /// 帐号状态

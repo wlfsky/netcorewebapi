@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WL.Account.Model.Core
+namespace WL.Account.Core.Core
 {
     public class ModifyPasswordReq
     {

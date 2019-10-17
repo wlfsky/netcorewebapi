@@ -1,9 +1,9 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
-using WL.Account.Model.Enum;
+using WL.Account.Core.Enum;
 using WL.Core.DBModel;
 
-namespace WL.Account.Model.DB
+namespace WL.Account.Core.DB
 {
     /// <summary>
     /// 帐号数据模型

@@ -3,8 +3,8 @@ using WL.Account.BusinessBridge;
 using WL.Account.BusinessService;
 using WL.Account.DataBridge;
 using WL.Account.DataService;
-using WL.Account.Model.Business.Interface;
-using WL.Account.Model.DB.Interface;
+using WL.Account.Core.Business.Interface;
+using WL.Account.Core.DB.Interface;
 using Xunit;
 
 namespace XUnitTestProject
@@ -23,7 +23,7 @@ namespace XUnitTestProject
         public void Test_DB_GetByID()
         {
             IUserAccountDAL test_dal = new UserAccountDAL();
-            var r = test_dal.Get(new WL.Account.Model.DB.AccountDBModel() { AccountID = "7" });
+            var r = test_dal.Get(new WL.Account.Core.DB.AccountDBModel() { AccountID = "7" });
             Console.WriteLine(r);
         }
 
@@ -32,11 +32,11 @@ namespace XUnitTestProject
         public void Test_DBB_GetByID()
         {
             IUserAccountDAL test_dal = new AccountDataBridge();
-            var r = test_dal.Get(new WL.Account.Model.DB.AccountDBModel() { AccountID = "7" });
+            var r = test_dal.Get(new WL.Account.Core.DB.AccountDBModel() { AccountID = "7" });
             Console.WriteLine(r);
 
             IAccountBLL ubll = new AccountBLL();
-            var u = ubll.Get(new WL.Account.Model.Business.AccountModel() { AccountID = "7" });
+            var u = ubll.Get(new WL.Account.Core.Business.AccountModel() { AccountID = "7" });
             Console.WriteLine(u);
 
         }
@@ -46,7 +46,7 @@ namespace XUnitTestProject
         {
             //
             IAccountBLL ab = new AccountBusinessBridge();
-            var res = ab.Get(new WL.Account.Model.Business.AccountModel() { AccountID = "7" });
+            var res = ab.Get(new WL.Account.Core.Business.AccountModel() { AccountID = "7" });
             Console.WriteLine(res);
 
         }

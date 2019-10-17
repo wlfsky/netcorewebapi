@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WL.Account.BusinessService\WL.Account.BusinessService.csproj" />
-    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Core.csproj" />
   </ItemGroup>
 
 </Project>

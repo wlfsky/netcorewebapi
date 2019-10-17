@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WL.Account.Model.Business;
-using WL.Account.Model.DB;
+using WL.Account.Core.Business;
+using WL.Account.Core.DB;
 
-namespace WL.Account.Model
+namespace WL.Account.Core
 {
     public static class DataTransExtension
     {

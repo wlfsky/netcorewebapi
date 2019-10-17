@@ -10,7 +10,7 @@
     <ProjectReference Include="..\..\Core\WL.Core.DataService\WL.Core.DataService.csproj" />
     <ProjectReference Include="..\..\Core\WL.Core.DBModel\WL.Core.DBModel.csproj" />
     <ProjectReference Include="..\..\Core\WlToolsLib\WlToolsLib.csproj" />
-    <ProjectReference Include="..\WL.Account.Model\WL.Account.Model.csproj" />
+    <ProjectReference Include="..\WL.Account.Model\WL.Account.Core.csproj" />
   </ItemGroup>
 
 </Project>

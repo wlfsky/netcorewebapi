@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using WL.Account.BusinessService;
-using WL.Account.Model.Business.Interface;
+using WL.Account.Core.Business.Interface;
 using WL.Core.BusinessService;
 using WL.Core.WebApp.Common.Middleware;
 using WlToolsLib.Extension;

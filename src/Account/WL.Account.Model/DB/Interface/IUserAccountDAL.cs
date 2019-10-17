@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WL.Account.Model.Business;
+using WL.Account.Core.Business;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 
-namespace WL.Account.Model.DB.Interface
+namespace WL.Account.Core.DB.Interface
 {
     /// <summary>
     /// 用户数据层接口

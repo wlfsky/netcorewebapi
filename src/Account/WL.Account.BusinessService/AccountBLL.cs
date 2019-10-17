@@ -7,18 +7,18 @@ using Autofac;
 using AutoMapper;
 using WL.Account.DataBridge;
 using WL.Account.DataService;
-using WL.Account.Model.Business;
-using WL.Account.Model.Business.Interface;
-using WL.Account.Model.DB;
-using WL.Account.Model.DB.Interface;
+using WL.Account.Core.Business;
+using WL.Account.Core.Business.Interface;
+using WL.Account.Core.DB;
+using WL.Account.Core.DB.Interface;
 using WL.Core.BusinessService;
 using WlToolsLib.CryptoHelper;
 using WlToolsLib.DataShell;
 using WlToolsLib.Extension;
 using WlToolsLib.Pagination;
 using WL.Account.BusinessService.Common;
-using WL.Account.Model;
-using WL.Account.Model.Core;
+using WL.Account.Core;
+using WL.Account.Core.Core;
 
 namespace WL.Account.BusinessService
 {
@@ -119,7 +119,7 @@ namespace WL.Account.BusinessService
             user.RegistTime = DateTime.Now;
             user.CreateTime = DateTime.Now;
             user.EditTime = DateTime.Now;
-            user.Status = Model.Enum.AccountStatus.RegistVerify;
+            user.Status = Core.Enum.AccountStatus.RegistVerify;
             // 如果用户名昵称为空用 帐号手机或者邮箱填充
             if (user.UserName.NullEmpty() && user.Account.NotNullEmpty()) { user.UserName = user.Account; }
             if (user.UserName.NullEmpty() && user.Mobile.NotNullEmpty()) { user.UserName = user.Mobile.Replace(2, 9, "*"); }

@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using WL.Account.BusinessService;
-using WL.Account.Model.Business.Interface;
+using WL.Account.Core.Business.Interface;
 using WL.Core.BusinessService;
 using WL.Core.WebApi.Filter;
 

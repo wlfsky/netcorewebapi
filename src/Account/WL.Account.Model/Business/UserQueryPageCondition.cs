@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WL.Account.Model.Enum;
+using WL.Account.Core.Enum;
 
-namespace WL.Account.Model.Business
+namespace WL.Account.Core.Business
 {
     public class UserQueryPageCondition
     {

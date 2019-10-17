@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WL.Account.Model.Business
+namespace WL.Account.Core.Business
 {
     public class UserLoginSuccess : UserFullInfo
     {
