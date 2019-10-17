@@ -261,10 +261,16 @@ namespace WL.Core.DataService
             return r;
         }
 
-        public IEnumerable<T> GetByCoreID<T>(T obj) where T : BaseDBModel
+        /// <summary>
+        /// 根据核心编号获取数据，只可能获取一个
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public DataShell<T> GetByCoreID<T>(T obj) where T : BaseDBModel
         {
-            var r = this.Con.GetByAnonymous<T>(new { @CoreID = obj.CoreID }, this.Tran);
-            return r;
+            var r = this.Con.GetByAnonymousSingle<T>(new { @CoreID = obj.CoreID }, this.Tran);
+            return r.Succ();
         }
 
         /// <summary>

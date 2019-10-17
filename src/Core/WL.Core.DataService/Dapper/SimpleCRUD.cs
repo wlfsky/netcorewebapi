@@ -434,7 +434,7 @@ namespace Dapper
             query = query.Replace("{OrderBy}", orderby);
             if (!string.IsNullOrWhiteSpace(conditions) && !conditions.Trim().ToLower().StartsWith("and"))
             {
-                conditions = "AND " + conditions;
+                conditions = " AND " + conditions;
             }
             query = query.Replace("{WhereClause}", $"WHERE 1=1 {conditions} AND IsDel = 0");
             query = query.Replace("{Offset}", ((pageNumber - 1) * rowsPerPage).ToString());

@@ -258,33 +258,93 @@ namespace WL.Account.DataService
             }
         }
         #endregion
+
         #region --根据特定信息提取用户单个信息--
 
+        /// <summary>
+        /// 根据帐号id获取用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByAccountID(user);
+                    return res;
+                }
+            }
         }
 
+        /// <summary>
+        /// 根据帐号获取用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByAccount(user);
+                    return res;
+                }
+            }
         }
 
+        /// <summary>
+        /// 根据电子邮件获取用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByEmail(user);
+                    return res;
+                }
+            }
         }
-
+        /// <summary>
+        /// 根据手机号获取用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByMobile(user);
+                    return res;
+                }
+            }
         }
-
+        /// <summary>
+        /// 根据核心编号获取用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
-            throw new NotImplementedException();
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByCoreID(user);
+                    return res;
+                }
+            }
         }
         #endregion
+
         #endregion
     }
 }

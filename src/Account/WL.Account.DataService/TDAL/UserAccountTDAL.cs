@@ -55,53 +55,53 @@ namespace WL.Account.DataService
             }
             if (condition.Condition.NotNull())
             {
-                if (condition.Condition.AccountID.NullEmpty())
+                if (condition.Condition.AccountID.NotNullEmpty())
                 {
-                    whereStr.Append("AND AccountID = @AccountID");
+                    whereStr.Append("AND AccountID = @AccountID ");
                 }
-                if (condition.Condition.Account.NullEmpty())
+                if (condition.Condition.Account.NotNullEmpty())
                 {
-                    whereStr.Append("AND Account = @Account");
+                    whereStr.Append("AND Account = @Account ");
                 }
-                if (condition.Condition.NickName.NullEmpty())
+                if (condition.Condition.NickName.NotNullEmpty())
                 {
-                    whereStr.Append("AND NickName = @NickName");
+                    whereStr.Append("AND NickName = @NickName ");
                 }
-                if (condition.Condition.Email.NullEmpty())
+                if (condition.Condition.Email.NotNullEmpty())
                 {
-                    whereStr.Append("AND Email = @Email");
+                    whereStr.Append("AND Email = @Email ");
                 }
-                if (condition.Condition.IDCard.NullEmpty())
+                if (condition.Condition.IDCard.NotNullEmpty())
                 {
-                    whereStr.Append("AND IDCard = @IDCard");
+                    whereStr.Append("AND IDCard = @IDCard ");
                 }
-                if (condition.Condition.Mobile.NullEmpty())
+                if (condition.Condition.Mobile.NotNullEmpty())
                 {
-                    whereStr.Append("AND Mobile = @Mobile");
+                    whereStr.Append("AND Mobile = @Mobile ");
                 }
-                if (condition.Condition.RealName.NullEmpty())
+                if (condition.Condition.RealName.NotNullEmpty())
                 {
-                    whereStr.Append("AND RealName = @RealName");
+                    whereStr.Append("AND RealName = @RealName ");
                 }
-                if (condition.Condition.UserName.NullEmpty())
+                if (condition.Condition.UserName.NotNullEmpty())
                 {
-                    whereStr.Append("AND UserName = @UserName");
+                    whereStr.Append("AND UserName = @UserName ");
                 }
-                if (condition.Condition.UserID.NullEmpty())
+                if (condition.Condition.UserID.NotNullEmpty())
                 {
-                    whereStr.Append("AND UserID = @UserID");
+                    whereStr.Append("AND UserID = @UserID ");
                 }
                 if (condition.Condition.Status.HasValue)
                 {
-                    whereStr.Append("AND Status = @Status");
+                    whereStr.Append("AND Status = @Status ");
                 }
                 if (condition.Condition.RegistTimeBegin.HasValue)
                 {
-                    whereStr.Append("AND RegistTime >= @RegistTimeBegin");
+                    whereStr.Append("AND RegistTime >= @RegistTimeBegin ");
                 }
                 if (condition.Condition.RegistTimeEnd.HasValue)
                 {
-                    whereStr.Append("AND RegistTime <= @RegistTimeEnd");
+                    whereStr.Append("AND RegistTime <= @RegistTimeEnd ");
                 }
             }
             string orderStr = $"{CreateTimeField} DESC";
