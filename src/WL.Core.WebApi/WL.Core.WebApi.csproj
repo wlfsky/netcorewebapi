@@ -29,7 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Account\WL.Account.BusinessBridge\WL.Account.BusinessBridge.csproj" />
     <ProjectReference Include="..\Account\WL.Account.BusinessService\WL.Account.BusinessService.csproj" />
-    <ProjectReference Include="..\Account\WL.Account.Model\WL.Account.Core.csproj" />
+    <ProjectReference Include="..\Account\WL.Account.Core\WL.Account.Core.csproj" />
     <ProjectReference Include="..\Core\WL.Core.Model\WL.Core.Model.csproj" />
   </ItemGroup>
 

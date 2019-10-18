@@ -49,6 +49,55 @@ namespace WL.Account.Core.DB.Interface
         /// <param name="user"></param>
         /// <returns></returns>
         DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user);
+        /// <summary>
+        /// 更新账户状态
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> UpdateStatus(AccountDBModel user);
+        /// <summary>
+        /// 设置临时密码,（TempPassword，TempPassOverTime，TempPassUseFor）
+        /// 用空参数设置临时密码就是清空临时密码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> SetTempPassword(AccountDBModel user);
+        /// <summary>
+        /// 更新昵称
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> UpdateNickName(AccountDBModel user);
+        /// <summary>
+        /// 更新头像
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user);
+        /// <summary>
+        /// 设置真名
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> SetRealName(AccountDBModel user);
+        /// <summary>
+        /// 设置身份证信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> SetIDCard(AccountDBModel user);
+        /// <summary>
+        /// 更新用户备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user);
+        /// <summary>
+        /// 更新系统备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user);
         #endregion
 
         #region --删除类功能--

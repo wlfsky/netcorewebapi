@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\WL.Core.InterfaceBridge\WL.Core.InterfaceBridge.csproj" />
+    <ProjectReference Include="..\WL.Account.Core\WL.Account.Core.csproj" />
     <ProjectReference Include="..\WL.Account.DataService\WL.Account.DataService.csproj" />
-    <ProjectReference Include="..\WL.Account.Model\WL.Account.Core.csproj" />
   </ItemGroup>
 
 </Project>

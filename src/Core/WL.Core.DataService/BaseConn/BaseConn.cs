@@ -61,6 +61,7 @@ namespace WL.Core.DataService
         public static readonly string EditTimeField = "EditTime";
         public static readonly string IsDelField = "IsDel";
         public static readonly string DBSysDateFunc = "SYSDATE()";
+        public static readonly string AbsoluteFunction = "ABS";
 
         /// <summary>
         /// 打开数据库连接
@@ -401,6 +402,85 @@ namespace WL.Core.DataService
             var r = this.Con.Execute(sqlStr, param, this.Tran);
             return r;
         }
+        #endregion
+
+        #region --基础状态变更业务--
+        #region --回收操作--
+        /// <summary>
+        /// 回收操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int Recycle<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET IsRecycle=1, {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        /// <summary>
+        /// 反回收操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int UnRecycle<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET IsRecycle=0, {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        /// <summary>
+        /// 切换回收操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int SwitchRecycle<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET IsRecycle={AbsoluteFunction}(IsRecycle - 1), {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        #endregion
+        #region --可用操作--
+        /// <summary>
+        /// 不可用操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int Disabled<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET Disabled=1, {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        /// <summary>
+        /// 可用操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int UnDisabled<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET Disabled=0, {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        /// <summary>
+        /// 切换可用操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int SwitchDisabled<T>(T obj) where T : BaseDBModel
+        {
+            string sqlStr = $"UPDATE {TableName} SET Disabled={AbsoluteFunction}(Disabled - 1), {EditTimeField} = {DBSysDateFunc} WHERE CoreID = @CoreID";
+            var r = this.Con.Execute(sqlStr, new { @CoreID = obj.CoreID }, this.Tran);
+            return r;
+        }
+        #endregion
         #endregion
 
         #region --删除记录--

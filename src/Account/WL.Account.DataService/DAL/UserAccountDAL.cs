@@ -11,6 +11,7 @@ using WL.Core.DataService;
 using WL.Account.Core.DB;
 using WL.Account.Core.Business;
 using WL.Account.Core.DB.Interface;
+using WL.Account.Core.Core;
 
 namespace WL.Account.DataService
 {
@@ -257,6 +258,208 @@ namespace WL.Account.DataService
                 }
             }
         }
+
+        /// <summary>
+        /// 更新帐号状态
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user, "Status=@Status", "AccountID=@AccountID", new { Status = user.Status, @AccountID = user.AccountID });
+                    if (result != 1) { return $"修改状态更新影响行数异常{result}".Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
+        #region --临时密码--
+        /// <summary>
+        /// 设置临时密码,（TempPassword，TempPassOverTime，TempPassUseFor）
+        /// 用空参数设置临时密码就是清空临时密码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user, 
+                        "TempPassword=@TempPassword, TempPassOverTime=@TempPassOverTime, TempPassUseFor=@TempPassUseFor", 
+                        "AccountID=@AccountID", 
+                        new { @TempPassword = user.TempPassword, 
+                            @TempPassOverTime = user.TempPassOverTime, 
+                            @TempPassUseFor = user.TempPassUseFor, 
+                            @AccountID = user.AccountID });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "SetTempPassword|设置临时密码").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+        #endregion
+
+        #region --变更昵称，头像--
+        /// <summary>
+        /// 更新昵称
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "LastNickName=NickName, NickName=@NickName",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @NickName = user.NickName,
+                            @LastNickName = user.LastNickName,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "UpdateNickName|更新昵称").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+        /// <summary>
+        /// 更新头像
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "NickPic=NickPic",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @NickPic = user.NickPic,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "UpdateNickPic|更新头像").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+        #endregion
+
+        #region --真名和身份证号码--
+        /// <summary>
+        /// 设置真名
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> SetRealName(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "RealName=@RealName",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @RealName = user.RealName,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "SetRealName|设置真名").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置身份证信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> SetIDCard(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "IDCard=@IDCard, IDCardPic=@IDCardPic",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @IDCard = user.IDCard,
+                            @IDCardPic = user.IDCardPic,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "SetIDCard|设置身份证信息").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 更新用户备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "Remark=@Remark",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @Remark = user.Remark,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "UpdateUserRemark|更新用户备注").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新系统备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var result = dal.Update(user,
+                        "SysRemark=@SysRemark",
+                        "AccountID=@AccountID",
+                        new
+                        {
+                            @SysRemark = user.SysRemark,
+                            @AccountID = user.AccountID
+                        });
+                    if (result != 1) { return PubError.DBError("ERR-00200301", "UpdateSysRemark|更新系统备注").ToStr().Fail<AccountDBModel>(); }
+                    return user.Succ();
+                }
+            }
+        }
+
         #endregion
 
         #region --根据特定信息提取用户单个信息--
@@ -333,6 +536,23 @@ namespace WL.Account.DataService
         /// <param name="user"></param>
         /// <returns></returns>
         public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        {
+            using (var conn = ConnFactory.GetUserConn())
+            {
+                using (var dal = new UserAccountTDAL(conn))
+                {
+                    var res = dal.GetByCoreID(user);
+                    return res;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取所有用户的简要信息，用于对照名字之类
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountDBModel> GetAllUser(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {

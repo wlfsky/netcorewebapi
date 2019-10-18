@@ -13,8 +13,8 @@
     <ProjectReference Include="..\..\Core\WL.Core.BusinessCommon\WL.Core.BusinessCommon.csproj" />
     <ProjectReference Include="..\..\Core\WL.Core.BusinessService\WL.Core.BusinessService.csproj" />
     <ProjectReference Include="..\..\Core\WlToolsLib\WlToolsLib.csproj" />
+    <ProjectReference Include="..\WL.Account.Core\WL.Account.Core.csproj" />
     <ProjectReference Include="..\WL.Account.DataBridge\WL.Account.DataBridge.csproj" />
-    <ProjectReference Include="..\WL.Account.Model\WL.Account.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -34,6 +34,8 @@ namespace Dapper
         private static string _getIdentitySql;
         private static string _getPagedListSql;
         private static string _valueHeadChar;
+        private static string _dBSysDateFunc;
+        private static string _absoluteFunction = "ABS";
 
         private static readonly IDictionary<Type, string> TableNames = new Dictionary<Type, string>();
         private static readonly IDictionary<string, string> ColumnNames = new Dictionary<string, string>();
@@ -67,6 +69,8 @@ namespace Dapper
                     _valueHeadChar = "@";
                     _getIdentitySql = string.Format("SELECT LASTVAL() AS id");
                     _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {RowsPerPage} OFFSET (({PageNumber}-1) * {RowsPerPage})";
+                    _dBSysDateFunc = "";
+                    _absoluteFunction = "ABS";
                     break;
                 case Dialect.SQLite:
                     _dialect = Dialect.SQLite;
@@ -74,6 +78,8 @@ namespace Dapper
                     _valueHeadChar = "@";
                     _getIdentitySql = string.Format("SELECT LAST_INSERT_ROWID() AS id");
                     _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {RowsPerPage} OFFSET (({PageNumber}-1) * {RowsPerPage})";
+                    _dBSysDateFunc = "";
+                    _absoluteFunction = "ABS";
                     break;
                 case Dialect.MySQL:
                     _dialect = Dialect.MySQL;
@@ -81,6 +87,8 @@ namespace Dapper
                     _valueHeadChar = "@";
                     _getIdentitySql = string.Format("SELECT LAST_INSERT_ID() AS id");
                     _getPagedListSql = "Select {SelectColumns} from {TableName} {WhereClause} Order By {OrderBy} LIMIT {Offset},{RowsPerPage}";
+                    _dBSysDateFunc = "SYSDATE()";
+                    _absoluteFunction = "ABS";
                     break;
                 case Dialect.Oracle:
                     _dialect = Dialect.Oracle;
@@ -88,6 +96,8 @@ namespace Dapper
                     _valueHeadChar = ":";
                     _getIdentitySql = string.Format("SELECT {0}.CurrVal FROM DUAL", CurrSeq);// seq style : {tableName}_{KeyField}_SEQ
                     _getPagedListSql = "SELECT {SelectColumns} FROM(SELECT A.*, ROWNUM RN FROM (SELECT {SelectColumns} FROM {TableName} {WhereClause} Order By {OrderBy}) A WHERE ROWNUM <= {PageNumber} * {RowsPerPage})WHERE RN > ({PageNumber}-1) * {RowsPerPage}";
+                    _dBSysDateFunc = "";
+                    _absoluteFunction = "ABS";
                     break;
                 default:
                     _dialect = Dialect.SQLServer;
@@ -95,6 +105,8 @@ namespace Dapper
                     _valueHeadChar = "@";
                     _getIdentitySql = string.Format("SELECT CAST(SCOPE_IDENTITY()  AS BIGINT) AS [id]");
                     _getPagedListSql = "SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY {OrderBy}) AS PagedNumber, {SelectColumns} FROM {TableName} {WhereClause}) AS u WHERE PagedNUMBER BETWEEN (({PageNumber}-1) * {RowsPerPage} + 1) AND ({PageNumber} * {RowsPerPage})";
+                    _dBSysDateFunc = "";
+                    _absoluteFunction = "ABS";
                     break;
             }
         }

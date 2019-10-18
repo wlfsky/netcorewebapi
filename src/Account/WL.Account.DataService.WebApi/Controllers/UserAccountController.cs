@@ -150,6 +150,94 @@ namespace WL.Account.DataService.WebApi.Controllers
             var res = _userDAL.GetByCoreID(user);
             return res;
         }
+        /// <summary>
+        /// 更新状态
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
+        {
+            var res =  _userDAL.UpdateStatus(user);
+            return res;
+        }
+        /// <summary>
+        /// 设置临时密码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
+        {
+            var res = _userDAL.SetTempPassword(user);
+            return res;
+        }
+        /// <summary>
+        /// 更新昵称
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
+        {
+            var res = _userDAL.UpdateNickName(user);
+            return res;
+        }
+        /// <summary>
+        /// 更新头像
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
+        {
+            var res = _userDAL.UpdateNickPic(user);
+            return res;
+        }
+        /// <summary>
+        /// 设置真名
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> SetRealName(AccountDBModel user)
+        {
+            var res = _userDAL.SetRealName(user);
+            return res;
+        }
+        /// <summary>
+        /// 设置身份信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> SetIDCard(AccountDBModel user)
+        {
+            var res = _userDAL.SetIDCard(user);
+            return res;
+        }
+        /// <summary>
+        /// 更新用户备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
+        {
+            var res = _userDAL.UpdateUserRemark(user);
+            return res;
+        }
+        /// <summary>
+        /// 更新系统备注
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
+        {
+            var res = _userDAL.UpdateSysRemark(user);
+            return res;
+        }
         #endregion
     }
 }
