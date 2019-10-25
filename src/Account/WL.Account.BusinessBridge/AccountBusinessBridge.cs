@@ -69,6 +69,11 @@ namespace WL.Account.BusinessBridge
             return res;
         }
 
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public DataShell<AccountModel> Login(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/Login";
@@ -76,6 +81,11 @@ namespace WL.Account.BusinessBridge
             return res;
         }
 
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
         public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             string funcUrl = "/api/UserAccount/ModifyPassword";

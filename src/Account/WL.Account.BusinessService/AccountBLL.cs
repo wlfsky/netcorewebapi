@@ -19,6 +19,7 @@ using WlToolsLib.Pagination;
 using WL.Account.BusinessService.Common;
 using WL.Account.Core;
 using WL.Account.Core.Core;
+using WL.Account.Core.ModelMapper;
 
 namespace WL.Account.BusinessService
 {
@@ -38,17 +39,7 @@ namespace WL.Account.BusinessService
             //RegistType();
             _userDAL = new AccountDataBridge();
 
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<AccountModel, AccountDBModel>();
-                cfg.CreateMap<AccountDBModel, AccountModel>();
-                cfg.CreateMap<DataShell<AccountDBModel>, DataShell<AccountModel>>();
-                cfg.CreateMap<PageShell<AccountDBModel>, PageShell<AccountModel>>();
-                cfg.CreateMap<DataShell<PageShell<AccountDBModel>>, DataShell<PageShell<AccountModel>>>();
-            });
-            // 下面一句只能在测试代码中调用，发布时要移除
-            configuration.AssertConfigurationIsValid();
-            Mapper = configuration.CreateMapper();
+            Mapper = AccountMapper.InitAllMapper();
 
         }
 
@@ -325,4 +316,7 @@ namespace WL.Account.BusinessService
         }
         #endregion
     }
+
+
+    
 }
