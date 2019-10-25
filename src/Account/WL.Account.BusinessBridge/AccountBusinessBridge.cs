@@ -57,6 +57,18 @@ namespace WL.Account.BusinessBridge
             return res;
         }
 
+        /// <summary>
+        /// 注册用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<AccountModel> Regist(AccountModel user)
+        {
+            string funcUrl = "/api/UserAccount/Regist";
+            var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
+            return res;
+        }
+
         public DataShell<AccountModel> Login(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/Login";

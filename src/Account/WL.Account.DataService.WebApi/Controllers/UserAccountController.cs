@@ -238,6 +238,15 @@ namespace WL.Account.DataService.WebApi.Controllers
             var res = _userDAL.UpdateSysRemark(user);
             return res;
         }
+        /// <summary>
+        /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
+        /// </summary>
+        /// <returns></returns>
+        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        {
+            var res = _userDAL.GetAllAccount();
+            return res;
+        }
         #endregion
     }
 }

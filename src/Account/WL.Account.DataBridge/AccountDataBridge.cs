@@ -6,6 +6,7 @@ using WL.Account.Core.DB.Interface;
 using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
+using System.Collections.Generic;
 
 namespace WL.Account.DataBridge
 {
@@ -33,7 +34,8 @@ namespace WL.Account.DataBridge
         /// <returns></returns>
         public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
-            Console.WriteLine("call data_service/useraccount/getpage");
+            string consoleLogStr = "call data_service/useraccount/getpage";
+            Console.WriteLine(consoleLogStr);
             string funcUrl = "/api/UserAccount/GetPage";
             var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountDBModel>>>(funcUrl, condition);
             return res;
@@ -239,6 +241,16 @@ namespace WL.Account.DataBridge
         {
             string funcUrl = "/api/UserAccount/UpdateSysRemark";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
+            return res;
+        }
+        /// <summary>
+        /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
+        /// </summary>
+        /// <returns></returns>
+        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        {
+            string funcUrl = "/api/UserAccount/GetAllAccount";
+            var res = bridge.CallApi<AccountDBModel, DataShell<IEnumerable<AccountDBModel>>>(funcUrl, null);
             return res;
         }
         #endregion

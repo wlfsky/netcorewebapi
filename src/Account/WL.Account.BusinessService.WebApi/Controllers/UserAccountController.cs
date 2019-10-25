@@ -91,29 +91,30 @@ namespace WL.Account.BusinessService.WebApi.Controllers
             return res;
         }
 
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
 
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        public DataShell<AccountModel> Regist(AccountModel user)
+        {
+            var res = _userBll.Regist(user);
+            return res;
+        }
 
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+    //// POST api/values
+    //[HttpPost]
+    //public void Post([FromBody] string value)
+    //{
+    //}
 
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-    }
+    //// PUT api/values/5
+    //[HttpPut("{id}")]
+    //public void Put(int id, [FromBody] string value)
+    //{
+    //}
+
+    //// DELETE api/values/5
+    //[HttpDelete("{id}")]
+    //public void Delete(int id)
+    //{
+    //}
+}
 }

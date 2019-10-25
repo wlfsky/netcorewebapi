@@ -191,6 +191,17 @@ namespace WL.Account.DataService
             return result.Success();
         }
 
+        /// <summary>
+        /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        {
+            var result = base.GetList<AccountDBModel>(new string[] { "CoreID", "AccountID", "Account", "Email", "Mobile", "Status", "UserName", "NickName", "RealName" }, null);
+            return result.Success();
+        }
+
         #endregion
 
         #region --修改类型方法，范例--

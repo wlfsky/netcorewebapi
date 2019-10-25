@@ -21,6 +21,11 @@ namespace WL.Account.Core.DB.Interface
         /// <param name="condition"></param>
         /// <returns></returns>
         DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition);
+        /// <summary>
+        /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
+        /// </summary>
+        /// <returns></returns>
+        DataShell<IEnumerable<AccountDBModel>> GetAllAccount();
         #endregion
 
         /// <summary>

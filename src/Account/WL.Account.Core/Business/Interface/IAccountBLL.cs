@@ -37,6 +37,13 @@ namespace WL.Account.Core.Business.Interface
         //DataShell<UserAccount> Update(UserAccount user);
 
         //DataShell<int> Del(UserAccount user);
+
+        /// <summary>
+        /// 登录功能
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        DataShell<AccountModel> Regist(AccountModel user);
         /// <summary>
         /// 登录功能
         /// </summary>
@@ -49,5 +56,7 @@ namespace WL.Account.Core.Business.Interface
         /// <param name="req"></param>
         /// <returns></returns>
         DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req);
+
+
     }
 }
