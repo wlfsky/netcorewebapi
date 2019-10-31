@@ -21,7 +21,7 @@ namespace WL.Core.WebApi
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://*:9031")
+                //.UseUrls("http://*:9031")
                 .UseKestrel(options =>
                     {
                         options.Limits.MaxRequestBufferSize = 512 * 1_000_000;

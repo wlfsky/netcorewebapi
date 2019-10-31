@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WL.Core.DBModel;
 
-namespace WL.Core.Model
+namespace WL.Account.Core.DB
 {
 
     /// <summary>

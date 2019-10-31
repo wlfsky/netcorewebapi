@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using WL.Core.DBModel;
 
-namespace WL.PowerRole.Model.DB
+namespace WL.Account.Core.DB
 {
     /// <summary>
     /// 模块

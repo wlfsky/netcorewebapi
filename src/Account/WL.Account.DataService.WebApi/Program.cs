@@ -15,7 +15,7 @@ namespace WL.Account.DataService.WebApi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).UseUrls("http://localhost:9011").Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

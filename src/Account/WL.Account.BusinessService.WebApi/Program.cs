@@ -14,7 +14,7 @@ namespace WL.Account.BusinessService.WebApi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).UseUrls("http://localhost:9021").Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

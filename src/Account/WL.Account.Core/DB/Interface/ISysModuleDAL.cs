@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WL.PowerRole.Model.DB.Interface
+namespace WL.Account.Core.DB.Interface
 {
-    public interface IRoleDAL
+    public interface ISysModuleDAL
     {
     }
 }
