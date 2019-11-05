@@ -297,6 +297,9 @@ namespace WL.Account.BusinessService
         }
         #endregion
 
+        #region ----
+
+        #endregion
 
         #region --辅助功能--
         /// <summary>
@@ -318,5 +321,12 @@ namespace WL.Account.BusinessService
     }
 
 
-    
+    public class UserAction<T>
+    {
+        public UserAction(T act)
+        {
+            this.DoAction = act;
+        }
+        public T DoAction { get; private set; }
+    }
 }
