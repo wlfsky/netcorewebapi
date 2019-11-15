@@ -14,12 +14,16 @@ namespace WL.Account.Core.DB
     /// 系统功能表
     /// </summary>
     [Table("WL_Function")]
-    public class SysFunction : BaseDBModel
+    public class SysFunctionDBModel : BaseDBModel
     {
         /// <summary>
         /// 功能编号|
         /// </summary>
         public string FuncID { get; set; } = string.Empty;
+        /// <summary>
+        /// 模块编号
+        /// </summary>
+        public string ModuleID { get; set; } = string.Empty;
         /// <summary>
         /// 系统功能别名，简短别名
         /// </summary>
@@ -28,6 +32,10 @@ namespace WL.Account.Core.DB
         /// 功能名字|
         /// </summary>
         public string FuncName { get; set; } = string.Empty;
+        /// <summary>
+        /// 功能方法
+        /// </summary>
+        public string FuncMethod { get; set; } = string.Empty;
         /// <summary>
         /// 功能父级编号|
         /// </summary>
@@ -40,6 +48,10 @@ namespace WL.Account.Core.DB
         /// 功能别名路径|/name/name
         /// </summary>
         public string FuncPath { get; set; } = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UrlPath { get; set; } = string.Empty;
         /// <summary>
         /// 功能备注|
         /// </summary>

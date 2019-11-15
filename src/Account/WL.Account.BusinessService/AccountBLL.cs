@@ -297,10 +297,6 @@ namespace WL.Account.BusinessService
         }
         #endregion
 
-        #region ----
-
-        #endregion
-
         #region --辅助功能--
         /// <summary>
         /// 密码核验
@@ -316,6 +312,15 @@ namespace WL.Account.BusinessService
                 return "用户名/手机/邮件或者密码不对".Fail<string>();
             }
             return "success".Succ();
+        }
+        #endregion
+
+        #region --角色权限体系--
+        public List<Role> RolsList { get; set; }
+
+        public bool IsRootUser()
+        {
+            return false;
         }
         #endregion
     }

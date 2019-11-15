@@ -17,7 +17,7 @@ namespace WlToolsLib.DataShell
     /// 增加多个成功，和失败设置，统一设置失败和成功的规则
     /// </summary>
     /// <typeparam name="TResult">具体返回类型</typeparam>
-    public class DataShell<TResult>
+    public class DataShell<TResult> : IDataShell<TResult>
     {
         #region --初始化函数组--
 

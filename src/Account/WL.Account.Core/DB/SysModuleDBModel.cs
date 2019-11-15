@@ -10,7 +10,7 @@ namespace WL.Account.Core.DB
     /// 模块
     /// </summary>
     [Table("WL_SYSMODEL")]
-    public class SysModule : BaseDBModel
+    public class SysModuleDBModel : BaseDBModel
     {
         /// <summary>
         /// 模块编号
@@ -44,5 +44,13 @@ namespace WL.Account.Core.DB
         /// 模块AppKey
         /// </summary>
         public string ModuleAppKey { get; set; } = string.Empty;
+        /// <summary>
+        /// 模块接口 类名称 完整名称，待定
+        /// </summary>
+        public string ModuleInterface { get; set; } = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UrlPath { get; set; } = string.Empty;
     }
 }

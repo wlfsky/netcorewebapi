@@ -14,7 +14,7 @@ namespace WL.Account.Core.DB
     /// ½ÇÉ«±í
     /// </summary>
     [Table("WL_Role")]
-    public class Role : BaseDBModel
+    public class RoleDBModel : BaseDBModel
     {
         /// <summary>
         /// ½ÇÉ«±àºÅ|
