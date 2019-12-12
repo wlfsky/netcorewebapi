@@ -41,9 +41,9 @@ namespace WL.Account.DataService
         /// 获取用户信息分页
         /// </summary>
         /// <returns></returns>
-        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
-            DataShell<PageShell<AccountDBModel>> _res(string msg = "未知错误[GetPage]")
+            IDataShell<PageShell<AccountDBModel>> _res(string msg = "未知错误[GetPage]")
             {
                 return msg.Fail<PageShell<AccountDBModel>>();
             }
@@ -114,7 +114,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetSingle(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetSingle(AccountDBModel user)
         {
             var result = base.Get(user);
             if (result.NotNull())
@@ -130,7 +130,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
             var res = base.GetByAnonymousSingle<AccountDBModel>(new { @AccountID = user.AccountID });
             return res.Succ<AccountDBModel>();
@@ -141,7 +141,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
             var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Account = user.Account });
             return res.Succ<AccountDBModel>();
@@ -151,7 +151,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
             var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Mobile = user.Mobile });
             return res.Succ<AccountDBModel>();
@@ -161,7 +161,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
             var res = base.GetByAnonymousSingle<AccountDBModel>(new { @Email = user.Email });
             return res.Succ<AccountDBModel>();
@@ -173,7 +173,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel user)
+        public IDataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel user)
         {
             var result = GetList<AccountDBModel>(new { @IsDel = 0 });
             return result.Success();
@@ -185,7 +185,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetUser(AccountDBModel user)
+        public IDataShell<IEnumerable<AccountDBModel>> GetUser(AccountDBModel user)
         {
             var result = base.GetList<AccountDBModel>(new string[] { "Account", "Password" }, new { @Account = user.Account });
             return result.Success();
@@ -196,7 +196,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        public IDataShell<IEnumerable<AccountDBModel>> GetAllAccount()
         {
             var result = base.GetList<AccountDBModel>(new string[] { "CoreID", "AccountID", "Account", "Email", "Mobile", "Status", "UserName", "NickName", "RealName" }, null);
             return result.Success();
@@ -210,7 +210,7 @@ namespace WL.Account.DataService
         /// 使用的是oracle seq
         /// </summary>
         /// <returns></returns>
-        public DataShell<long> NewUserID()
+        public IDataShell<long> NewUserID()
         {
             return DateTime.Now.DateTimeID().Success();
         }
@@ -220,7 +220,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Insert(AccountDBModel user)
+        public IDataShell<AccountDBModel> Insert(AccountDBModel user)
         {
             user.CoreID = this.NewCoreID();
             user.AccountID = this.NewAccountID();
@@ -234,7 +234,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Update(AccountDBModel account)
+        public IDataShell<AccountDBModel> Update(AccountDBModel account)
         {
             var result = base.Update(account);
             return account.Success();
@@ -245,7 +245,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<int> Del(AccountDBModel account)
+        public IDataShell<int> Del(AccountDBModel account)
         {
             var result = base.Del(new { @AccountID = account.AccountID });
             return result.Success();
@@ -256,7 +256,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<int> DelList(List<string> accountids)
+        public IDataShell<int> DelList(List<string> accountids)
         {
             var result = base.DelList<string>(accountids);
             return result.Success();
@@ -270,7 +270,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateMoble(AccountDBModel account)
+        public IDataShell<AccountDBModel> UpdateMoble(AccountDBModel account)
         {
             var result = base.Update<AccountDBModel>(new { @Mobile = account.Mobile, @OldMobile = account.OldMobile }, new { @AccountID = account.AccountID });
             return account.Success();
@@ -281,7 +281,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel account)
+        public IDataShell<AccountDBModel> UpdateStatus(AccountDBModel account)
         {
             var result = base.Update<AccountDBModel>(new { @Status = account.Status }, new { @AccountID = account.AccountID });
             return account.Success();

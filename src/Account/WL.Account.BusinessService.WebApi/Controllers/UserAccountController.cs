@@ -23,7 +23,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         }
 
         [HttpGet]
-        public DataShell<string> Ping(string x)
+        public IDataShell<string> Ping(string x)
         {
             return "ok".Succ();
         }
@@ -34,7 +34,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public DataShell<AccountModel> Get(AccountModel user)
+        public IDataShell<AccountModel> Get(AccountModel user)
         {
             Console.WriteLine("call business_service/useraccount/get");
             var res = _userBll.Get(user);
@@ -47,7 +47,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         /// <param name="condition"></param>
         /// <returns></returns>
         [HttpPost]
-        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             Console.WriteLine("call business_service/useraccount/getpage");
             var res = _userBll.GetPage(condition);
@@ -60,7 +60,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public DataShell<AccountModel> Insert(AccountModel user)
+        public IDataShell<AccountModel> Insert(AccountModel user)
         {
             var res = _userBll.Insert(user);
             return res;
@@ -72,7 +72,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public DataShell<AccountModel> Login(AccountModel user)
+        public IDataShell<AccountModel> Login(AccountModel user)
         {
 
             var res = _userBll.Login(user);
@@ -85,7 +85,7 @@ namespace WL.Account.BusinessService.WebApi.Controllers
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
-        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        public IDataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             var res = _userBll.ModifyPassword(req);
             return res;
@@ -93,28 +93,28 @@ namespace WL.Account.BusinessService.WebApi.Controllers
 
 
         [HttpPost]
-        public DataShell<AccountModel> Regist(AccountModel user)
+        public IDataShell<AccountModel> Regist(AccountModel user)
         {
             var res = _userBll.Regist(user);
             return res;
         }
 
-    //// POST api/values
-    //[HttpPost]
-    //public void Post([FromBody] string value)
-    //{
-    //}
+        //// POST api/values
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-    //// PUT api/values/5
-    //[HttpPut("{id}")]
-    //public void Put(int id, [FromBody] string value)
-    //{
-    //}
+        //// PUT api/values/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-    //// DELETE api/values/5
-    //[HttpDelete("{id}")]
-    //public void Delete(int id)
-    //{
-    //}
-}
+        //// DELETE api/values/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
+    }
 }

@@ -63,7 +63,7 @@ namespace WL.Core.BusinessService
         /// <typeparam name="TOut"></typeparam>
         /// <param name="src"></param>
         /// <returns></returns>
-        public DataShell<TOut> MapResult<TIn, TOut>(DataShell<TIn> src)
+        public IDataShell<TOut> MapResult<TIn, TOut>(IDataShell<TIn> src)
         {
             if (src.Data.IsNull())
             {
@@ -82,11 +82,11 @@ namespace WL.Core.BusinessService
             }
             else
             {
-                return Mapper.Map<DataShell<TIn>, DataShell<TOut>>(src);
+                return Mapper.Map<IDataShell<TIn>, IDataShell<TOut>>(src);
             }
         }
 
-        public DataShell<TOut> ReqResTransShell<TIn, TInTo, TOutFrom, TOut>(TIn req, Func<TInTo, DataShell<TOutFrom>> process)
+        public IDataShell<TOut> ReqResTransShell<TIn, TInTo, TOutFrom, TOut>(TIn req, Func<TInTo, IDataShell<TOutFrom>> process)
         {
             var reqTemp = MapRequest<TIn, TInTo>(req);
             var resTemp = process(reqTemp);

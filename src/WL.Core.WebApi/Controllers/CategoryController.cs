@@ -16,7 +16,7 @@ namespace WL.Core.WebApi.Controllers
         [HttpGet]
         [HttpOptions]
         [Route("/api/category/{cateid}")]
-        public DataShell<List<CategoryModel>> Get(string cateid)
+        public IDataShell<List<CategoryModel>> Get(string cateid)
         {
             List<CategoryModel> cate = new List<CategoryModel>();
             cate.Add(new CategoryModel() { CateId = "11", Alias = "csbase", NewCount = 1, TotalCount = 10, Title = "C#基础", Remark = "C#基础", ParentId = "" });

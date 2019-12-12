@@ -5,7 +5,7 @@ namespace WL.Core.DBModel
     /// <summary>
     /// 基础类
     /// </summary>
-    public class BaseDBModel
+    public class BaseDBModel : IBaseDBModel
     {
         /// <summary>
         /// 核心编号

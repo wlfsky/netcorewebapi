@@ -18,19 +18,20 @@ namespace WL.Account.Core.Business.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountModel> Get(AccountModel user);
+        IDataShell<AccountModel> Get(AccountModel user);
+
         /// <summary>
         /// 分页查询
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition);
+        IDataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition);
         /// <summary>
         /// 插入一个新用户帐号记录
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountModel> Insert(AccountModel user);
+        IDataShell<AccountModel> Insert(AccountModel user);
 
         //DataShell<IEnumerable<UserAccount>> GetList(UserAccount user);
 
@@ -43,19 +44,19 @@ namespace WL.Account.Core.Business.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountModel> Regist(AccountModel user);
+        IDataShell<AccountModel> Regist(AccountModel user);
         /// <summary>
         /// 登录功能
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountModel> Login(AccountModel user);
+        IDataShell<AccountModel> Login(AccountModel user);
         /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req);
+        IDataShell<AccountModel> ModifyPassword(ModifyPasswordReq req);
 
 
     }

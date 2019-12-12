@@ -21,7 +21,7 @@ namespace WL.Core.WebApi.Controllers
         // GET api/values
         [HttpGet]
         [Route("get")]
-        public DataShell<string> Get()
+        public IDataShell<string> Get()
         {
             return "欢迎使用 WL.Core.WebApi 2019".Success(info:"欢迎信息");
         }
@@ -29,7 +29,7 @@ namespace WL.Core.WebApi.Controllers
 
         [HttpGet]
         [Route("info")]
-        public DataShell<List<string>> Info()
+        public IDataShell<List<string>> Info()
         {
             var infos = new List<string>();
             infos.Add(Constant.CurrDir);

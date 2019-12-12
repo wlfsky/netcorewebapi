@@ -61,16 +61,16 @@ namespace WL.Core.WebApi.Common
         /// <param name="self"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static Task<ActionResult<DataShell<T>>> ToTaskActResult<T>(this DataShell<T> self, Func<ActionResult<DataShell<T>>> func = null)
+        public static Task<ActionResult<IDataShell<T>>> ToTaskActResult<T>(this IDataShell<T> self, Func<ActionResult<IDataShell<T>>> func = null)
         {
             if (func.IsNull())
             {
-                return Task<ActionResult<DataShell<T>>>.Run<ActionResult<DataShell<T>>>(() => new ActionResult<DataShell<T>>(self));
+                return Task<ActionResult<IDataShell<T>>>.Run<ActionResult<IDataShell<T>>>(() => new ActionResult<IDataShell<T>>(self));
                 //return new Task<ActionResult<DataShell<T>>>();
             }
             else
             {
-                return Task<ActionResult<DataShell<T>>>.Run<ActionResult<DataShell<T>>>(func);
+                return Task<ActionResult<IDataShell<T>>>.Run<ActionResult<IDataShell<T>>>(func);
                 //return new Task<ActionResult<DataShell<T>>>(func);
             }
         }

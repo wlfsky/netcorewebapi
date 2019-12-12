@@ -16,7 +16,7 @@ namespace WL.Core.WebApi.Controllers
         [HttpGet]
         [HttpOptions]
         [Route("/api/content/{contid}")]
-        public DataShell<ContentModel> Get(string contid)
+        public IDataShell<ContentModel> Get(string contid)
         {
 
             return new ContentModel() { Title = "正文内容" }.Success();

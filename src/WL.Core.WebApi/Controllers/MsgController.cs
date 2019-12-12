@@ -16,7 +16,7 @@ namespace WL.Core.WebApi.Controllers
         [HttpGet]
         [HttpOptions]
         [Route("/api/[controller]/{contid}")]
-        public DataShell<MsgModel> Get(string contid)
+        public IDataShell<MsgModel> Get(string contid)
         {
             var res = new MsgModel() { MsgId = "1", MsgText = "msg text", MsgTime = DateTime.Now, IsRead = false };
             return res.Success();

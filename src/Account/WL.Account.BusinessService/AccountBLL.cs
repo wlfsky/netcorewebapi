@@ -59,7 +59,7 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Get(AccountModel user)
+        public IDataShell<AccountModel> Get(AccountModel user)
         {
             var res = ReqResTransShell<AccountModel, AccountDBModel, AccountDBModel, AccountModel>(user, (rq) => _userDAL.Get(rq));
             return res;
@@ -70,7 +70,7 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             var res = ReqResTransShell<PageCondition<UserQueryPageCondition>, PageCondition<UserQueryPageCondition>, PageShell<AccountDBModel>, PageShell<AccountModel>>(condition, (rq) => _userDAL.GetPage(rq));
             return res;
@@ -89,7 +89,7 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Insert(AccountModel user)
+        public IDataShell<AccountModel> Insert(AccountModel user)
         {
             user.CoreID = "";
 
@@ -125,7 +125,7 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Regist(AccountModel user)
+        public IDataShell<AccountModel> Regist(AccountModel user)
         {
             var res = Insert(user);
             return res;
@@ -155,10 +155,10 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Login(AccountModel user)
+        public IDataShell<AccountModel> Login(AccountModel user)
         {
             #region --提取用户信息--
-            DataShell<AccountDBModel> tempres = new DataShell<AccountDBModel>();
+            IDataShell<AccountDBModel> tempres = new DataShell<AccountDBModel>();
             switch (user)
             {
                 case AccountModel u when user.Account.NotNullEmpty():
@@ -207,7 +207,7 @@ namespace WL.Account.BusinessService
 
         #region --修改密码功能--
         // 发起修改密码申请，应用密码修改
-        public DataShell<AccountModel> ApplyForModifyPassword()
+        public IDataShell<AccountModel> ApplyForModifyPassword()
         {
             throw new Exception("no function body");
         }
@@ -217,7 +217,7 @@ namespace WL.Account.BusinessService
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        public IDataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             #region --早期验证--
             // 这是一个数据验证扩展的样例
@@ -241,7 +241,7 @@ namespace WL.Account.BusinessService
                 Email = req.Email, 
                 Mobile = req.Mobile, 
                 AccountID = req.AccountID };
-            DataShell<AccountDBModel> tempuser = new DataShell<AccountDBModel>();
+            IDataShell<AccountDBModel> tempuser = new DataShell<AccountDBModel>();
             switch (user)
             {
                 case AccountModel u when user.Account.NotNullEmpty():
@@ -291,7 +291,7 @@ namespace WL.Account.BusinessService
         /// 退出登录
         /// </summary>
         /// <returns></returns>
-        public DataShell<string> Logout()
+        public IDataShell<string> Logout()
         {
             throw new Exception();
         }
@@ -304,7 +304,7 @@ namespace WL.Account.BusinessService
         /// <param name="srcPass">原始密码，及库内加密后的密码</param>
         /// <param name="verifyPass">要验证的密码，及未加密的密码</param>
         /// <returns></returns>
-        protected static DataShell<string> PasswordVerify(string srcPass, string verifyPass)
+        protected static IDataShell<string> PasswordVerify(string srcPass, string verifyPass)
         {
             var cyPass = CommonLib.AccountPassword(verifyPass);
             if(srcPass != cyPass)

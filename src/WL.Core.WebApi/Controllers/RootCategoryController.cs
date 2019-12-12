@@ -15,7 +15,7 @@ namespace WL.Core.WebApi.Controllers
     {
         [HttpGet]
         [HttpOptions]
-        public DataShell<List<CategoryModel>> Get()
+        public IDataShell<List<CategoryModel>> Get()
         {
             List<CategoryModel> cate = new List<CategoryModel>();
             cate.Add(new CategoryModel() { CateId ="1", Alias="cs", NewCount = 1, TotalCount = 10, Title= "C#", Remark = "c#备注", ParentId = "" });

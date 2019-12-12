@@ -31,7 +31,7 @@ namespace WL.Core.WebApi.Controllers
         // POST api/user
         [HttpPost]
         [TypeFilter(typeof(WebApiErrorHandleAttribute))]
-        public DataShell<AccountModel> Get(AccountModel req)
+        public IDataShell<AccountModel> Get(AccountModel req)
         {
             //string info = req;
             LogInfo("use /user/get 超级日志 info");
@@ -43,7 +43,7 @@ namespace WL.Core.WebApi.Controllers
 
         [HttpPost]
         [TypeFilter(typeof(WebApiErrorHandleAttribute))]
-        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             //string info = req;
             LogInfo("use /user/getpage");
@@ -51,7 +51,7 @@ namespace WL.Core.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<DataShell<AccountModel>> Insert(AccountModel user)
+        public async Task<IDataShell<AccountModel>> Insert(AccountModel user)
         {
             //throw new Exception("异常演示");
             // 抛出错误后会被中间件引导到error控制器
@@ -64,7 +64,7 @@ namespace WL.Core.WebApi.Controllers
 
         [HttpGet]
         [Route("gets")]
-        public async Task<ActionResult<DataShell<string>>> Get()
+        public async Task<ActionResult<IDataShell<string>>> Get()
         {
             //throw new Exception("异常演示");
             // 抛出错误后会被中间件引导到error控制器

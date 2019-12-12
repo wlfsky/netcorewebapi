@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using Microsoft.Data.Sqlite;
 using System.Configuration;
 using WL.Core.DataService;
 using WlToolsLib.Extension;

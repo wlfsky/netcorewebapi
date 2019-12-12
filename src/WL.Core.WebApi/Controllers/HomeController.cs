@@ -15,7 +15,7 @@ namespace WL.Core.WebApi.Controllers
         [HttpGet]
         [Route("/")]
         [Route("/api")]
-        public DataShell<string> Index()
+        public IDataShell<string> Index()
         {
             return "欢迎使用 WL.Core.WebApi 2019".Success(info: "欢迎信息");
         }

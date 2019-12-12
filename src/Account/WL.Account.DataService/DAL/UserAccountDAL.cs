@@ -28,7 +28,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -45,7 +45,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Get(AccountDBModel account)
+        public IDataShell<AccountDBModel> Get(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -62,7 +62,7 @@ namespace WL.Account.DataService
         /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
         /// </summary>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        public IDataShell<IEnumerable<AccountDBModel>> GetAllAccount()
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -75,7 +75,7 @@ namespace WL.Account.DataService
         }
         #endregion
 
-        public DataShell<AccountDBModel> Login(AccountDBModel account)
+        public IDataShell<AccountDBModel> Login(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())
             using (var dal = new UserAccountTDAL(conn))
@@ -92,7 +92,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel account)
+        public IDataShell<IEnumerable<AccountDBModel>> GetList(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -125,7 +125,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Insert(AccountDBModel account)
+        public IDataShell<AccountDBModel> Insert(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -146,7 +146,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Update(AccountDBModel account)
+        public IDataShell<AccountDBModel> Update(AccountDBModel account)
         {
             var ig_list = new List<string>() { "AccountID", "CoreID", "UserID", "Account" };
             using (var conn = ConnFactory.GetUserConn())
@@ -181,7 +181,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<int> Del(AccountDBModel account)
+        public IDataShell<int> Del(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -198,7 +198,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<int> DelList(List<string> accountids)
+        public IDataShell<int> DelList(List<string> accountids)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -218,7 +218,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> TranWork(AccountDBModel account)
+        public IDataShell<AccountDBModel> TranWork(AccountDBModel account)
         {
             using (var conn = ConnFactory.GetUserConn())//打开链接
             {
@@ -246,7 +246,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -264,7 +264,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -282,7 +282,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -302,7 +302,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -328,7 +328,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -353,7 +353,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -380,7 +380,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetRealName(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetRealName(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -405,7 +405,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetIDCard(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetIDCard(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -433,7 +433,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -458,7 +458,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -487,7 +487,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -504,7 +504,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -521,7 +521,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -532,12 +532,13 @@ namespace WL.Account.DataService
                 }
             }
         }
+
         /// <summary>
         /// 根据手机号获取用户
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -548,12 +549,13 @@ namespace WL.Account.DataService
                 }
             }
         }
+
         /// <summary>
         /// 根据核心编号获取用户
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {
@@ -570,7 +572,7 @@ namespace WL.Account.DataService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetAllUser(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetAllUser(AccountDBModel user)
         {
             using (var conn = ConnFactory.GetUserConn())
             {

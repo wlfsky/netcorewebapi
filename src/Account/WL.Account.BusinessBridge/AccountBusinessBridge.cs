@@ -26,7 +26,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Get(AccountModel user)
+        public IDataShell<AccountModel> Get(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/get";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
@@ -38,7 +38,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             string funcUrl = "/api/UserAccount/getpage";
             var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountModel>>>(funcUrl, condition);
@@ -50,7 +50,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Insert(AccountModel user)
+        public IDataShell<AccountModel> Insert(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/Insert";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
@@ -62,7 +62,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Regist(AccountModel user)
+        public IDataShell<AccountModel> Regist(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/Regist";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
@@ -74,7 +74,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> Login(AccountModel user)
+        public IDataShell<AccountModel> Login(AccountModel user)
         {
             string funcUrl = "/api/UserAccount/Login";
             var res = bridge.CallApi<AccountModel, DataShell<AccountModel>>(funcUrl, user);
@@ -86,7 +86,7 @@ namespace WL.Account.BusinessBridge
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public DataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
+        public IDataShell<AccountModel> ModifyPassword(ModifyPasswordReq req)
         {
             string funcUrl = "/api/UserAccount/ModifyPassword";
             var res = bridge.CallApi<ModifyPasswordReq, DataShell<AccountModel>>(funcUrl, req);

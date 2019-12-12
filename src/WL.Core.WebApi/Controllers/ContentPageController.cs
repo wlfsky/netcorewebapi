@@ -16,7 +16,7 @@ namespace WL.Core.WebApi.Controllers
     {
         [HttpPost]
         [HttpOptions]
-        public DataShell<PageShell<ContentListItemModel>> Get(PageCondition<ContentsPageCondition> param)
+        public IDataShell<PageShell<ContentListItemModel>> Get(PageCondition<ContentsPageCondition> param)
         {
             var res = new PageShell<ContentListItemModel>() { Rows = new List<ContentListItemModel>(), PageIndex = 1, PageSize = 10, RecordCount = 12 };
             res.Rows.Add(new ContentListItemModel() { Title = "1", Summary = "11", ContentId = "1" });

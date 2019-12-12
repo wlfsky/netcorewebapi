@@ -15,7 +15,7 @@ namespace WL.Core.WebApi.Controllers
     {
         [HttpGet]
         [HttpOptions]
-        public DataShell<AboutInfoModel> Get()
+        public IDataShell<AboutInfoModel> Get()
         {
             var res = new AboutInfoModel();
             res.OpenSourceInfo = new List<OpenSourceInfoModel>();

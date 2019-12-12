@@ -20,7 +20,7 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="TResult">结果实体类型</typeparam>
         /// <param name="self">扩展字符串类型</param>
         /// <returns></returns>
-        public static DataShell<TResult> Success<TResult>(this TResult self)
+        public static IDataShell<TResult> Success<TResult>(this TResult self)
         {
             return DataShellCreator.CreateSuccess<TResult>(self);
         }
@@ -31,7 +31,7 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="TResult">结果实体类型</typeparam>
         /// <param name="self">扩展字符串类型</param>
         /// <returns></returns>
-        public static DataShell<TResult> Succ<TResult>(this TResult self)
+        public static IDataShell<TResult> Succ<TResult>(this TResult self)
         {
             return DataShellCreator.CreateSuccess<TResult>(self);
         }
@@ -46,7 +46,7 @@ namespace WlToolsLib.DataShell
         /// <param name="self"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static DataShell<TResult> Success<TResult>(this TResult self, string info)
+        public static IDataShell<TResult> Success<TResult>(this TResult self, string info)
         {
             return DataShellCreator.CreateSuccess<TResult>(self).Succeed(self, info);
         }
@@ -58,7 +58,7 @@ namespace WlToolsLib.DataShell
         /// <param name="self"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static DataShell<TResult> Succ<TResult>(this TResult self, string info)
+        public static IDataShell<TResult> Succ<TResult>(this TResult self, string info)
         {
             return DataShellCreator.CreateSuccess<TResult>(self).Succeed(self, info);
         }
@@ -71,7 +71,7 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="TResult">结果数据实体类型</typeparam>
         /// <param name="self">扩展字符串类型</param>
         /// <returns></returns>
-        public static DataShell<TResult> Fail<TResult>(this string self)
+        public static IDataShell<TResult> Fail<TResult>(this string self)
         {
             return DataShellCreator.CreateFail<TResult>(self);
         }
@@ -85,7 +85,7 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="TResult">结果实体类型</typeparam>
         /// <param name="self">扩展字符串类型</param>
         /// <returns></returns>
-        public static DataShell<TResult> Fail<TResult>(this IList<string> self)
+        public static IDataShell<TResult> Fail<TResult>(this IList<string> self)
         {
             return DataShellCreator.CreateFail<TResult>(self);
         }
@@ -99,7 +99,7 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static DataShell<T> Fail<T>(this Exception self)
+        public static IDataShell<T> Fail<T>(this Exception self)
         {
             // 用错误信息创建失败，且加入堆栈信息
             return self.Message.Fail<T>().AddInfo(self.StackTrace).AddInfo(self.Source);
@@ -113,9 +113,9 @@ namespace WlToolsLib.DataShell
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static DataShell<TTag> ToNewShell<TSrc, TTag>(this DataShell<TSrc> self, TTag newdata = default(TTag))
+        public static IDataShell<TTag> ToNewShell<TSrc, TTag>(this IDataShell<TSrc> self, TTag newdata = default(TTag))
         {
-            DataShell<TTag> target = new DataShell<TTag>();
+            IDataShell<TTag> target = new DataShell<TTag>();
             target.Code = self.Code;
             target.Data = newdata;
             target.ExceptionList = self.ExceptionList;

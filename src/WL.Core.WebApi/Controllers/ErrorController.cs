@@ -15,7 +15,7 @@ namespace WL.Core.WebApi.Controllers
     {
 
         
-        public DataShell<string> Index(string msg)
+        public IDataShell<string> Index(string msg)
         {
             return $"发生了一个令程序员毛骨悚然的恐怖错误！({msg})".Fail<string>();
         }

@@ -20,12 +20,12 @@ namespace WL.Account.Core.DB.Interface
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition);
+        IDataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition);
         /// <summary>
         /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
         /// </summary>
         /// <returns></returns>
-        DataShell<IEnumerable<AccountDBModel>> GetAllAccount();
+        IDataShell<IEnumerable<AccountDBModel>> GetAllAccount();
         #endregion
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace WL.Account.Core.DB.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> Insert(AccountDBModel user);
+        IDataShell<AccountDBModel> Insert(AccountDBModel user);
 
         #region --更新类方法--
         /// <summary>
@@ -41,68 +41,68 @@ namespace WL.Account.Core.DB.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> Update(AccountDBModel user);
+        IDataShell<AccountDBModel> Update(AccountDBModel user);
         /// <summary>
         /// 登录后更新
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user);
         /// <summary>
         /// 修改密码更新
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user);
         /// <summary>
         /// 更新账户状态
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateStatus(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateStatus(AccountDBModel user);
         /// <summary>
         /// 设置临时密码,（TempPassword，TempPassOverTime，TempPassUseFor）
         /// 用空参数设置临时密码就是清空临时密码
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> SetTempPassword(AccountDBModel user);
+        IDataShell<AccountDBModel> SetTempPassword(AccountDBModel user);
         /// <summary>
         /// 更新昵称
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateNickName(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateNickName(AccountDBModel user);
         /// <summary>
         /// 更新头像
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateNickPic(AccountDBModel user);
         /// <summary>
         /// 设置真名
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> SetRealName(AccountDBModel user);
+        IDataShell<AccountDBModel> SetRealName(AccountDBModel user);
         /// <summary>
         /// 设置身份证信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> SetIDCard(AccountDBModel user);
+        IDataShell<AccountDBModel> SetIDCard(AccountDBModel user);
         /// <summary>
         /// 更新用户备注
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user);
         /// <summary>
         /// 更新系统备注
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user);
+        IDataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user);
         #endregion
 
         #region --删除类功能--
@@ -111,7 +111,7 @@ namespace WL.Account.Core.DB.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<int> Del(AccountDBModel user);
+        IDataShell<int> Del(AccountDBModel user);
         #endregion
 
         #region --根据给定数据键提取单个用户数据--
@@ -120,37 +120,37 @@ namespace WL.Account.Core.DB.Interface
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> Get(AccountDBModel user);
+        IDataShell<AccountDBModel> Get(AccountDBModel user);
         /// <summary>
         /// 根据AccountID 获取帐号信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> GetByAccountID(AccountDBModel user);
+        IDataShell<AccountDBModel> GetByAccountID(AccountDBModel user);
         /// <summary>
         /// 根据帐号 Account 获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> GetByAccount(AccountDBModel user);
+        IDataShell<AccountDBModel> GetByAccount(AccountDBModel user);
         /// <summary>
         /// 根据电子邮件获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> GetByEmail(AccountDBModel user);
+        IDataShell<AccountDBModel> GetByEmail(AccountDBModel user);
         /// <summary>
         /// 根据手机号获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> GetByMobile(AccountDBModel user);
+        IDataShell<AccountDBModel> GetByMobile(AccountDBModel user);
         /// <summary>
         /// 根据核心id获取用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        DataShell<AccountDBModel> GetByCoreID(AccountDBModel user);
+        IDataShell<AccountDBModel> GetByCoreID(AccountDBModel user);
         #endregion
     }
 }

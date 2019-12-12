@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using WL.Account.Core.Business;
 using WL.Account.Core.DB;
+using WlToolsLib.DataShell;
+using WlToolsLib.Extension;
 
 namespace WL.Account.Core
 {
@@ -50,5 +52,43 @@ namespace WL.Account.Core
             return res;
         }
         #endregion
+
+        /// <summary>
+        /// 相应数据转换
+        /// </summary>
+        /// <typeparam name="TIn"></typeparam>
+        /// <typeparam name="TOut"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public static IDataShell<TOut> MapResult<TIn, TOut>(IDataShell<TIn> src)
+        {
+            if (src.Data.IsNull())
+            {
+                var res = new DataShell<TOut>();
+                res.Code = src.Code;
+                res.ExceptionList = src.ExceptionList;
+                res.Info = src.Info;
+                res.Infos = src.Infos;
+                res.Operator = src.Operator;
+                res.Status = src.Status;
+                res.Success = src.Success;
+                res.Time = src.Time;
+                res.Version = src.Version;
+                res.Data = default(TOut);
+                return res;
+            }
+            else
+            {
+                return null;// return Mapper.Map<DataShell<TIn>, DataShell<TOut>>(src);
+            }
+        }
+
+        public static IDataShell<TOut> ReqResTransShell<TIn, TInTo, TOutFrom, TOut>(TIn req, Func<TInTo, DataShell<TOutFrom>> process)
+        {
+            var reqTemp = default(TInTo); // MapRequest<TIn, TInTo>(req);
+            var resTemp = process(reqTemp);
+            var res = MapResult<TOutFrom, TOut>(resTemp);
+            return res;
+        }
     }
 }

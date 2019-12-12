@@ -268,7 +268,7 @@ namespace WL.Core.DataService
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public DataShell<T> GetByCoreID<T>(T obj) where T : BaseDBModel
+        public IDataShell<T> GetByCoreID<T>(T obj) where T : BaseDBModel
         {
             var r = this.Con.GetByAnonymousSingle<T>(new { @CoreID = obj.CoreID }, this.Tran);
             return r.Succ();

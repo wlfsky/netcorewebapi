@@ -7,6 +7,7 @@ using WL.Core.InterfaceBridge.InterfaceBridge;
 using WlToolsLib.DataShell;
 using WlToolsLib.Pagination;
 using System.Collections.Generic;
+using WL.Core.Common.Log;
 
 namespace WL.Account.DataBridge
 {
@@ -20,7 +21,7 @@ namespace WL.Account.DataBridge
             bridge.ServiceUrlMaker = new AccountDataUrlMaker();
         }
 
-        public DataShell<int> Del(AccountDBModel user)
+        public IDataShell<int> Del(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/Del";
             var res = bridge.CallApi<AccountDBModel, DataShell<int>>(funcUrl, user);
@@ -32,10 +33,10 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        public DataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
+        public IDataShell<PageShell<AccountDBModel>> GetPage(PageCondition<UserQueryPageCondition> condition)
         {
             string consoleLogStr = "call data_service/useraccount/getpage";
-            Console.WriteLine(consoleLogStr);
+            SysLog.InfoLog(consoleLogStr);
             string funcUrl = "/api/UserAccount/GetPage";
             var res = bridge.CallApi<PageCondition<UserQueryPageCondition>, DataShell<PageShell<AccountDBModel>>>(funcUrl, condition);
             return res;
@@ -45,7 +46,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Get(AccountDBModel user)
+        public IDataShell<AccountDBModel> Get(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/get";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -56,7 +57,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Insert(AccountDBModel user)
+        public IDataShell<AccountDBModel> Insert(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/Insert";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -69,7 +70,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> Update(AccountDBModel user)
+        public IDataShell<AccountDBModel> Update(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/Update";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -80,7 +81,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateAfterLogin(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateAfterLogin";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -91,7 +92,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateModifyPassword(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateModifyPassword";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -105,7 +106,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccountID(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/GetByAccountID";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -116,7 +117,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByAccount(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByAccount(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/GetByAccount";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -127,7 +128,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByEmail(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByEmail(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/GetByEmail";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -138,7 +139,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByMobile(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByMobile(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/GetByMobile";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -149,7 +150,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
+        public IDataShell<AccountDBModel> GetByCoreID(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/GetByCoreID";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -160,7 +161,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateStatus(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateStatus";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -171,7 +172,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetTempPassword(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/SetTempPassword";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -182,7 +183,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateNickName(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateNickName";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -193,7 +194,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateNickPic(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateNickPic";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -204,7 +205,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetRealName(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetRealName(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/SetRealName";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -215,7 +216,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> SetIDCard(AccountDBModel user)
+        public IDataShell<AccountDBModel> SetIDCard(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/SetIDCard";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -226,7 +227,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateUserRemark(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateUserRemark";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -237,7 +238,7 @@ namespace WL.Account.DataBridge
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public DataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
+        public IDataShell<AccountDBModel> UpdateSysRemark(AccountDBModel user)
         {
             string funcUrl = "/api/UserAccount/UpdateSysRemark";
             var res = bridge.CallApi<AccountDBModel, DataShell<AccountDBModel>>(funcUrl, user);
@@ -247,7 +248,7 @@ namespace WL.Account.DataBridge
         /// 获取全部用户信息，用于管理端对照提取用户关联信息使用
         /// </summary>
         /// <returns></returns>
-        public DataShell<IEnumerable<AccountDBModel>> GetAllAccount()
+        public IDataShell<IEnumerable<AccountDBModel>> GetAllAccount()
         {
             string funcUrl = "/api/UserAccount/GetAllAccount";
             var res = bridge.CallApi<AccountDBModel, DataShell<IEnumerable<AccountDBModel>>>(funcUrl, null);
