@@ -96,7 +96,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0F871682-B4F
 		Doc\优惠卷系统设计.xmind = Doc\优惠卷系统设计.xmind
 		Doc\总体设计.xmind = Doc\总体设计.xmind
 		Doc\数据库设计.内容管理.xlsx = Doc\数据库设计.内容管理.xlsx
-		Doc\数据库设计文档.用户帐号.xlsx = Doc\数据库设计文档.用户帐号.xlsx
+		Doc\数据库设计.商品.xlsx = Doc\数据库设计.商品.xlsx
+		Doc\数据库设计.用户帐号.xlsx = Doc\数据库设计.用户帐号.xlsx
+		Doc\数据库设计.进销存.xlsx = Doc\数据库设计.进销存.xlsx
 		Doc\流程状态图.vsdx = Doc\流程状态图.vsdx
 		Doc\评价体系表设计.xlsx = Doc\评价体系表设计.xlsx
 		Doc\评价体系设计.xmind = Doc\评价体系设计.xmind
@@ -152,6 +154,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WL.Admin.Web", "src\WL.Admi
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1956"
 		SlnRelativePath = "src\WL.Admin.Web\"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{9E8033B9-1AE1-40DB-88E5-37F112EC0048}"
+	ProjectSection(SolutionItems) = preProject
+		src\Sql\Account.sql = src\Sql\Account.sql
 	EndProjectSection
 EndProject
 Global
@@ -313,6 +320,7 @@ Global
 		{337C34A9-22A0-4804-B0BA-7481B5217764} = {C9ED1A61-921A-412B-9A5E-57D512A9CEA9}
 		{67034466-7C7C-4C76-815A-3D3137CC7782} = {C9ED1A61-921A-412B-9A5E-57D512A9CEA9}
 		{21D96F1D-3FC7-4C43-97A1-57D67AE6CC19} = {C9ED1A61-921A-412B-9A5E-57D512A9CEA9}
+		{9E8033B9-1AE1-40DB-88E5-37F112EC0048} = {C9ED1A61-921A-412B-9A5E-57D512A9CEA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AC1A0B3D-01A5-4197-B9DC-2B638C113F23}
