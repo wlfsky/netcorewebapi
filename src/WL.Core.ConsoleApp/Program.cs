@@ -83,7 +83,6 @@ namespace WL.Core.ConsoleApp
             WriteLine(g1);
             #endregion
 
-
             #region --DateTime.Now.Ticks 生成测试--
             var fileTicks = System.IO.File.CreateText(AppDomain.CurrentDomain.BaseDirectory + "TicksMakeTest.txt");
             for (int i = 0; i < 200; i++)
@@ -93,7 +92,6 @@ namespace WL.Core.ConsoleApp
             }
             fileTicks.Close();
             #endregion
-
 
             #region --处理集群测试--
             //Cluster.DistributedSystemTest.test_the_cluster();
@@ -114,7 +112,6 @@ namespace WL.Core.ConsoleApp
             #region --线程池测试--
             Test_Th_Pool();
             #endregion
-
 
             #region --接口转换api--
             var dll2 = $"{AppDomain.CurrentDomain.BaseDirectory}WL.Core.ConsoleApp.dll";
@@ -233,6 +230,9 @@ namespace WL.Core.ConsoleApp
             Console.WriteLine(array1[2]);
         }
 
+        /// <summary>
+        /// 验证
+        /// </summary>
         public void Check()
         {
             var b = new Book();
@@ -257,6 +257,10 @@ namespace WL.Core.ConsoleApp
             var d = b.GetType().GetProperties().First().PropertyType.Name;
         }
 
+        /// <summary>
+        /// 测试执行时间外壳
+        /// </summary>
+        /// <param name="xn"></param>
         public static void TimeOf_Shell(Action xn = null)
         {
             Stopwatch watch = new Stopwatch();

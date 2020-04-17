@@ -17,6 +17,8 @@ using WL.Account.Core.Business.Interface;
 using WL.Core.BusinessService;
 using WL.Core.WebApp.Common.Middleware;
 using WlToolsLib.Extension;
+//using SignalRChat.Hubs;
+using WL.Core.WebApp.Hubs;
 
 namespace WL.Core.WebApp
 {
@@ -47,9 +49,9 @@ namespace WL.Core.WebApp
             services.AddSingleton<IAccountBLL, AccountBLL>();
             #endregion
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest); ;
-
-            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            // SignalR 配置
+            services.AddSignalR();
         }
 
         /// <summary>
@@ -89,13 +91,14 @@ namespace WL.Core.WebApp
             app.Use(async (context, next) =>
             {
                 // Do work that doesn't write to the Response.
-                await context.Response.WriteAsync("Hello, World! This is my world! Enjoy!");
+                // await context.Response.WriteAsync("Hello, World! This is my world! Enjoy!");
                 await next.Invoke();
                 // Do logging or other work that doesn't write to the Response.
             });
             app.Use(next =>
             {
                 Console.WriteLine("\nA\n");
+
                 return async (context) =>
                 {
                     // 1. 对Request做一些处理
@@ -178,12 +181,12 @@ namespace WL.Core.WebApp
             #endregion
 
             #region --Run 不向下传递--
-            app.Run(async context =>
-                {
-                // Run 不向下传递
-                await context.Response.WriteAsync("This is my world! Enjoy! [this is the end!]");
-                    // 此代码执行后，未向下继续执行。
-                });
+            //app.Run(async context =>
+            //    {
+            //    // Run 不向下传递
+            //    await context.Response.WriteAsync("This is my world! Enjoy! [this is the end!] no more running！");
+            //        // 此代码执行后，未向下继续执行。
+            //    });
             #endregion
             #endregion
 
@@ -216,6 +219,8 @@ namespace WL.Core.WebApp
                     name: "api",
                     pattern: "api/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                //
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
             // 下面这个是老的core2.2的
             //app.UseMvc(routes =>
