@@ -13,6 +13,8 @@ using System.Diagnostics;
 using WlToolsLib.EasyHttpClient;
 using System.IO;
 using WL.Core.Common.InterfaceMaker;
+using WlToolsLib.TcpUdp;
+using System.Net.Http;
 
 namespace WL.Core.ConsoleApp
 {
@@ -154,12 +156,13 @@ namespace WL.Core.ConsoleApp
             #endregion
 
             #region --http get 文件流--
-            Task.Run(() =>
-            {
-                int size = 4096;
-                IEasyHttpClient hc = new DefaultEasyHttpClient();
-                hc.SetBaseUrl("http://192.168.21.197:8096").GetToFile("/download/ftg", data: "abcdefghijklmn");
-            });
+            // 这个可以运行,只是需要开启服务端.服务端是py的flask文件下载服务
+            //Task.Run(() =>
+            //{
+            //    int size = 4096;
+            //    IEasyHttpClient hc = new DefaultEasyHttpClient();
+            //    hc.SetBaseUrl("http://192.168.21.197:8096").GetToFile("/download/ftg", data: "abcdefghijklmn");
+            //});
             #endregion
 
             WriteLine($"好像执行完了。读键...");
@@ -167,8 +170,52 @@ namespace WL.Core.ConsoleApp
             {
                 WriteLine($"证明我是异步[{i}]...");
             }
+
+
+            #region --udp 服务--
+            //new UdpService().StartUdpServer("127.0.0.1", 58884);
+            #endregion
+
+            #region --tcp server--
+            //new TCPServer(58886).ServerStart();
+            #endregion
+
+            #region --tcp client--
+            //foreach (var item in new int[] {1, 2,3,4,5, })
+            //{
+            //    new TCPClient("127.0.0.1", 58884).StartAndSend($"始终保持再结尾处--{item}");
+            //}
+            #endregion
+
+            HttpClientTest();
+            //结尾读键  始终保持再结尾处
+            WriteLine($"结尾读键  始终保持再结尾处. 这里后面就是结束读按任意键！");
             ReadKey();
         }
+
+        #region --HttpClient 测试 含异步--
+        public static void HttpClientTest()
+        {
+            string url = "http://localhost:8090/api/content/1";
+            var t2 = Task.Run(async () => {
+                using (HttpClient hc = new HttpClient())
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await hc.GetAsync(url);
+                        response.EnsureSuccessStatusCode();//用来抛异常的
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        WriteLine($"HttpClient Res: {responseBody}");
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        WriteLine($"HttpClient Res Err: {e.Message}");
+                    }
+                }
+            });
+            Task.WaitAll(t2);
+        }
+        #endregion
 
         #region --同类型数组拼接--
         // 这个应该是 列拼接，而非队列拼接
