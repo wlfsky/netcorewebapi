@@ -15,7 +15,8 @@ export default class CMSApi {
   }
   // 根分类获取
   static RootCategory (param: CategoryRequest): ThenPromise<Result<Array<CategoryItem>>> {
-    return HttpClient.Get<CategoryRequest, Result<Array<CategoryItem>>>(`api/rootcategory`, param)
+    let url = `api/rootcategory/${param.id}`;
+    return HttpClient.Get<CategoryRequest, Result<Array<CategoryItem>>>(url, param)
   }
   // 第一分类
   static FirstCategory (param: CategoryRequest): ThenPromise<Result<Array<CategoryItem>>> {

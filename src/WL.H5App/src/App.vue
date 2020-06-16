@@ -5,7 +5,7 @@
       @click-left="leftButtonClickHandle"
       @click-right="rightButtonClickHandle"
     />
-    <mt-header fixed v-bind:title="computedPageTitle"></mt-header>
+    <!-- <mt-header fixed v-bind:title="computedPageTitle"></mt-header> -->
     <router-view/>
     <van-tabbar v-model="bottomBarActiveIndex">
       <template v-for="(bbitem, key) in BottomBarItems">
@@ -21,6 +21,7 @@ import { Component, Watch/*, Prop, Emit, Inject, Model, Provide*/ } from 'vue-pr
 // Component组件， Prop上级传来数据，Vue核心， Watch监控
 import { NavBar } from 'vant';
 import { Tabbar, TabbarItem } from 'vant';
+import HttpClient from './common/HttpClient';
 
 
 Vue.use(NavBar);
@@ -47,11 +48,23 @@ export default class App extends Vue {
   //
   bottomBarActiveIndex: number = 0;
   BottomBarItems: Array<BottomButton> = new Array<BottomButton>();
-
-  // 声明周期钩子
+  
+  // 生命周期钩子
   mounted () {
     this.BottomBarItems.push(new BottomButton(0, 'records', '首页', '', this.goHome));
     this.BottomBarItems.push(new BottomButton(1, 'gold-coin', '关于', '', this.goAbout));
+  }
+
+  created () {
+    console.log("执行了一次创建！");
+    let p = "ok";
+    let t = "CF8C652EACD9D7C655DE3246E7BE785EB230C00FE8436B00584A03EFB0D4F8E39975A196FFAA042402CBA53897386D9B178BF0EBA1A5EB7943C8C32F71CF1D4A";
+    let resx = HttpClient.TestCallUrl("GET", "http://ocssopenapi.hw.pisendev.com/api/EndUserCenter/DoWork?msg="+p, p, t).then((res) => {
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+      console.log(err.Message)
+    })
   }
 
   // 计算属性

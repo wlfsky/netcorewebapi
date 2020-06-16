@@ -14,3 +14,4 @@ export default Vue.extend({
 <style scoped>
 
 </style>
+

@@ -1,7 +1,7 @@
 <template>
     <div>
     <div v-for="cate in categoryList" :key="cate.CateId">
-    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/ContentListView/${cate.CateId}`, params: { categoryid: cate.CateId }}">
+    <van-cell v-bind:value="cate.Remark" icon="shop" is-link :to="{path: `/ContentListView/${cate.Cid}`, params: { categoryid: cate.Cid }}">
     <template slot="title">
         <span>{{cate.Title}}</span>
         <van-tag type="danger">{{cate.NewCount}}</van-tag>

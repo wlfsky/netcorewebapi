@@ -5,9 +5,9 @@ export class Result<T> {
   Message: string
   Msg: string
   Data: T
-  ResponseAction: Action
-  Infos: Array<string>
-  Version: string
+  ResponseAction: Action = new Action();
+  Infos: Array<string> = new Array<string>();
+  Version: string = "";
   get IsSucc (): boolean { return this.Success === true }
 
   constructor (success: boolean, msg: string = '', data?: T) {
@@ -20,7 +20,7 @@ export class Result<T> {
 }
 
 export class Action {
-  Condition: string
-  ActionType: string
-  Action: string
+  Condition: string = "";
+  ActionType: string = "";
+  Action: string = "";
 }

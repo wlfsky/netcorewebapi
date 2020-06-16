@@ -45,7 +45,7 @@ export default class ContentListView extends App {
     list: number[] = []
     loading: boolean = false
     finished: boolean = false
-    page_list: Page<ContentListItemModel> = {PageSize: 3, PageIndex: 1, Rows: []} as Page<ContentListItemModel>
+    page_list: Page<ContentListItemModel> = { PageSize: 3, PageIndex: 1, Rows: [] } as Page<ContentListItemModel>;
     currPageSize: number = 2
     condition: PageRequest<ContentPageCondition> = {PageSize: this.currPageSize, PageIndex: 1, Condition: {PCId:'0'}} as PageRequest<ContentPageCondition>
 
